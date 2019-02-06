@@ -16,8 +16,6 @@
 		4D6396AC220165CE004B6718 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 4D6396AB220165CE004B6718 /* Assets.xcassets */; };
 		4D6396AF220165CE004B6718 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 4D6396AD220165CE004B6718 /* LaunchScreen.storyboard */; };
 		4DA3FF62220A9EFB008B7BC4 /* GameConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4DA3FF61220A9EFB008B7BC4 /* GameConstants.swift */; };
-		4DA3FF64220AA5C2008B7BC4 /* Button.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4DA3FF63220AA5C2008B7BC4 /* Button.swift */; };
-		4DA3FF66220AAB43008B7BC4 /* Menu.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4DA3FF65220AAB43008B7BC4 /* Menu.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -32,8 +30,6 @@
 		4D6396AE220165CE004B6718 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		4D6396B0220165CE004B6718 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		4DA3FF61220A9EFB008B7BC4 /* GameConstants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameConstants.swift; sourceTree = "<group>"; };
-		4DA3FF63220AA5C2008B7BC4 /* Button.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Button.swift; sourceTree = "<group>"; };
-		4DA3FF65220AAB43008B7BC4 /* Menu.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Menu.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -66,18 +62,16 @@
 		4D63969D220165CB004B6718 /* Farkle */ = {
 			isa = PBXGroup;
 			children = (
-				4D63969E220165CB004B6718 /* AppDelegate.swift */,
-				4D6396A0220165CB004B6718 /* GameScene.sks */,
 				4D6396A2220165CB004B6718 /* Actions.sks */,
+				4D63969E220165CB004B6718 /* AppDelegate.swift */,
+				4D6396AB220165CE004B6718 /* Assets.xcassets */,
+				4DA3FF61220A9EFB008B7BC4 /* GameConstants.swift */,
+				4D6396A0220165CB004B6718 /* GameScene.sks */,
 				4D6396A4220165CB004B6718 /* GameScene.swift */,
 				4D6396A6220165CB004B6718 /* GameViewController.swift */,
-				4D6396A8220165CB004B6718 /* Main.storyboard */,
-				4D6396AB220165CE004B6718 /* Assets.xcassets */,
-				4D6396AD220165CE004B6718 /* LaunchScreen.storyboard */,
 				4D6396B0220165CE004B6718 /* Info.plist */,
-				4DA3FF61220A9EFB008B7BC4 /* GameConstants.swift */,
-				4DA3FF63220AA5C2008B7BC4 /* Button.swift */,
-				4DA3FF65220AAB43008B7BC4 /* Menu.swift */,
+				4D6396AD220165CE004B6718 /* LaunchScreen.storyboard */,
+				4D6396A8220165CB004B6718 /* Main.storyboard */,
 			);
 			path = Farkle;
 			sourceTree = "<group>";
@@ -155,8 +149,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				4DA3FF66220AAB43008B7BC4 /* Menu.swift in Sources */,
-				4DA3FF64220AA5C2008B7BC4 /* Button.swift in Sources */,
 				4D6396A5220165CB004B6718 /* GameScene.swift in Sources */,
 				4DA3FF62220A9EFB008B7BC4 /* GameConstants.swift in Sources */,
 				4D6396A7220165CB004B6718 /* GameViewController.swift in Sources */,
@@ -237,13 +229,14 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.1;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 4.2;
 			};
 			name = Debug;
 		};
@@ -292,12 +285,13 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.1;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				SDKROOT = iphoneos;
 				SWIFT_COMPILATION_MODE = wholemodule;
 				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				SWIFT_VERSION = 4.2;
 				VALIDATE_PRODUCT = YES;
 			};
 			name = Release;
