@@ -91,7 +91,6 @@ struct GameConstants {
         static let Texture = SKTexture(imageNamed: "Felt_Green")
         static let Size = gameScene.size
         static let Position = CGPoint(x: 0, y: 0)
-        static let ZPosition = 0
     }
     
     struct MainMenu {
