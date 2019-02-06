@@ -12,26 +12,33 @@ let gameScene = GameScene()
 
 class GameScene: SKScene {
     
-    var gameTable: SKSpriteNode!
-    var menu: SKSpriteNode!
-    var menuLabel: SKLabelNode!
-    var button1: SKSpriteNode!
-    var button1Label: SKLabelNode!
-    var button2: SKSpriteNode!
-    var button2Label: SKLabelNode!
-    var button3: SKSpriteNode!
-    var button3Label: SKLabelNode!
+    var GameTable: SKSpriteNode!
+    var Menu: SKSpriteNode!
+    var Label: SKLabelNode!
+    var Button: SKSpriteNode!
+    var ButtonLabel: SKLabelNode!
+    
+    var buttonPos1: CGPoint!
+    var buttonPos2: CGPoint!
+    var buttonPos3: CGPoint!
+    
+    var labelPos: CGPoint!
 
     override func didMove(to view: SKView) {
         setupGameTable()
-        setupMenu(menuName: "Main Menu")
-        setupButtons()
-        setupButtonLabels()
+        setupMenu(menuName: "MainMenu")
+        setupButton(buttonName: "PlayButton", buttonNumber: 1)
+        setupButton(buttonName: "SettingsButton", buttonNumber: 2)
+        setupButton(buttonName: "HelpButton", buttonNumber: 3)
+        setupMenuLabel(label: "Main Menu")
+        setupButtonLabel(label: "Play", labelNumber: 1)
+        setupButtonLabel(label: "Settings", labelNumber: 2)
+        setupButtonLabel(label: "Help", labelNumber: 3)
     }
     
     func setupGameTable() {
         if let gameTable = SKSpriteNode(texture: SKTexture(imageNamed: "Felt_Green")) as SKSpriteNode? {
-            self.gameTable = gameTable
+            self.GameTable = gameTable
             gameTable.name = "Game Table"
             gameTable.size = (scene?.size)!
             gameTable.position = CGPoint(x: 0, y: 0)
@@ -42,7 +49,7 @@ class GameScene: SKScene {
     
     func setupMenu(menuName: String) {
         if let menu = SKSpriteNode(texture: SKTexture(imageNamed: "Casual Game GUI_Window - Wide")) as SKSpriteNode? {
-            self.menu = menu
+            self.Menu = menu
             menu.name = menuName
             menu.size = CGSize(width: ((scene?.size.width)! / 2) + 100, height: ((scene?.size.height)! / 2) + 50)
             menu.position = CGPoint(x: (scene?.position.x)!, y: (scene?.position.y)!)
@@ -52,16 +59,34 @@ class GameScene: SKScene {
         }
     }
     
-    func setupButtons() {
-        if let playButton = SKSpriteNode(texture: SKTexture(imageNamed: "PlayButton")) as SKSpriteNode? {
-            self.button1 = playButton
-            playButton.name = "Play Button"
-            playButton.position = CGPoint(x: 0, y: 30)
-            playButton.size = CGSize(width: 128, height: 48)
-            playButton.zPosition = 2
- 
-            self.addChild(playButton)
+    func setupButton(buttonName: String, buttonNumber: Int) {
+        var pos = CGPoint()
+        
+        switch buttonNumber {
+        case 1:
+            pos = CGPoint(x: 0, y: 30)
+            buttonPos1 = pos
+        case 2:
+            pos = CGPoint(x: 0, y: -20)
+            buttonPos2 = pos
+        case 3:
+            pos = CGPoint(x: 0, y: -70)
+            buttonPos3 = pos
+        default:
+            break
         }
+        if let button = SKSpriteNode(texture: SKTexture(imageNamed: buttonName)) as SKSpriteNode? {
+            self.Button = button
+            button.name = buttonName
+            button.position = pos
+            button.size = CGSize(width: 128, height: 48)
+            button.zPosition = 2
+ 
+            self.addChild(button)
+        }
+    }
+
+        /*
         if let settingsButton = SKSpriteNode(texture: SKTexture(imageNamed: "SettingsButton")) as SKSpriteNode? {
             self.button2 = settingsButton
             settingsButton.name = "Settings Button"
@@ -80,24 +105,52 @@ class GameScene: SKScene {
 
             self.addChild(helpButton)
         }
+    }*/
+    
+    func setupMenuLabel(label: String) {
+        if let menuLabel = SKLabelNode(text: "Main Menu") as SKLabelNode? {
+            self.Label = menuLabel
+            menuLabel.text = label
+            menuLabel.fontName = "Marker Felt Wide"
+            menuLabel.fontColor = UIColor.black
+            menuLabel.fontSize = 34
+            menuLabel.zPosition = 3
+            menuLabel.name = "\(label) Label"
+            menuLabel.position = CGPoint(x: Menu.position.x, y: ((Menu.position.y) + (Menu.size.height / 2)) - 40)
+            
+            self.addChild(menuLabel)
+        }
+    }
+
+    func setupButtonLabel(label: String, labelNumber: Int) {
+        
+        switch labelNumber {
+        case 1:
+            labelPos = CGPoint(x: 0, y: 22)
+        case 2:
+            labelPos = CGPoint(x: 0, y: ((self.buttonPos1.y) - (self.Button.size.height)) - 10)
+        case 3:
+            labelPos = CGPoint(x: 0, y: ((self.buttonPos2.y) - (self.Button.size.height)) - 10)
+        default:
+            break
+        }
+        if let buttonLabel = SKLabelNode(text: label) as SKLabelNode? {
+            self.ButtonLabel = buttonLabel
+            buttonLabel.text = label
+            buttonLabel.fontName = "Marker Felt Wide"
+            buttonLabel.fontColor = UIColor.black
+            buttonLabel.fontSize = 24
+            buttonLabel.zPosition = 3
+            buttonLabel.name = "\(label) Label"
+            buttonLabel.position = labelPos
+            
+            self.addChild(buttonLabel)
+        }
     }
     
-    func setupButtonLabels() {
-        if let mainMenuLabel = SKLabelNode(text: "Main Menu") as SKLabelNode? {
-            self.menuLabel = mainMenuLabel
-            mainMenuLabel.text = "Main Menu"
-            mainMenuLabel.fontName = "Marker Felt Wide"
-            mainMenuLabel.fontColor = UIColor.black
-            mainMenuLabel.fontSize = 34
-            mainMenuLabel.zPosition = 3
-            mainMenuLabel.name = "Main Menu Label"
-            mainMenuLabel.position = CGPoint(x: menu.position.x, y: ((menu.position.y) + (menu.size.height / 2)) - 40)
-            
-            self.addChild(mainMenuLabel)
-        }
-        
+        /*
         if let playButtonLabel = SKLabelNode(text: "Play") as SKLabelNode? {
-            self.button1Label = playButtonLabel
+            self.ButtonLabel = playButtonLabel
             playButtonLabel.text = "Play"
             playButtonLabel.fontName = "Marker Felt Wide"
             playButtonLabel.fontColor = UIColor.black
@@ -109,6 +162,7 @@ class GameScene: SKScene {
 
             self.addChild(playButtonLabel)
         }
+    
         if let settingsButtonLabel = SKLabelNode(text: "Settings") as SKLabelNode? {
             self.button2Label = settingsButtonLabel
             settingsButtonLabel.text = "Settings"
@@ -116,7 +170,7 @@ class GameScene: SKScene {
             settingsButtonLabel.fontColor = UIColor.black
             settingsButtonLabel.fontSize = 24
             settingsButtonLabel.name = "Settings Button Label"
-            settingsButtonLabel.position = CGPoint(x: 0, y: ((self.button1.position.y) - (self.button1.size.height)) - 10)
+            settingsButtonLabel.position = CGPoint(x: 0, y: ((self.Button.position.y) - (self.Button.size.height)) - 10)
             //settingsButtonLabel.size = CGSize(width: 128, height: 64)
             settingsButtonLabel.zPosition = 3
 
@@ -136,6 +190,7 @@ class GameScene: SKScene {
             self.addChild(helpButtonLabel)
         }
     }
+    */
     
     override func update(_ currentTime: TimeInterval) {
 
