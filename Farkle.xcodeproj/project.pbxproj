@@ -15,6 +15,9 @@
 		4D6396AA220165CB004B6718 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 4D6396A8220165CB004B6718 /* Main.storyboard */; };
 		4D6396AC220165CE004B6718 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 4D6396AB220165CE004B6718 /* Assets.xcassets */; };
 		4D6396AF220165CE004B6718 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 4D6396AD220165CE004B6718 /* LaunchScreen.storyboard */; };
+		4DA3FF62220A9EFB008B7BC4 /* GameConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4DA3FF61220A9EFB008B7BC4 /* GameConstants.swift */; };
+		4DA3FF64220AA5C2008B7BC4 /* Button.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4DA3FF63220AA5C2008B7BC4 /* Button.swift */; };
+		4DA3FF66220AAB43008B7BC4 /* Menu.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4DA3FF65220AAB43008B7BC4 /* Menu.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -28,6 +31,9 @@
 		4D6396AB220165CE004B6718 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		4D6396AE220165CE004B6718 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		4D6396B0220165CE004B6718 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		4DA3FF61220A9EFB008B7BC4 /* GameConstants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameConstants.swift; sourceTree = "<group>"; };
+		4DA3FF63220AA5C2008B7BC4 /* Button.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Button.swift; sourceTree = "<group>"; };
+		4DA3FF65220AAB43008B7BC4 /* Menu.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Menu.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -69,6 +75,9 @@
 				4D6396AB220165CE004B6718 /* Assets.xcassets */,
 				4D6396AD220165CE004B6718 /* LaunchScreen.storyboard */,
 				4D6396B0220165CE004B6718 /* Info.plist */,
+				4DA3FF61220A9EFB008B7BC4 /* GameConstants.swift */,
+				4DA3FF63220AA5C2008B7BC4 /* Button.swift */,
+				4DA3FF65220AAB43008B7BC4 /* Menu.swift */,
 			);
 			path = Farkle;
 			sourceTree = "<group>";
@@ -146,7 +155,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				4DA3FF66220AAB43008B7BC4 /* Menu.swift in Sources */,
+				4DA3FF64220AA5C2008B7BC4 /* Button.swift in Sources */,
 				4D6396A5220165CB004B6718 /* GameScene.swift in Sources */,
+				4DA3FF62220A9EFB008B7BC4 /* GameConstants.swift in Sources */,
 				4D6396A7220165CB004B6718 /* GameViewController.swift in Sources */,
 				4D63969F220165CB004B6718 /* AppDelegate.swift in Sources */,
 			);
@@ -225,7 +237,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 12.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
@@ -280,7 +292,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 12.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				SDKROOT = iphoneos;

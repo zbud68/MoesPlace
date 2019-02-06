@@ -7,83 +7,139 @@
 //
 
 import SpriteKit
-import GameplayKit
+
+let gameScene = GameScene()
 
 class GameScene: SKScene {
     
-    private var label : SKLabelNode?
-    private var spinnyNode : SKShapeNode?
-    
+    var gameTable: SKSpriteNode!
+    var mainMenu: SKSpriteNode!
+    var mainMenuLabel: SKLabelNode!
+    var playButton: SKSpriteNode!
+    var playButtonLabel: SKLabelNode!
+    var settingsButton: SKSpriteNode!
+    var settingsButtonLabel: SKLabelNode!
+    var helpButton: SKSpriteNode!
+    var helpButtonLabel: SKLabelNode!
+
     override func didMove(to view: SKView) {
-        
-        // Get label node from scene and store it for use later
-        self.label = self.childNode(withName: "//helloLabel") as? SKLabelNode
-        if let label = self.label {
-            label.alpha = 0.0
-            label.run(SKAction.fadeIn(withDuration: 2.0))
-        }
-        
-        // Create shape node to use during mouse interaction
-        let w = (self.size.width + self.size.height) * 0.05
-        self.spinnyNode = SKShapeNode.init(rectOf: CGSize.init(width: w, height: w), cornerRadius: w * 0.3)
-        
-        if let spinnyNode = self.spinnyNode {
-            spinnyNode.lineWidth = 2.5
+        loadGameTable()
+        loadMainMenu()
+        loadChildren()
+        loadButtonLabels()
+    }
+    
+    func loadGameTable() {
+        if let gameTable = SKSpriteNode(texture: SKTexture(imageNamed: "Felt_Green")) as SKSpriteNode? {
+            self.gameTable = gameTable
+            gameTable.name = "Game Table"
+            gameTable.size = (scene?.size)!
+            gameTable.position = CGPoint(x: 0, y: 0)
             
-            spinnyNode.run(SKAction.repeatForever(SKAction.rotate(byAngle: CGFloat(Double.pi), duration: 1)))
-            spinnyNode.run(SKAction.sequence([SKAction.wait(forDuration: 0.5),
-                                              SKAction.fadeOut(withDuration: 0.5),
-                                              SKAction.removeFromParent()]))
+            self.addChild(gameTable)
         }
     }
     
-    
-    func touchDown(atPoint pos : CGPoint) {
-        if let n = self.spinnyNode?.copy() as! SKShapeNode? {
-            n.position = pos
-            n.strokeColor = SKColor.green
-            self.addChild(n)
+    func loadMainMenu() {
+        if let mainMenu = SKSpriteNode(texture: SKTexture(imageNamed: "Casual Game GUI_Window - Wide")) as SKSpriteNode? {
+            self.mainMenu = mainMenu
+            mainMenu.name = "Main Menu"
+            mainMenu.size = CGSize(width: ((scene?.size.width)! / 2) + 100, height: ((scene?.size.height)! / 2) + 50)
+            mainMenu.position = CGPoint(x: (scene?.position.x)!, y: (scene?.position.y)!)
+            mainMenu.zPosition = 1
+
+            self.addChild(mainMenu)
         }
     }
     
-    func touchMoved(toPoint pos : CGPoint) {
-        if let n = self.spinnyNode?.copy() as! SKShapeNode? {
-            n.position = pos
-            n.strokeColor = SKColor.blue
-            self.addChild(n)
+    func loadChildren() {
+        
+        
+        if let playButton = SKSpriteNode(texture: SKTexture(imageNamed: "PlayButton")) as SKSpriteNode? {
+            self.playButton = playButton
+            playButton.name = "Play Button"
+            playButton.position = CGPoint(x: 0, y: 30)
+            playButton.size = CGSize(width: 128, height: 48)
+            playButton.zPosition = 2
+ 
+            self.addChild(playButton)
+        }
+        if let settingsButton = SKSpriteNode(texture: SKTexture(imageNamed: "SettingsButton")) as SKSpriteNode? {
+            self.settingsButton = settingsButton
+            settingsButton.name = "Settings Button"
+            settingsButton.position = CGPoint(x: 0, y: -20)
+            settingsButton.size = CGSize(width: 128, height: 48)
+            settingsButton.zPosition = 2
+
+            self.addChild(settingsButton)
+        }
+        if let helpButton = SKSpriteNode(texture: SKTexture(imageNamed: "HelpButton")) as SKSpriteNode? {
+            self.helpButton = helpButton
+            helpButton.name = "Help Button"
+            helpButton.position = CGPoint(x: 0, y: -70)
+            helpButton.size = CGSize(width: 128, height: 48)
+            helpButton.zPosition = 2
+
+            self.addChild(helpButton)
         }
     }
     
-    func touchUp(atPoint pos : CGPoint) {
-        if let n = self.spinnyNode?.copy() as! SKShapeNode? {
-            n.position = pos
-            n.strokeColor = SKColor.red
-            self.addChild(n)
-        }
-    }
-    
-    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
-        if let label = self.label {
-            label.run(SKAction.init(named: "Pulse")!, withKey: "fadeInOut")
+    func loadButtonLabels() {
+        if let mainMenuLabel = SKLabelNode(text: "Main Menu") as SKLabelNode? {
+            self.mainMenuLabel = mainMenuLabel
+            mainMenuLabel.text = "Main Menu"
+            mainMenuLabel.fontName = "Marker Felt Wide"
+            mainMenuLabel.fontColor = UIColor.black
+            mainMenuLabel.fontSize = 34
+            mainMenuLabel.zPosition = 3
+            mainMenuLabel.name = "Main Menu Label"
+            mainMenuLabel.position = CGPoint(x: mainMenu.position.x, y: ((mainMenu.position.y) + (mainMenu.size.height / 2)) - 40)
+            
+            self.addChild(mainMenuLabel)
         }
         
-        for t in touches { self.touchDown(atPoint: t.location(in: self)) }
+        if let playButtonLabel = SKLabelNode(text: "Play") as SKLabelNode? {
+            self.playButtonLabel = playButtonLabel
+            playButtonLabel.text = "Play"
+            playButtonLabel.fontName = "Marker Felt Wide"
+            playButtonLabel.fontColor = UIColor.black
+            playButtonLabel.fontSize = 24
+            playButtonLabel.name = "Play Button Label"
+            playButtonLabel.position = CGPoint(x: 0, y: 22)
+            //playButtonLabel.size = CGSize(width: 128, height: 64)
+            playButtonLabel.zPosition = 3
+
+            self.addChild(playButtonLabel)
+        }
+        if let settingsButtonLabel = SKLabelNode(text: "Settings") as SKLabelNode? {
+            self.settingsButtonLabel = settingsButtonLabel
+            settingsButtonLabel.text = "Settings"
+            settingsButtonLabel.fontName = "Marker Felt Wide"
+            settingsButtonLabel.fontColor = UIColor.black
+            settingsButtonLabel.fontSize = 24
+            settingsButtonLabel.name = "Settings Button Label"
+            settingsButtonLabel.position = CGPoint(x: 0, y: ((self.playButton.position.y) - (self.playButton.size.height)) - 10)
+            //settingsButtonLabel.size = CGSize(width: 128, height: 64)
+            settingsButtonLabel.zPosition = 3
+
+            self.addChild(settingsButtonLabel)
+        }
+        if let helpButtonLabel = SKLabelNode(text: "Help") as SKLabelNode? {
+            self.helpButtonLabel = helpButtonLabel
+            helpButtonLabel.text = "Help"
+            helpButtonLabel.fontName = "Marker Felt Wide"
+            helpButtonLabel.fontColor = UIColor.black
+            helpButtonLabel.fontSize = 24
+            helpButtonLabel.name = "Help Button Label"
+            helpButtonLabel.position = CGPoint(x: 0, y: ((self.settingsButton.position.y) - (self.settingsButton.size.height)) - 10)
+            //helpButtonLabel = CGSize(width: 128, height: 64)
+            helpButtonLabel.zPosition = 3
+
+            self.addChild(helpButtonLabel)
+        }
     }
-    
-    override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
-        for t in touches { self.touchMoved(toPoint: t.location(in: self)) }
-    }
-    
-    override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
-        for t in touches { self.touchUp(atPoint: t.location(in: self)) }
-    }
-    
-    override func touchesCancelled(_ touches: Set<UITouch>, with event: UIEvent?) {
-        for t in touches { self.touchUp(atPoint: t.location(in: self)) }
-    }
-    
     
     override func update(_ currentTime: TimeInterval) {
-        // Called before each frame is rendered
+
     }
 }
