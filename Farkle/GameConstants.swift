@@ -55,40 +55,24 @@ struct GameConstants {
         static let die4Name = "Die4"
         static let die5Name = "Die5"
         static let die6Name = "Die6"
-    }
-
-    struct Menu {
-        static let fontName = "Marker Felt Wide"
-        static let fontColor = UIColor.black
-        static let fontSize: CGFloat = 34
-        static let ZPos: CGFloat = 2
-        static let ImageName = "Casual Game GUI_Window - Wide"
-        static let Texture = SKTexture(imageNamed: "Casual Game GUI_Window - Wide")
-        //static let Size =  CGSize(width: (gameScene.size.width) + 100, height: (gameScene.size.height) + 50)
-        //static let Position = CGPoint(x: (gameScene.position.x), y: (gameScene.position.y))
-        static let ZPosition = 1
-
+        
+        static let IconWindowImageName = "WindowPopup1"
+        static let ScoresWindowImageName = "WindowPopup2"
+        static let GameTableImageName = "WindowPopup"
+        static let MainMenuImageName = "MainMenu"
+        static let SettingsMenuImageName = "SettingsMenu"
+        static let HelpMenuImageName = "HelpMenu"
+        static let BackGroundImageName = "Felt_Green"
     }
     
-    struct Button {
-        static let fontName = "Marker Felt Wide"
-        static let fontColor = UIColor.black
-        static let fontSize: CGFloat = 24
-        static let ZPos: CGFloat = 2
-        static let Texture = SKTexture(imageNamed: "PlayButton")
-        static let Size =  CGSize(width: 128, height: 48)
-    }
-    
-    struct Dice {
-        static let PhysicBody = SKPhysicsBody(rectangleOf: CGSize(width: 64, height: 64))
-        static let Size = CGSize(width: 64, height: 64)
-        static let ZPosition = CGFloat(10)
-        static let PhysicsCategoryMask: UInt32 = 1
-        static let PhysicsContactMask: UInt32 = 1
-        static let PhysicsCollisionMask: UInt32 = 1
-        static let Gravity = false
-        static let AllowsRotation = true
-        static let Dynamic = true
+    struct ZPositions {
+        static let BackGround: CGFloat = 0
+        static let GameTable: CGFloat = 1
+        static let Menu: CGFloat = 1
+        static let Icon: CGFloat = 2
+        static let IconLabel: CGFloat = 3
+        static let Dice: CGFloat = 4
+        static let Message: CGFloat = 5
     }
     
     struct PhysicsCategory {
@@ -106,21 +90,62 @@ struct GameConstants {
         static let Busted = "You must match the target score exactly to win"
         static let Farkle = "No scoring dice"
     }
+
+    struct MainMenu {
+        static let fontName = GameConstants.Label.FontName
+        static let fontColor = GameConstants.Label.FontColor
+        static let fontSize = GameConstants.Label.FontSize
+    }
     
-    struct GameTable {
-        static let Name = "Game Table"
-        static let ImageName = "Felt_Green"
-        static let Texture = SKTexture(imageNamed: "Felt_Green1")
-        //static let Size = gameScene.size
-        static let Position = CGPoint(x: 0, y: 0)
+    struct ScoresMenu {
+        static let fontName = GameConstants.Label.FontName
+        static let fontColor = GameConstants.Label.FontColor
+        static let fontSize = GameConstants.Label.FontSize
+        static let ImageName = "WindowPop2"
+        static let Size = CGSize(width: 150, height: 330)
     }
 
-    struct ZPositions {
-        static let GameTable = 0
-        static let Menu = 1
-        static let Button = 2
-        static let ButtonLabel = 3
-        static let Dice = 4
-        static let Message = 5
+    struct Icon {
+        static let fontName = "Marker Felt Wide"
+        static let fontColor = UIColor.black
+        static let fontSize: CGFloat = 24
+        static let Size =  CGSize(width: 35, height: 35)
+    }
+    
+    struct Dice {
+        static let PhysicsBody = SKPhysicsBody(rectangleOf: CGSize(width: 64, height: 64))
+        static let Size = CGSize(width: 64, height: 64)
+        static let PhysicsCategoryMask: UInt32 = GameConstants.PhysicsCategory.Dice
+        static let PhysicsContactMask: UInt32 = GameConstants.PhysicsCategory.Frame
+        static let PhysicsCollisionMask: UInt32 = GameConstants.PhysicsCategory.Frame
+        
+        static let Gravity = false
+        static let AllowsRotation = true
+        static let Dynamic = true
+    }
+    
+    struct GameTable {
+        static let physicsBody = SKPhysicsBody(edgeLoopFrom: CGRect(x: 75, y: 0, width: 750, height: 440))
+        static let ImageName = "WindowPopup"
+        
+        static let PhysicsCategoryMask: UInt32 = GameConstants.PhysicsCategory.Frame
+        static let PhysicsContacMask: UInt32 = GameConstants.PhysicsCategory.Dice
+        static let PhysicsCollisionMask: UInt32 = GameConstants.PhysicsCategory.Dice
+        
+        static let Gravity = false
+        static let AllowsRotation = true
+        static let Dynamic = true
+    }
+    
+    struct BackGround {
+        static let Name = "BackGround"
+        static let ImageName = "Felt_Green"
+        static let Position = CGPoint(x: 0, y: 0)
+    }
+    
+    struct Label {
+        static let FontName = "Marker Felt Wide"
+        static let FontColor = UIColor.black
+        static let FontSize: CGFloat = 34
     }
 }

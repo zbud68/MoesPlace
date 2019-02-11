@@ -29,6 +29,16 @@ class GameViewController: UIViewController {
             view.showsFPS = true
             view.showsNodeCount = true
         }
+        
+        /*
+        let textBox = UITextField(frame: CGRect(x: 0, y: 0, width: 85, height: 30))
+        textBox.backgroundColor = UIColor.black
+        textBox.textColor = UIColor.white
+        textBox.clearsOnBeginEditing = true
+        textBox.placeholder = "10000"
+        self.view.addSubview(textBox)
+        */
+
     }
 
     override var shouldAutorotate: Bool {
