@@ -39,33 +39,36 @@ extension GameScene {
         setupIconsArray()
         setupIconWindowIconsArray()
         
-        /*
-         for icon in Icons {
-         icon.size = GameConstants.Icon.Size
-         icon.isUserInteractionEnabled = true
-         icon.zPosition = GameConstants.ZPositions.Icon
-         
-         switch icon.name {
-         case "Play Icon":
-         icon.position = CGPoint(x: 100, y: 100)
-         PlayIcon.position = icon.position
-         case "Exit Icon":
-         icon.position = CGPoint(x: frame.maxX - 40, y: frame.maxY - 10)
-         ExitIcon.position = icon.position
-         case "Pause Icon":
-         icon.position = CGPoint(x: frame.maxX - 10, y: frame.maxY - 50)
-         PauseIcon.position = icon.position
-         case "Sound Icon":
-         icon.position = CGPoint(x: frame.maxX - 10, y: frame.minY + 10)
-         SoundIcon.position = icon.position
-         case "Info Icon":
-         icon.position = CGPoint(x: frame.maxX - 40, y: frame.minY + 10)
-         InfoIcon.position = icon.position
-         default:
-         break
-         }
-         }
-         */
+        positionIconWindowIcons()
+        addIconWindowIcons()
+    }
+    
+    func positionIconWindowIcons() {
+        
+        for icon in IconWindowIcons {
+            icon.zPosition = IconWindow.zPosition + 1
+            icon.size = CGSize(width: 30, height: 30)
+            switch icon.name {
+            case "Play Icon":
+                icon.position = CGPoint(x: (icon.size.width / 2) - (IconWindow.size.width / 3) + 3, y: (icon.size.height / 2) + (IconWindow.size.height / 4) - 20)
+                PlayIcon.position = icon.position
+            case "Pause Icon":
+                icon.position = CGPoint(x: PlayIcon.position.x + 35, y: PlayIcon.position.y)
+                PauseIcon.position = icon.position
+            case "Exit Icon":
+                icon.position = CGPoint(x: PauseIcon.position.x + 35, y: PauseIcon.position.y)
+                ExitIcon.position = icon.position
+            case "Menu Icon":
+                icon.position = CGPoint(x: (PlayIcon.position.x + (icon.size.width / 2)), y: (PlayIcon.position.y - icon.size.height) - 5)
+                MenuIcon.position = icon.position
+            case "Sound Icon":
+                icon.position = CGPoint(x: MenuIcon.position.x + 35, y: MenuIcon.position.y)
+                SoundIcon.position = icon.position
+
+            default:
+                break
+            }
+        }
     }
     
     func setupIconsArray() {
@@ -78,14 +81,24 @@ extension GameScene {
 
     func addIconWindowIcons() {
         for icon in IconWindowIcons {
-            IconWindow.addChild(icon)
+            switch icon.name {
+            case "Play Icon":
+                IconWindow.addChild(icon)
+            case "Pause Icon":
+                IconWindow.addChild(icon)
+            case "Exit Icon":
+                IconWindow.addChild(icon)
+            case "Menu Icon":
+                IconWindow.addChild(icon)
+            case "Sound Icon":
+                IconWindow.addChild(icon)
+            default:
+                break
+            }
         }
     }
     
     func addIcons() {
-        for icon in Icons {
-            icon.zPosition = GameConstants.ZPositions.Icon
-            IconWindow.addChild(icon)
-        }
+        
     }
 }
