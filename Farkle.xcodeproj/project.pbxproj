@@ -76,18 +76,14 @@
 		4D63969D220165CB004B6718 /* Farkle */ = {
 			isa = PBXGroup;
 			children = (
-				4DE4A22F2211D7CE00671D07 /* GameScene Extensions */,
-				4D6396B0220165CE004B6718 /* Info.plist */,
-				4D6396A2220165CB004B6718 /* Actions.sks */,
-				4D6396A0220165CB004B6718 /* GameScene1.sks */,
-				4D63969E220165CB004B6718 /* AppDelegate.swift */,
-				4DA3FF61220A9EFB008B7BC4 /* GameConstants.swift */,
-				4D6396A4220165CB004B6718 /* GameScene.swift */,
-				4D6396A6220165CB004B6718 /* GameViewController.swift */,
 				4D6396AB220165CE004B6718 /* Assets.xcassets */,
-				4D6396AD220165CE004B6718 /* LaunchScreen.storyboard */,
-				4D19460A220C0B8D00EA2EFB /* Main.storyboard */,
-				4D7BD9E222110B02005D6D78 /* GameScene.sks */,
+				4D6396A4220165CB004B6718 /* GameScene.swift */,
+				4DE4A22F2211D7CE00671D07 /* GameScene Extensions */,
+				4DE4A23E22123D5100671D07 /* Helper Files */,
+				4DE4A23B22123C8B00671D07 /* SKS Files */,
+				4DE4A23D22123CE000671D07 /* Story Boards */,
+				4DE4A23C22123CB500671D07 /* Support Files */,
+				4D6396B0220165CE004B6718 /* Info.plist */,
 			);
 			path = Farkle;
 			sourceTree = "<group>";
@@ -103,6 +99,42 @@
 				4DE4A2392211DB0E00671D07 /* Popup_Ext.swift */,
 			);
 			path = "GameScene Extensions";
+			sourceTree = "<group>";
+		};
+		4DE4A23B22123C8B00671D07 /* SKS Files */ = {
+			isa = PBXGroup;
+			children = (
+				4D6396A2220165CB004B6718 /* Actions.sks */,
+				4D7BD9E222110B02005D6D78 /* GameScene.sks */,
+				4D6396A0220165CB004B6718 /* GameScene1.sks */,
+			);
+			path = "SKS Files";
+			sourceTree = "<group>";
+		};
+		4DE4A23C22123CB500671D07 /* Support Files */ = {
+			isa = PBXGroup;
+			children = (
+				4D63969E220165CB004B6718 /* AppDelegate.swift */,
+				4D6396A6220165CB004B6718 /* GameViewController.swift */,
+			);
+			path = "Support Files";
+			sourceTree = "<group>";
+		};
+		4DE4A23D22123CE000671D07 /* Story Boards */ = {
+			isa = PBXGroup;
+			children = (
+				4D19460A220C0B8D00EA2EFB /* Main.storyboard */,
+				4D6396AD220165CE004B6718 /* LaunchScreen.storyboard */,
+			);
+			path = "Story Boards";
+			sourceTree = "<group>";
+		};
+		4DE4A23E22123D5100671D07 /* Helper Files */ = {
+			isa = PBXGroup;
+			children = (
+				4DA3FF61220A9EFB008B7BC4 /* GameConstants.swift */,
+			);
+			path = "Helper Files";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
