@@ -68,7 +68,7 @@ struct GameConstants {
     struct ZPositions {
         static let BackGround: CGFloat = 0
         static let GameTable: CGFloat = 1
-        static let Menu: CGFloat = 1
+        static let Window: CGFloat = 1
         static let Icon: CGFloat = 2
         static let IconLabel: CGFloat = 3
         static let Dice: CGFloat = 4
