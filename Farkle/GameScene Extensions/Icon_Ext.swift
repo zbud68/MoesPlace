@@ -28,13 +28,16 @@ extension GameScene {
         PauseIcon.name = "Pause Icon"
         
         ReloadIcon = SKSpriteNode(imageNamed: "GreenReload")
-        ReloadIcon.name = "Restart Icon"
+        ReloadIcon.name = "Reload Icon"
         
         SettingsIcon = SKSpriteNode(imageNamed: "GreenSettings")
         SettingsIcon.name = "Settings Icon"
         
         HomeIcon = SKSpriteNode(imageNamed: "GreenHome")
         HomeIcon.name = "Home Icon"
+        
+        iconWidth = PlayIcon.size.width
+        iconHeight = PlayIcon.size.height
         
         setupIconsArray()
         setupIconWindowIconsArray()
@@ -55,16 +58,15 @@ extension GameScene {
             case "Pause Icon":
                 icon.position = CGPoint(x: PlayIcon.position.x + 35, y: PlayIcon.position.y)
                 PauseIcon.position = icon.position
-            case "Exit Icon":
+            case "Reload Icon":
                 icon.position = CGPoint(x: PauseIcon.position.x + 35, y: PauseIcon.position.y)
-                ExitIcon.position = icon.position
+                ReloadIcon.position = icon.position
             case "Menu Icon":
                 icon.position = CGPoint(x: (PlayIcon.position.x + (icon.size.width / 2)), y: (PlayIcon.position.y - icon.size.height) - 5)
                 MenuIcon.position = icon.position
-            case "Sound Icon":
+            case "Exit Icon":
                 icon.position = CGPoint(x: MenuIcon.position.x + 35, y: MenuIcon.position.y)
-                SoundIcon.position = icon.position
-
+                ExitIcon.position = icon.position
             default:
                 break
             }
@@ -76,7 +78,7 @@ extension GameScene {
     }
     
     func setupIconWindowIconsArray() {
-        IconWindowIcons = [PlayIcon, PauseIcon, ExitIcon, MenuIcon, SoundIcon]
+        IconWindowIcons = [PlayIcon, PauseIcon, ReloadIcon, MenuIcon, ExitIcon]
     }
 
     func addIconWindowIcons() {
@@ -86,19 +88,15 @@ extension GameScene {
                 IconWindow.addChild(icon)
             case "Pause Icon":
                 IconWindow.addChild(icon)
-            case "Exit Icon":
+            case "Reload Icon":
                 IconWindow.addChild(icon)
             case "Menu Icon":
                 IconWindow.addChild(icon)
-            case "Sound Icon":
+            case "Exit Icon":
                 IconWindow.addChild(icon)
             default:
                 break
             }
         }
-    }
-    
-    func addIcons() {
-        
     }
 }

@@ -11,7 +11,6 @@ extension GameScene {
     func setupBackGround() {
         BackGround = SKSpriteNode(texture: SKTexture(imageNamed: GameConstants.BackGround.ImageName))
         BackGround.size = CGSize(width: self.frame.size.width, height: self.frame.size.height)
-        //BackGround.zRotation = 90
         BackGround.zPosition = GameConstants.ZPositions.BackGround
         BackGround.name = GameConstants.BackGround.Name
         BackGround.position = GameConstants.BackGround.Position
@@ -20,7 +19,9 @@ extension GameScene {
         backGroundMaxY = BackGround.frame.maxY
         backGroundMinX = BackGround.frame.minX
         backGroundMinY = BackGround.frame.minY
-    
-        addChild(BackGround)
+        backGroundWidth = BackGround.size.width
+        backGroundHeight = BackGround.size.height
+
+        self.addChild(BackGround)
     }
 }

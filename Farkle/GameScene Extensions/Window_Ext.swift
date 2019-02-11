@@ -34,7 +34,9 @@ extension GameScene {
         scoresWindowMaxY = ScoresWindow.frame.maxY
         scoresWindowMinX = ScoresWindow.frame.minX
         scoresWindowMinY = ScoresWindow.frame.minY
-
+        scoresWindowWidth = ScoresWindow.size.width
+        scoresWindowHeight = ScoresWindow.size.height
+        
         BackGround.addChild(ScoresWindow)
     }
 
