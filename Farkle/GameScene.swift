@@ -135,7 +135,13 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     var scoresWindowWidth: CGFloat = CGFloat(0)
     var scoresWindowHeight: CGFloat = CGFloat(0)
     
-    var diceAction: SKAction = SKAction()
+    var diceAreResting = true
+    
+    var rollResults = [Int?]()
+    
+    var rollAction = SKAction()
+    
+    var dieStartPosition = CGPoint()
 
     //MARK: ********** didMove Section **********
     override func didMove(to view: SKView) {
@@ -235,6 +241,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     }
     
     func reloadIconTouched() {
+        removeAllActions()
         positionDice()
     }
     
@@ -271,6 +278,6 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
 
     //MARK: ********** Updates Section **********
     override func update(_ currentTime: TimeInterval) {
-    
+
     }
 }

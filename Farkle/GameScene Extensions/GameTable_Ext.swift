@@ -18,6 +18,9 @@ extension GameScene {
         GameTable.physicsBody?.affectedByGravity = false
         GameTable.physicsBody?.allowsRotation = false
         GameTable.physicsBody?.isDynamic = true
+        GameTable.physicsBody?.restitution = 0.5
+        GameTable.physicsBody?.linearDamping = 0
+        GameTable.physicsBody?.angularDamping = 0
         
         GameTable.physicsBody?.categoryBitMask = 1
         GameTable.physicsBody?.collisionBitMask = 1

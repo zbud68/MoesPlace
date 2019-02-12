@@ -39,17 +39,16 @@ extension GameScene {
     
     func setupDicePhysics() {
         for die in Dice {
-            die.physicsBody = SKPhysicsBody(rectangleOf: die.size)
+            die.physicsBody = SKPhysicsBody(texture: SKTexture(imageNamed: "Die1"), size: die.size)
             die.physicsBody?.affectedByGravity = false
             die.physicsBody?.isDynamic = true
             die.physicsBody?.allowsRotation = true
             die.physicsBody?.categoryBitMask = 1
             die.physicsBody?.contactTestBitMask = 1
             die.physicsBody?.collisionBitMask = 1
-            die.physicsBody?.restitution = 0.5
-            die.physicsBody?.friction = 0
-            die.physicsBody?.linearDamping = 1
-            die.physicsBody?.angularDamping = 2
+            die.physicsBody?.restitution = 0.50
+            die.physicsBody?.linearDamping = 1.75
+            die.physicsBody?.angularDamping = 3
         }
     }
 
@@ -60,22 +59,23 @@ extension GameScene {
             die.zPosition = GameTable.zPosition + 1
             switch die.name {
             case "Die 1":
-                die.position = CGPoint(x: ((GameTable.size.width / 2) - (GameTable.size.width / 6)), y: (GameTable.frame.midY + (die.size.height / 2)) + ((die.size.height * 3) + (die.size.height / 2)))
+                die.position = CGPoint(x: ((GameTable.size.width / 2) - (GameTable.size.width / 6)), y: (GameTable.frame.midY + (die.size.height * 2.5)))
                 Die1.position = die.position
+                dieStartPosition = die.position
             case "Die 2":
-                die.position = CGPoint(x: Die1.position.x, y: Die1.position.y - 30)
+                die.position = CGPoint(x: Die1.position.x, y: Die1.position.y - 50)
                 Die2.position = die.position
             case "Die 3":
-                die.position = CGPoint(x: Die2.position.x, y: Die2.position.y - 30)
+                die.position = CGPoint(x: Die2.position.x, y: Die2.position.y - 50)
                 Die3.position = die.position
             case "Die 4":
-                die.position = CGPoint(x: Die3.position.x, y: Die3.position.y - 30)
+                die.position = CGPoint(x: Die3.position.x, y: Die3.position.y - 50)
                 Die4.position = die.position
             case "Die 5":
-                die.position = CGPoint(x: Die4.position.x, y: Die4.position.y - 30)
+                die.position = CGPoint(x: Die4.position.x, y: Die4.position.y - 50)
                 Die5.position = die.position
             case "Die 6":
-                die.position = CGPoint(x: Die5.position.x, y: Die5.position.y - 30)
+                die.position = CGPoint(x: Die5.position.x, y: Die5.position.y - 50)
                 Die6.position = die.position
             default:
                 break
@@ -90,14 +90,69 @@ extension GameScene {
     }
     
     func rollDice() {
-        if let RollDice = SKAction(named: "RollDice") {
-            diceAction = RollDice
+        if let rollAction = SKAction(named: "RollDice") {
+            self.rollAction = rollAction
         }
+        let finishRollAction = SKAction.run {
+            self.setDieFace()
+        }
+        let seq = SKAction.sequence([rollAction, finishRollAction])
+        
+        let randomX = CGFloat(arc4random_uniform(200) + 200)
+        let randomY = CGFloat(arc4random_uniform(200) + 200)
+ 
         for die in Dice {
-            die.run(diceAction)
-            die.physicsBody?.applyImpulse(CGVector(dx: 100, dy: 100))
-            die.physicsBody?.applyImpulse(CGVector(dx: 0, dy: 0))
+            if die == Die6 {
+                die.run(seq)
+            } else {
+                die.run(rollAction)
+            }
+            die.physicsBody?.applyForce(CGVector(dx: randomX, dy: randomY))
+            die.physicsBody?.applyAngularImpulse(CGFloat(200))
         }
+
+        /*
+        for die in Dice {
+            while die.physicsBody?.isResting != true {
+                diceAreResting = false
+            }
+            diceAreResting = true
+        }
+        */
     }
 
+    func setDieFace() {
+        rollResults.removeAll()
+        for _ in 0...5 {
+            let dieValue = Int(arc4random_uniform(6)) + 1
+            rollResults.append(dieValue)
+        }
+
+        id = 0
+        for _ in rollResults {
+            switch rollResults[id] {
+            case 1:
+                Dice[id].texture = SKTexture(imageNamed: "Die1")
+                print(rollResults[id]!)
+            case 2:
+                Dice[id].texture = SKTexture(imageNamed: "Die2")
+                print(rollResults[id]!)
+            case 3:
+                Dice[id].texture = SKTexture(imageNamed: "Die3")
+                print(rollResults[id]!)
+            case 4:
+                Dice[id].texture = SKTexture(imageNamed: "Die4")
+                print(rollResults[id]!)
+            case 5:
+                Dice[id].texture = SKTexture(imageNamed: "Die5")
+                print(rollResults[id]!)
+            case 6:
+                Dice[id].texture = SKTexture(imageNamed: "Die6")
+                print(rollResults[id]!)
+            default:
+                break
+            }
+            id += 1
+        }
+    }
 }
