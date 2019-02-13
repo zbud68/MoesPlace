@@ -6,40 +6,38 @@
 //  Copyright © 2019 Mark Davis. All rights reserved.
 //
 
-import UIKit
 import SpriteKit
+import UIKit
 
 class GameViewController: UIViewController {
-
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+
         if let view = self.view as! SKView? {
             // Load the SKScene from 'GameScene.sks'
             if let scene = SKScene(fileNamed: "GameScene") {
                 // Set the scale mode to scale to fit the window
                 scene.scaleMode = .resizeFill
-                
+
                 // Present the scene
                 view.presentScene(scene)
             }
-            
+
             view.ignoresSiblingOrder = true
-            
+
             view.showsFPS = true
             view.showsNodeCount = true
             view.showsPhysics = true
         }
-        
-        /*
-        let textBox = UITextField(frame: CGRect(x: 0, y: 0, width: 85, height: 30))
-        textBox.backgroundColor = UIColor.black
-        textBox.textColor = UIColor.white
-        textBox.clearsOnBeginEditing = true
-        textBox.placeholder = "10000"
-        self.view.addSubview(textBox)
-        */
 
+        /*
+         let textBox = UITextField(frame: CGRect(x: 0, y: 0, width: 85, height: 30))
+         textBox.backgroundColor = UIColor.black
+         textBox.textColor = UIColor.white
+         textBox.clearsOnBeginEditing = true
+         textBox.placeholder = "10000"
+         self.view.addSubview(textBox)
+         */
     }
 
     override var shouldAutorotate: Bool {

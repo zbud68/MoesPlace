@@ -7,6 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		4D10179B2213A9170060FBA2 /* Player.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D10179A2213A9170060FBA2 /* Player.swift */; };
+		4D10179D2213AC530060FBA2 /* Player_Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D10179C2213AC530060FBA2 /* Player_Ext.swift */; };
+		4D10179F2213C4730060FBA2 /* Die.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D10179E2213C4730060FBA2 /* Die.swift */; };
 		4D19460B220C0B8D00EA2EFB /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 4D19460A220C0B8D00EA2EFB /* Main.storyboard */; };
 		4D63969F220165CB004B6718 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D63969E220165CB004B6718 /* AppDelegate.swift */; };
 		4D6396A1220165CB004B6718 /* GameScene1.sks in Resources */ = {isa = PBXBuildFile; fileRef = 4D6396A0220165CB004B6718 /* GameScene1.sks */; };
@@ -26,6 +29,9 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		4D10179A2213A9170060FBA2 /* Player.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Player.swift; sourceTree = "<group>"; };
+		4D10179C2213AC530060FBA2 /* Player_Ext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Player_Ext.swift; sourceTree = "<group>"; };
+		4D10179E2213C4730060FBA2 /* Die.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Die.swift; sourceTree = "<group>"; };
 		4D19460A220C0B8D00EA2EFB /* Main.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Main.storyboard; sourceTree = "<group>"; };
 		4D63969B220165CB004B6718 /* Farkle.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Farkle.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		4D63969E220165CB004B6718 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -57,6 +63,15 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		4D1017A02213DE8A0060FBA2 /* Class Files */ = {
+			isa = PBXGroup;
+			children = (
+				4D10179E2213C4730060FBA2 /* Die.swift */,
+				4D10179A2213A9170060FBA2 /* Player.swift */,
+			);
+			path = "Class Files";
+			sourceTree = "<group>";
+		};
 		4D639692220165CB004B6718 = {
 			isa = PBXGroup;
 			children = (
@@ -76,9 +91,9 @@
 		4D63969D220165CB004B6718 /* Farkle */ = {
 			isa = PBXGroup;
 			children = (
+				4D1017A02213DE8A0060FBA2 /* Class Files */,
 				4D6396AB220165CE004B6718 /* Assets.xcassets */,
-				4D6396A4220165CB004B6718 /* GameScene.swift */,
-				4DE4A22F2211D7CE00671D07 /* GameScene Extensions */,
+				4DE4A22F2211D7CE00671D07 /* GameScene Files */,
 				4DE4A23E22123D5100671D07 /* Helper Files */,
 				4DE4A23B22123C8B00671D07 /* SKS Files */,
 				4DE4A23D22123CE000671D07 /* Story Boards */,
@@ -88,17 +103,19 @@
 			path = Farkle;
 			sourceTree = "<group>";
 		};
-		4DE4A22F2211D7CE00671D07 /* GameScene Extensions */ = {
+		4DE4A22F2211D7CE00671D07 /* GameScene Files */ = {
 			isa = PBXGroup;
 			children = (
+				4D6396A4220165CB004B6718 /* GameScene.swift */,
 				4DE4A22D2211D74300671D07 /* BackGround_Ext.swift */,
 				4DE4A2302211D82800671D07 /* GameTable_Ext.swift */,
 				4DE4A2332211D87100671D07 /* Window_Ext.swift */,
 				4DE4A2352211D8EA00671D07 /* Icon_Ext.swift */,
 				4DE4A2372211D96D00671D07 /* Dice_Ext.swift */,
 				4DE4A2392211DB0E00671D07 /* Popup_Ext.swift */,
+				4D10179C2213AC530060FBA2 /* Player_Ext.swift */,
 			);
-			path = "GameScene Extensions";
+			path = "GameScene Files";
 			sourceTree = "<group>";
 		};
 		4DE4A23B22123C8B00671D07 /* SKS Files */ = {
@@ -211,6 +228,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				4D10179D2213AC530060FBA2 /* Player_Ext.swift in Sources */,
+				4D10179F2213C4730060FBA2 /* Die.swift in Sources */,
+				4D10179B2213A9170060FBA2 /* Player.swift in Sources */,
 				4D6396A5220165CB004B6718 /* GameScene.swift in Sources */,
 				4DE4A22E2211D74300671D07 /* BackGround_Ext.swift in Sources */,
 				4DE4A2342211D87100671D07 /* Window_Ext.swift in Sources */,
