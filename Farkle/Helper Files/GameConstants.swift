@@ -85,8 +85,8 @@ struct GameConstants {
     struct Messages {
         static let GameInProgress = "There is currently a game in progress. Press 'Continue' to abandon game in progress and return to main menu, or 'Cancel' and press 'Resume Game' from main menu to contiue the game in progress"
         static let NoGameInProgress = "There is no game in progress, select 'Play' from the main menu to start a new game"
-        static let Winner = "has won the game." // ((VC2.CurrentPlayerNameLabel.text)!)
-        static let GameOver = "Has finished the game.\n Remaining players have 1 final roll." // \((VC2.CurrentPlayerNameLabel.text)!)
+        static let Winner = "has won the game."
+        static let GameOver = "Has finished the game.\n Remaining players have 1 final roll."
         static let Busted = "You must match the target score exactly to win"
         static let Farkle = "No scoring dice"
     }
@@ -112,6 +112,7 @@ struct GameConstants {
         static let Size = CGSize(width: 35, height: 35)
     }
 
+    /*
     struct Dice {
         static let PhysicsBody = SKPhysicsBody(rectangleOf: CGSize(width: 64, height: 64))
         static let Size = CGSize(width: 64, height: 64)
@@ -123,7 +124,9 @@ struct GameConstants {
         static let AllowsRotation = true
         static let Dynamic = true
     }
+    */
 
+    /*
     struct GameTable {
         static let physicsBody = SKPhysicsBody(edgeLoopFrom: CGRect(x: 75, y: 0, width: 750, height: 440))
         static let ImageName = "WindowPopup"
@@ -136,6 +139,7 @@ struct GameConstants {
         static let AllowsRotation = true
         static let Dynamic = true
     }
+    */
 
     struct BackGround {
         static let Name = "BackGround"

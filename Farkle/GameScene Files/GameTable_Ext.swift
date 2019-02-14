@@ -15,13 +15,11 @@ extension GameScene {
         gameTable.zPosition = GameConstants.ZPositions.GameTable
         gameTable.size = CGSize(width: backGround.size.width - 75, height: backGround.size.height + 20)
         gameTable.position = CGPoint(x: (backGroundMaxX - (gameTable.size.width / 2) + 40), y: 0)
-        gameTable.physicsBody = SKPhysicsBody(edgeLoopFrom: CGRect(origin: CGPoint(x: gameTable.frame.minX, y: gameTable.frame.minY + 50), size: CGSize(width: gameTable.size.width - 175, height: gameTable.size.height - 100)))
+        gameTable.physicsBody = SKPhysicsBody(edgeLoopFrom: CGRect(origin: CGPoint(x: gameTable.frame.minX - 15, y: gameTable.frame.minY + 40), size: CGSize(width: gameTable.size.width - 140, height: gameTable.size.height - 80)))
         gameTable.physicsBody?.affectedByGravity = false
         gameTable.physicsBody?.allowsRotation = false
         gameTable.physicsBody?.isDynamic = true
-        gameTable.physicsBody?.restitution = 0.5
-        gameTable.physicsBody?.linearDamping = 0
-        gameTable.physicsBody?.angularDamping = 0
+        gameTable.physicsBody?.restitution = 0.75
 
         gameTable.physicsBody?.categoryBitMask = 1
         gameTable.physicsBody?.collisionBitMask = 1
@@ -54,6 +52,6 @@ extension GameScene {
         logo2.zPosition = GameConstants.ZPositions.Logo
         logo2.position = CGPoint(x: -210, y: -75)
         gameTable.addChild(logo)
-        gameTable.addChild(logo2)
+        logo.addChild(logo2)
     }
 }

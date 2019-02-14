@@ -314,8 +314,6 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     // MARK: ********** Updates Section **********
 
     override func update(_ currentTime: TimeInterval) {
-        if playerState == .Rolling {
-            // updateDieFrames()
-        }
+
     }
 }
