@@ -98,4 +98,48 @@ extension GameScene {
             }
         }
     }
+    
+    func wasIconTouched() {
+        for icon in iconWindowIcons {
+            if icon.contains(iconWindowTouchLocation) {
+                switch icon.name {
+                case "Play Icon":
+                    playIconTouched()
+                case "Pause Icon":
+                    pauseIconTouched()
+                case "Reload Icon":
+                    reloadIconTouched()
+                case "Menu Icon":
+                    menuIconTouched()
+                case "Settings Icon":
+                    settingsIconTouched()
+                default:
+                    break
+                }
+            }
+        }
+    }
+    
+    func playIconTouched() {
+        rollDice()
+        playerState = .Idle
+    }
+    
+    func pauseIconTouched() {
+        print("Pause Icon was Touched")
+        //worldNode.isPaused = true
+    }
+    
+    func reloadIconTouched() {
+        removeAllActions()
+        positionDice()
+    }
+    
+    func menuIconTouched() {
+        print("Menu Icon was Touched")
+    }
+    
+    func settingsIconTouched() {
+        print("Settings Icon was Touched")
+    }
 }

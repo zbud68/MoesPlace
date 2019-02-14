@@ -10,6 +10,8 @@ import SpriteKit
 
 // MARK: ********** Global Variables Section **********
 
+var playerState = player.playerState
+
 var id: Int = 0
 
 var player: Player = Player()
@@ -30,6 +32,11 @@ let logo = SKLabelNode(text: "Farkle")
 let logo2 = SKLabelNode(text: "Plus")
 
 class GameScene: SKScene, SKPhysicsContactDelegate {
+    
+    var numDice = 6
+    var numPlayers = 1
+    var targetScore = 10000
+    var matchTargetScore = true
     
     var touchLocation: CGPoint = CGPoint(x: 0, y: 0)
     var iconWindowTouchLocation: CGPoint = CGPoint(x: 0, y: 0)
@@ -97,7 +104,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     var scoresWindowMinY: CGFloat = CGFloat(0)
     var scoresWindowWidth: CGFloat = CGFloat(0)
     var scoresWindowHeight: CGFloat = CGFloat(0)
-
+    
     // MARK: ********** Class Variables Section **********
 
     let physicsContactDelegate = self
@@ -115,7 +122,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
                 case .InProgress:
                     break
                 case .NewRound:
-                    break
+                    startNewRound()
                 case .GameOver:
                     break
             }
@@ -137,18 +144,13 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         addChild(worldNode)
         switch gameState {
             case .NewGame:
-                print("new game")
                 startNewGame()
                 gameState = .InProgress
             case .InProgress:
-                print("in progress")
                 continueRound()
             case .NewRound:
-                print("new round")
                 startNewRound()
-                gameState = .InProgress
             case .GameOver:
-                print("game over")
                 endGame()
         }
     }
@@ -156,6 +158,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     // MARK: ********** Game Flow Section **********
 
     func startNewGame() {
+        print("New Game")
         gameState = .InProgress
 
         setupBackGround()
@@ -167,7 +170,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         setupPlayers()
         setupDice()
     }
-
+    
     func continueRound() {
         print("continue round")
     }
@@ -192,92 +195,6 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         wasDiceTouched()
     }
 
-    func wasIconTouched() {
-        for icon in iconWindowIcons {
-            if icon.contains(iconWindowTouchLocation) {
-                switch icon.name {
-                    case "Play Icon":
-                        playIconTouched()
-                    case "Pause Icon":
-                        pauseIconTouched()
-                    case "Reload Icon":
-                        reloadIconTouched()
-                    case "Menu Icon":
-                        menuIconTouched()
-                    case "Settings Icon":
-                        settingsIconTouched()
-                    default:
-                        break
-                }
-            }
-        }
-    }
-    func wasDiceTouched() {
-        for dieNode in dice {
-            if dieNode.contains(gameTableTouchLocation) {
-                if dieNode.selected == false {
-                    switch dieNode.faceValue {
-                        case 1:
-                            dieNode.texture = SKTexture(imageNamed: "Selectable_Die1")
-                        case 2:
-                            dieNode.texture = SKTexture(imageNamed: "Selectable_Die2")
-                        case 3:
-                            dieNode.texture = SKTexture(imageNamed: "Selectable_Die3")
-                        case 4:
-                            dieNode.texture = SKTexture(imageNamed: "Selectable_Die4")
-                        case 5:
-                            dieNode.texture = SKTexture(imageNamed: "Selectable_Die5")
-                        case 6:
-                            dieNode.texture = SKTexture(imageNamed: "Selectable_Die6")
-                        default:
-                            break
-                    }
-                    dieNode.selected = true
-                } else {
-                    switch dieNode.faceValue {
-                        case 1:
-                            dieNode.texture = SKTexture(imageNamed: "Die1")
-                        case 2:
-                            dieNode.texture = SKTexture(imageNamed: "Die2")
-                        case 3:
-                            dieNode.texture = SKTexture(imageNamed: "Die3")
-                        case 4:
-                            dieNode.texture = SKTexture(imageNamed: "Die4")
-                        case 5:
-                            dieNode.texture = SKTexture(imageNamed: "Die5")
-                        case 6:
-                            dieNode.texture = SKTexture(imageNamed: "Die6")
-                        default:
-                            break
-                    }
-                    dieNode.selected = false
-                }
-            }
-        }
-    }
-
-    func playIconTouched() {
-        rollDice()
-        playerState = .Idle
-    }
-
-    func pauseIconTouched() {
-        print("Pause Icon was Touched")
-        //worldNode.isPaused = true
-    }
-    
-    func reloadIconTouched() {
-        removeAllActions()
-        positionDice()
-    }
-    
-    func menuIconTouched() {
-        print("Menu Icon was Touched")
-    }
-    
-    func settingsIconTouched() {
-        print("Settings Icon was Touched")
-    }
 
     // MARK: ********** Check State Machines **********
 
@@ -295,14 +212,14 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     }
 
     func checkPlayerState() {
-        switch playerState {
+        switch player.playerState {
             case .Idle:
                 print("Player State: \(playerState)")
             case .Rolling:
                 print("Player State: \(playerState)")
             case .Scored:
                 print("Player State: \(playerState)")
-            case .LostTurn:
+            case .Farkle:
                 print("Player State: \(playerState)")
             case .FinalRoll:
                 print("Player State: \(playerState)")
