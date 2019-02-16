@@ -35,22 +35,23 @@ extension GameScene {
         backGround.addChild(gameTable)
     }
     
-    func setupLabel() {
+    func setupLogo() {
         
-        logo.fontName = GameConstants.Label.FontName
-        logo.fontColor = GameConstants.Label.FontColor
+        logo.fontName = GameConstants.Logo.FontName
+        logo.fontColor = GameConstants.Logo.FontColor
         logo.fontSize = 144
-        logo.alpha = 0.4
-        logo.position = CGPoint(x: -25, y: -50)
+        logo.alpha = 0.65
+        logo.position = CGPoint(x: 0, y: -50)
         logo.zPosition = GameConstants.ZPositions.Logo
         
-        logo2.fontName = GameConstants.Label.FontName
-        logo2.fontColor = GameConstants.Label.FontColor
+        logo2.fontName = GameConstants.Logo.FontName
+        logo2.fontColor = GameConstants.Logo.FontColor
         logo2.fontSize = 36
-        logo2.alpha = 0.4
+        logo2.alpha = 0.65
         logo2.zRotation = 75
+        
         logo2.zPosition = GameConstants.ZPositions.Logo
-        logo2.position = CGPoint(x: -210, y: -75)
+        logo2.position = CGPoint(x: -185, y: -25)
         gameTable.addChild(logo)
         logo.addChild(logo2)
     }

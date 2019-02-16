@@ -8,42 +8,52 @@
 import SpriteKit
 
 extension GameScene {
+    
     func setupDice() {
+        print("Setting up Dice")
+        
         die1 = Die(texture: SKTexture(imageNamed: "Die1"))
         die1.name = "Die 1"
         die1.size = CGSize(width: 32, height: 32)
-
+        
         die2 = Die(texture: SKTexture(imageNamed: "Die2"))
         die2.name = "Die 2"
         die2.size = CGSize(width: 32, height: 32)
-
+        
         die3 = Die(texture: SKTexture(imageNamed: "Die3"))
         die3.name = "Die 3"
         die3.size = CGSize(width: 32, height: 32)
-
+        
         die4 = Die(texture: SKTexture(imageNamed: "Die4"))
         die4.name = "Die 4"
         die4.size = CGSize(width: 32, height: 32)
-
+        
         die5 = Die(texture: SKTexture(imageNamed: "Die5"))
         die5.name = "Die 5"
         die5.size = CGSize(width: 64, height: 64)
-
+        
         die6 = Die(texture: SKTexture(imageNamed: "Die6"))
         die6.name = "Die 6"
         die6.size = CGSize(width: 64, height: 64)
-
+        
         setupDiceArray()
         setupDicePhysics()
         positionDice()
         addDice()
     }
-
+    
     func setupDiceArray() {
-        dice = [die1, die2, die3, die4, die5, die6]
+        print("Setting up Dice Array")
+        
+        if currentGame.numDice == 5 {
+            dice = [die1, die2, die3, die4, die5]
+        } else {
+            dice = [die1, die2, die3, die4, die5, die6]
+        }
     }
-
+    
     func setupDicePhysics() {
+        print("Setting Dice Physics")
         for dieNode in dice {
             dieNode.physicsBody = SKPhysicsBody(texture: SKTexture(imageNamed: "Die1"), size: (CGSize(width: 32, height: 32)))
             dieNode.physicsBody?.affectedByGravity = false
@@ -57,14 +67,15 @@ extension GameScene {
             dieNode.physicsBody?.angularDamping = 5
         }
     }
-
+    
     func positionDice() {
+        print("Positioning Dice")
         for dieNode in dice {
             if dieNode.selected != true {
                 dieNode.zRotation = 0
                 dieNode.zPosition = GameConstants.ZPositions.Dice
                 dieNode.size = CGSize(width: 32, height: 32)
-     
+                
                 switch dieNode.name {
                 case "Die 1":
                     dieNode.position = CGPoint(x: -(gameTable.size.width / 7), y: gameTable.frame.minY + 100)
@@ -90,17 +101,22 @@ extension GameScene {
             }
         }
     }
-
+    
     func addDice() {
+        print("Adding Dice")
         for dieNode in dice {
+            print(dieNode.name as Any)
+            dieNode.zPosition = 1000
+            dieNode.position = CGPoint(x: 0, y: 0)
             gameTable.addChild(dieNode)
         }
     }
 
+
     func rollDice() {
         if gameState == .InProgress{
             playerState = .Rolling
-
+            
             if let RollAction = SKAction(named: "RollDice") {
                 rollAction = RollAction
             }
@@ -108,21 +124,32 @@ extension GameScene {
                 self.setDieFace()
             }
             let seq = SKAction.sequence([rollAction, finishRollAction])
-
+            
             let randomX = CGFloat(arc4random_uniform(5) + 5)
             let randomY = CGFloat(arc4random_uniform(2) + 3)
-
+            
             for dieNode in dice {
-                if dieNode.selected != true {
+                if dieNode.selected == true {
+                    player.scoringDice.append(dieNode)
+                } else {
                     dieNode.physicsBody?.applyImpulse(CGVector(dx: randomX, dy: randomY))
                     dieNode.physicsBody?.applyTorque(3)
                     dieNode.run(seq)
                 }
             }
+            player.Roll.diceRemaining -= player.scoringDice.count
         } else {
-            getPlayerSelectedDice()
             gameState = .InProgress
         }
+        if player.Roll.diceRemaining == 0 {
+            setupNewRoll()
+        }
+            
+    }
+    
+    func setupNewRoll() {
+        
+        
     }
     
     func wasDiceTouched() {
@@ -168,6 +195,7 @@ extension GameScene {
             }
         }
     }
+
     
     func setDieFace() {
         for die in dice {
@@ -196,7 +224,7 @@ extension GameScene {
                 }
             }
             if playerState != .Farkle {
-                if player.stats.numDiceRemaining == 0 {
+                if player.Roll.diceRemaining == 0 {
                     playerState = .Rolling
                 }
             } else {
@@ -213,24 +241,24 @@ extension GameScene {
         var fives = 0
         var sixes = 0
         var pairs = 0
-
+        
         let lowStraight = [1,2,3,4,5]
         let highStraight = [2,3,4,5,6]
         let sixDieStraight = [1,2,3,4,5,6]
         
-        var threeOfAKind = false
-        //var fourOfAKind = false
-        //var fiveOfAKind = false
-        //var sixOfAKind = false
-
+        let threeOfAKind = false
+        var fourOfAKind = false
+        var fiveOfAKind = false
+        var sixOfAKind = false
+        
         var straight = false
         var fullHouse = false
         var threePair = false
-                
+        
         var scoringDieFaceValue = 0
         
         var currentRoll = [ones, twos, threes, fours, fives, sixes]
-        var currentRoundScores: [Int] = []
+        //var currentRoundScores: [Int] = []
         
         for die in dice {
             switch die.faceValue {
@@ -254,7 +282,7 @@ extension GameScene {
         }
         currentRoll = currentRoll.sorted()
         
-        if numDice == 5 {
+        if game.numDice == 5 {
             if currentRoll == lowStraight || currentRoll == highStraight {
                 straight = true
             }
@@ -309,11 +337,11 @@ extension GameScene {
             }
         }
         if pairs == 3 {
-            threePair = true
+            //threePair = true
             playerState = .Scored
         }
         if threeOfAKind == true && pairs > 0 {
-            fullHouse = true
+            //fullHouse = true
         }
     }
     
@@ -322,13 +350,13 @@ extension GameScene {
         var pointsScored = 0
         
         var faceValue = dieFace
-
+        
         if dieFace == 1 {
             faceValue = 10
         }
         switch numRolled {
         case 3:
-             pointsScored = faceValue * 100
+            pointsScored = faceValue * 100
         case 4:
             pointsScored = (faceValue * 100) * 2
         case 5:
@@ -338,17 +366,24 @@ extension GameScene {
         default:
             break
         }
-        player.stats.currentRollScore += pointsScored
+        player.Roll.score += pointsScored
     }
     
     func getPlayerSelectedDice() {
         id = 0
         for die in dice {
-            if die.selected != true {
+            if die.selected == true {
                 dice.remove(at: id)
+                player.scoringDice.append(die)
             }
             id += 1
         }
+        player.Roll.diceRemaining -= player.scoringDice.count
+        print("dice remaining: \(player.Roll.diceRemaining)")
+        if player.Roll.diceRemaining == 0 {
+            print("reset Dice")
         checkForScoringCombos()
+        }
     }
 }
+

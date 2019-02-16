@@ -12,8 +12,8 @@ import UIKit
 struct GameConstants {
     struct GameDefaults {
         static let targetScore = 10000
-        static let players = 1
-        static let dice = 5
+        static let players = 4
+        static let dice = 6
         static let matchTarget = true
         static let playerScore = 0
         static let round = 1
@@ -71,6 +71,7 @@ struct GameConstants {
         static let Logo: CGFloat = 3
         static let Icon: CGFloat = 3
         static let IconLabel: CGFloat = 4
+        static let NameLabel: CGFloat = 4
         static let Dice: CGFloat = 5
         static let Message: CGFloat = 6
     }
@@ -92,23 +93,23 @@ struct GameConstants {
     }
 
     struct MainMenu {
-        static let fontName = GameConstants.Label.FontName
-        static let fontColor = GameConstants.Label.FontColor
-        static let fontSize = GameConstants.Label.FontSize
+        static let FontName = GameConstants.Logo.FontName
+        static let FontColor = GameConstants.Logo.FontColor
+        static let FontSize = GameConstants.Logo.FontSize2
     }
 
     struct ScoresMenu {
-        static let fontName = GameConstants.Label.FontName
-        static let fontColor = GameConstants.Label.FontColor
-        static let fontSize = GameConstants.Label.FontSize
+        static let FontName = GameConstants.Logo.FontName
+        static let FontColor = GameConstants.Logo.FontColor
+        static let FontSize = GameConstants.Logo.FontSize2
         static let ImageName = "WindowPop2"
         static let Size = CGSize(width: 150, height: 330)
     }
 
     struct Icon {
-        static let fontName = "Marker Felt Wide"
-        static let fontColor = UIColor.black
-        static let fontSize: CGFloat = 24
+        static let FontName = "Marker Felt Wide"
+        static let FontColor = UIColor.black
+        static let FontSize: CGFloat = 24
         static let Size = CGSize(width: 35, height: 35)
     }
 
@@ -147,9 +148,23 @@ struct GameConstants {
         static let Position = CGPoint(x: 0, y: 0)
     }
 
-    struct Label {
+    struct Logo {
+        static let FontName = "Marker Felt Wide"
+        static let FontColor = UIColor.brown
+        static let FontSize1: CGFloat = 144
+        static let FontSize2: CGFloat = 34
+    }
+    
+    struct PlayerNameLabel {
+        static let FontName = "Marker Felt Wide"
+        static let FontColor = UIColor.brown
+        static let FontSize: CGFloat = 25
+    }
+    
+    struct PlayerScoreLabel {
         static let FontName = "Marker Felt Wide"
         static let FontColor = UIColor.black
-        static let FontSize: CGFloat = 34
+        static let FontSize: CGFloat = 25
     }
+
 }

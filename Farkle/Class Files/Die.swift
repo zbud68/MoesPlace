@@ -14,5 +14,4 @@ class Die: SKSpriteNode {
     var selected: Bool = false
     var scoringDie: Bool = false
     var scoringCombination: Bool = false
-
 }
