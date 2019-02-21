@@ -8,19 +8,19 @@
 
 import SpriteKit
 
-class Game: SKSpriteNode {
+class Game {
     var numDice = 6
     var numPlayers = 4
     var targetScore = 10000
     var matchTargetScore = true
-    var settingsChanged = false
     
-    func hasSettingsChanged() -> Bool {
-        if numDice != GameConstants.GameDefaults.dice && numPlayers != GameConstants.GameDefaults.players && targetScore != GameConstants.GameDefaults.targetScore && matchTargetScore != GameConstants.GameDefaults.matchTarget {
-            
-            settingsChanged = true
-        }
-        return settingsChanged
-    }
+    let defaults: Defaults = Defaults.init()
+}
+
+struct Defaults {
+    let numDice: Int = Int(5)
+    let numPlayers: Int = Int(2)
+    let targetScore: Int = Int(10000)
+    let matchTargetScore: Bool = Bool(true)
 }
 

@@ -11,65 +11,45 @@ import SpriteKit
 extension GameScene {
 
     func setupPlayers() {
+        player1.nameLabel.text = "Player 1"
+        player2.nameLabel.text = "Player 2"
+        player3.nameLabel.text = "Player 3"
+        player4.nameLabel.text = "Player 4"
         
-        player1.Roll.diceRemaining = currentGame.numDice
-        player2.Roll.diceRemaining = currentGame.numDice
-        player3.Roll.diceRemaining = currentGame.numDice
-        player4.Roll.diceRemaining = currentGame.numDice
-        
-        player1.name = GameConstants.StringConstants.player1Name
-        player2.name = GameConstants.StringConstants.player2Name
-        player3.name = GameConstants.StringConstants.player3Name
-        player4.name = GameConstants.StringConstants.player4Name
-        
-        player1.Label.nameLabel.text = player1.name
-        player2.Label.nameLabel.text = player2.name
-        player3.Label.nameLabel.text = player3.name
-        player4.Label.nameLabel.text = player4.name
-        
-        setupPlayersArray()
-        setupPlayerScoreLabels()
-    }
-    
-    func setupPlayersArray() {
         switch currentGame.numPlayers {
         case 1:
-            players = [player1]
+            playersArray = [player1]
         case 2:
-            players = [player1, player2]
+            playersArray = [player1, player2]
         case 3:
-            players = [player1, player2, player3]
+            playersArray = [player1, player2, player3]
         case 4:
-            players = [player1, player2, player3, player4]
+            playersArray = [player1, player2, player3, player4]
         default:
-            players = [player1]
+            playersArray = [player1, player2]
+        }
+        for player in playersArray {
+            player.scoreLabel.text = String(player.score)
+            player.name = player.nameLabel.text!
+        }
+        for player in playersArray {
+            print("player name: \(player.name)")
+            print("player score: \(player.scoreLabel.text!)")
+        }
+        positionPlayerLabels()
+        for player in playersArray {
+            scoresWindow.addChild(player.nameLabel)
+            scoresWindow.addChild(player.scoreLabel)
         }
     }
     
-    func setupPlayerScoreLabels() {
+    func positionPlayerLabels() {
         
-        player1.score = 10000
-        player2.score = 1000
-        player3.score = 2341
-        player4.score = 9993
         
-        player1.Label.scoreLabel.text = String(player1.score)
-        player2.Label.scoreLabel.text = String(player2.score)
-        player3.Label.scoreLabel.text = String(player3.score)
-        player4.Label.scoreLabel.text = String(player4.score)
-        
-        for player in players {
-            player.Label.nameLabel.fontName = GameConstants.PlayerNameLabel.FontName
-            player.Label.nameLabel.fontColor = GameConstants.PlayerNameLabel.FontColor
-            player.Label.nameLabel.fontSize = GameConstants.PlayerNameLabel.FontSize
-            player.Label.nameLabel.zPosition = scoresWindow.zPosition + 1
-            
-            player.Label.scoreLabel.fontName = GameConstants.PlayerScoreLabel.FontName
-            player.Label.scoreLabel.fontColor = GameConstants.PlayerScoreLabel.FontColor
-            player.Label.scoreLabel.fontSize = GameConstants.PlayerScoreLabel.FontSize
-            player.Label.scoreLabel.zPosition = scoresWindow.zPosition + 1
-            print("player name label: \(player.Label.nameLabel.text!)")
-            print("player score label: \(player.Label.scoreLabel.text!)")
+    }
+}
+
+        /*
             switch player.name {
             case "Player 1":
                 player.Label.nameLabel.position = CGPoint(x: 0, y: (scoresWindow.frame.height / 4) + 15)
@@ -110,12 +90,9 @@ extension GameScene {
             scoresWindow.addChild(player.Label.nameLabel)
             scoresWindow.addChild(player.Label.scoreLabel)
         }
-        /*
+        
         for player in players {
             print("player name: \(player.name!)")
             scoresWindow.addChild(player.nameLabel)
             scoresWindow.addChild(player.scoreLabel)
-        }
-        */
-    }
-}
+        }*/

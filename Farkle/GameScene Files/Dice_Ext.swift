@@ -9,109 +9,83 @@ import SpriteKit
 
 extension GameScene {
     
+    func setupDieFaces() {
+        dieFaceArray = [dieFace1, dieFace2, dieFace3, dieFace4, dieFace5, dieFace6]
+    }
+
     func setupDice() {
-        print("Setting up Dice")
         
-        die1 = Die(texture: SKTexture(imageNamed: "Die1"))
+        die1 = SKSpriteNode(texture: GameConstants.Textures.Die1)
         die1.name = "Die 1"
-        die1.size = CGSize(width: 32, height: 32)
-        
-        die2 = Die(texture: SKTexture(imageNamed: "Die2"))
+        die2 = SKSpriteNode(texture: GameConstants.Textures.Die2)
         die2.name = "Die 2"
-        die2.size = CGSize(width: 32, height: 32)
-        
-        die3 = Die(texture: SKTexture(imageNamed: "Die3"))
+        die3 = SKSpriteNode(texture: GameConstants.Textures.Die3)
         die3.name = "Die 3"
-        die3.size = CGSize(width: 32, height: 32)
-        
-        die4 = Die(texture: SKTexture(imageNamed: "Die4"))
+        die4 = SKSpriteNode(texture: GameConstants.Textures.Die4)
         die4.name = "Die 4"
-        die4.size = CGSize(width: 32, height: 32)
-        
-        die5 = Die(texture: SKTexture(imageNamed: "Die5"))
+        die5 = SKSpriteNode(texture: GameConstants.Textures.Die5)
         die5.name = "Die 5"
-        die5.size = CGSize(width: 64, height: 64)
-        
-        die6 = Die(texture: SKTexture(imageNamed: "Die6"))
+        die6 = SKSpriteNode(texture: GameConstants.Textures.Die6)
         die6.name = "Die 6"
-        die6.size = CGSize(width: 64, height: 64)
-        
-        setupDiceArray()
-        setupDicePhysics()
+
+        switch currentGame.numDice {
+        case 5:
+            diceArray = [die1, die2, die3, die4, die5]
+        case 6:
+            diceArray = [die1, die2, die3, die4, die5, die6]
+        default:
+            break
+        }
+    
+        for dice in diceArray {
+            dice.physicsBody = SKPhysicsBody(texture: SKTexture(imageNamed: "Die1"), size: (CGSize(width: 32, height: 32)))
+            dice.physicsBody?.affectedByGravity = false
+            dice.physicsBody?.isDynamic = true
+            dice.physicsBody?.allowsRotation = true
+            dice.physicsBody?.categoryBitMask = 1
+            dice.physicsBody?.contactTestBitMask = 1
+            dice.physicsBody?.collisionBitMask = 1
+            dice.physicsBody?.restitution = 0.5
+            dice.physicsBody?.linearDamping = 4
+            dice.physicsBody?.angularDamping = 5
+        }
         positionDice()
-        addDice()
-    }
-    
-    func setupDiceArray() {
-        print("Setting up Dice Array")
-        
-        if currentGame.numDice == 5 {
-            dice = [die1, die2, die3, die4, die5]
-        } else {
-            dice = [die1, die2, die3, die4, die5, die6]
-        }
-    }
-    
-    func setupDicePhysics() {
-        print("Setting Dice Physics")
-        for dieNode in dice {
-            dieNode.physicsBody = SKPhysicsBody(texture: SKTexture(imageNamed: "Die1"), size: (CGSize(width: 32, height: 32)))
-            dieNode.physicsBody?.affectedByGravity = false
-            dieNode.physicsBody?.isDynamic = true
-            dieNode.physicsBody?.allowsRotation = true
-            dieNode.physicsBody?.categoryBitMask = 1
-            dieNode.physicsBody?.contactTestBitMask = 1
-            dieNode.physicsBody?.collisionBitMask = 1
-            dieNode.physicsBody?.restitution = 0.5
-            dieNode.physicsBody?.linearDamping = 4
-            dieNode.physicsBody?.angularDamping = 5
-        }
     }
     
     func positionDice() {
-        print("Positioning Dice")
-        for dieNode in dice {
-            if dieNode.selected != true {
-                dieNode.zRotation = 0
-                dieNode.zPosition = GameConstants.ZPositions.Dice
-                dieNode.size = CGSize(width: 32, height: 32)
-                
-                switch dieNode.name {
-                case "Die 1":
-                    dieNode.position = CGPoint(x: -(gameTable.size.width / 7), y: gameTable.frame.minY + 100)
-                    die1.position = dieNode.position
-                case "Die 2":
-                    dieNode.position = CGPoint(x: die1.position.x + dieNode.size.width, y: gameTable.frame.minY + 100)
-                    die2.position = dieNode.position
-                case "Die 3":
-                    dieNode.position = CGPoint(x: die2.position.x + dieNode.size.width, y: gameTable.frame.minY + 100)
-                    die3.position = dieNode.position
-                case "Die 4":
-                    dieNode.position = CGPoint(x: die3.position.x + dieNode.size.width, y: gameTable.frame.minY + 100)
-                    die4.position = dieNode.position
-                case "Die 5":
-                    dieNode.position = CGPoint(x: die4.position.x + dieNode.size.width, y: gameTable.frame.minY + 100)
-                    die5.position = dieNode.position
-                case "Die 6":
-                    dieNode.position = CGPoint(x: die5.position.x + dieNode.size.width, y: gameTable.frame.minY + 100)
-                    die6.position = dieNode.position
-                default:
-                    break
-                }
+        for dice in diceArray {
+            dice.zRotation = 0
+            dice.zPosition = GameConstants.ZPositions.Dice
+            dice.size = CGSize(width: 32, height: 32)
+            
+            switch dice.name {
+            case "Die 1":
+                dice.position = CGPoint(x: -(gameTable.size.width / 7), y: gameTable.frame.minY + 100)
+                die1.position = dice.position
+            case "Die 2":
+                dice.position = CGPoint(x: die1.position.x + dice.size.width, y: gameTable.frame.minY + 100)
+                die2.position = dice.position
+            case "Die 3":
+                dice.position = CGPoint(x: die2.position.x + dice.size.width, y: gameTable.frame.minY + 100)
+                die3.position = dice.position
+            case "Die 4":
+                dice.position = CGPoint(x: die3.position.x + dice.size.width, y: gameTable.frame.minY + 100)
+                die4.position = dice.position
+            case "Die 5":
+                dice.position = CGPoint(x: die4.position.x + dice.size.width, y: gameTable.frame.minY + 100)
+                die5.position = dice.position
+            case "Die 6":
+                dice.position = CGPoint(x: die5.position.x + dice.size.width, y: gameTable.frame.minY + 100)
+                die6.position = dice.position
+            default:
+                break
             }
+            gameTable.addChild(dice)
         }
     }
-    
-    func addDice() {
-        print("Adding Dice")
-        for dieNode in dice {
-            print(dieNode.name as Any)
-            dieNode.zPosition = 1000
-            dieNode.position = CGPoint(x: 0, y: 0)
-            gameTable.addChild(dieNode)
-        }
-    }
+}
 
+/*
 
     func rollDice() {
         if gameState == .InProgress{
@@ -386,4 +360,6 @@ extension GameScene {
         }
     }
 }
+
+*/
 

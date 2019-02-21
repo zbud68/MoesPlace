@@ -8,98 +8,141 @@
 
 import SpriteKit
 
+
 // MARK: ********** Global Variables Section **********
-
-var die1: Die!
-var die2: Die!
-var die3: Die!
-var die4: Die!
-var die5: Die!
-var die6: Die!
-
-var dice: [Die]!
-
-var playerState = player.playerState
-
-var id: Int = 0
-
-var player: Player = Player()
-var die: Die = Die()
-var game: Game = Game()
-
-var currentGame: Game = game
-
-var rollAction = SKAction()
-
-let logo = SKLabelNode(text: "Farkle")
-let logo2 = SKLabelNode(text: "Plus")
-
-let LabelColor = UIColor(red: 161, green: 0, blue: 0, alpha: 100)
-
-var gameTable: SKSpriteNode = SKSpriteNode()
-var backGround: SKSpriteNode = SKSpriteNode()
-var mainMenu: SKSpriteNode = SKSpriteNode()
-var settingsMenu: SKSpriteNode = SKSpriteNode()
-var helpMenu: SKSpriteNode = SKSpriteNode()
-var label: SKLabelNode = SKLabelNode()
 
 enum GameState {
     case NewGame, InProgress, NewRoll, NewRound, GameOver
 }
 
+enum PlayerState {
+    case Rolling, FinalRoll, Finished, Farkle
+}
+
 class GameScene: SKScene, SKPhysicsContactDelegate {
+
     
+    // MARK: ********** Class Variables Section **********
+
     var gameState = GameState.NewGame {
         willSet {
             switch newValue {
-            //case .NewGame:
-                //setupNewGame()
-            case .InProgress:
-                break
-            case .NewRoll:
-                break
-            //case .NewRound:
-                //startNewRound()
-            case .GameOver:
-                break
-            default:
-                break
+                case .NewGame:
+                    setupNewGame()
+                case .InProgress:
+                    break
+                case .NewRoll:
+                    break
+                case .NewRound:
+                    startNewRound()
+                case .GameOver:
+                    exit(0)
             }
         }
     }
     
-    /*
-    var player1NameLabel: SKLabelNode = SKLabelNode()
-    var player1ScoreLabel: SKLabelNode = SKLabelNode()
-    var player2NameLabel: SKLabelNode = SKLabelNode()
-    var player2ScoreLabel: SKLabelNode = SKLabelNode()
-    var player3NameLabel: SKLabelNode = SKLabelNode()
-    var player3ScoreLabel: SKLabelNode = SKLabelNode()
-    var player4NameLabel: SKLabelNode = SKLabelNode()
-    var player4ScoreLabel: SKLabelNode = SKLabelNode()
-    */
+    var playerState = PlayerState.Rolling {
+        willSet {
+            switch newValue {
+                case .Rolling:
+                    print("Player Rolling")
+                    //rollDice()
+                case .Finished:
+                    print("Player has finished")
+                    //currentPlayer.finished = true
+                case .FinalRoll:
+                    print("Player has one final roll")
+                    //currentPlayer.finalRoll = true
+                case .Farkle:
+                    print("Player farkled, next players turn")
+                    //nextPlayer()
+            }
+        }
+    }
+    
+    var currentGame: Game = Game()
+    var currentPlayer: Player!
+    
+    var rollAction = SKAction()
+    
+    let player1: Player = Player.init(score: 0, hasScoringDice: false)
+    let player2: Player = Player.init(score: 0, hasScoringDice: false)
+    let player3: Player = Player.init(score: 0, hasScoringDice: false)
+    let player4: Player = Player.init(score: 0, hasScoringDice: false)
+    
+    var playersArray: [Player]!
+    
+    let dieFace1: dieFaceDef = dieFaceDef.init(faceValue: 1, scoring: true)
+    let dieFace2: dieFaceDef = dieFaceDef.init(faceValue: 2, scoring: false)
+    let dieFace3: dieFaceDef = dieFaceDef.init(faceValue: 3, scoring: false)
+    let dieFace4: dieFaceDef = dieFaceDef.init(faceValue: 4, scoring: false)
+    let dieFace5: dieFaceDef = dieFaceDef.init(faceValue: 5, scoring: true)
+    let dieFace6: dieFaceDef = dieFaceDef.init(faceValue: 6, scoring: false)
+    
+    var dieFaceArray: [dieFaceDef]!
+    
+    var die1: SKSpriteNode = SKSpriteNode()
+    var die2: SKSpriteNode = SKSpriteNode()
+    var die3: SKSpriteNode = SKSpriteNode()
+    var die4: SKSpriteNode = SKSpriteNode()
+    var die5: SKSpriteNode = SKSpriteNode()
+    var die6: SKSpriteNode = SKSpriteNode()
+    
+    var diceArray: [SKSpriteNode] = [SKSpriteNode]()
+    
+    let logo = SKLabelNode(text: "Farkle")
+    let logo2 = SKLabelNode(text: "Plus")
+    
+    //let LabelColor = UIColor(red: 161, green: 0, blue: 0, alpha: 1)
+   
+    var mainMenuHolder: SKNode = SKNode()
+    var settingsMenuHolder: SKNode = SKNode()
+    var iconWindowIconsHolder: SKNode = SKNode()
+    var gameTableHolder: SKNode = SKNode()
+    var gameTable: SKSpriteNode = SKSpriteNode()
+    var backGround: SKSpriteNode = SKSpriteNode()
+    var mainMenu: SKSpriteNode = SKSpriteNode()
+    var settingsMenu: SKSpriteNode = SKSpriteNode()
+    var helpMenu: SKSpriteNode = SKSpriteNode()
+    var mainMenuLabel: SKLabelNode = SKLabelNode()
+    var settingsMenuLabel: SKLabelNode = SKLabelNode()
+    var soundIconLabel: SKLabelNode = SKLabelNode()
+    var backIconLabel: SKLabelNode = SKLabelNode()
+    var newGameIconLabel: SKLabelNode = SKLabelNode()
+    var settingsIconLabel: SKLabelNode = SKLabelNode()
+    var resumeIconLabel: SKLabelNode = SKLabelNode()
+    var exitIconLabel: SKLabelNode = SKLabelNode()
+    var rollDiceIconLabel: SKLabelNode = SKLabelNode()
+    var keepScoreIconLabel: SKLabelNode = SKLabelNode()
 
     var touchLocation: CGPoint = CGPoint(x: 0, y: 0)
+    var currentTouch: UITouch = UITouch()
+    var currentTouchLocation: CGPoint = CGPoint(x: 0, y: 0)
     var iconWindowTouchLocation: CGPoint = CGPoint(x: 0, y: 0)
     var gameTableTouchLocation: CGPoint = CGPoint(x: 0, y: 0)
+    var mainMenuTouchLocation: CGPoint = CGPoint(x: 0, y: 0)
+    var settingsMenuTouchLocation: CGPoint = CGPoint(x: 0, y: 0)
 
-    var playIcon: SKSpriteNode = SKSpriteNode()
+    var newGameIcon: SKSpriteNode = SKSpriteNode()
     var pauseIcon: SKSpriteNode = SKSpriteNode()
     var exitIcon: SKSpriteNode = SKSpriteNode()
     var soundIcon: SKSpriteNode = SKSpriteNode()
     var infoIcon: SKSpriteNode = SKSpriteNode()
     var menuIcon: SKSpriteNode = SKSpriteNode()
-    var reloadIcon: SKSpriteNode = SKSpriteNode()
+    var resumeIcon: SKSpriteNode = SKSpriteNode()
     var settingsIcon: SKSpriteNode = SKSpriteNode()
     var homeIcon: SKSpriteNode = SKSpriteNode()
     var backIcon: SKSpriteNode = SKSpriteNode()
     var iconTouched: String = String("")
+    var rollDiceIcon: SKSpriteNode = SKSpriteNode()
+    var keepScoreIcon: SKSpriteNode = SKSpriteNode()
 
     var iconWindow: SKSpriteNode = SKSpriteNode()
     var scoresWindow: SKSpriteNode = SKSpriteNode()
-
-    var icons = [SKSpriteNode]()
-    var iconWindowIcons = [SKSpriteNode]()
+    
+    var mainMenuIconsArray = [SKSpriteNode]()
+    var settingsMenuIconsArray = [SKSpriteNode]()
+    var iconWindowIconsArray = [SKSpriteNode]()
     
     var selfMaxX: CGFloat = CGFloat(0)
     var selfMinX: CGFloat = CGFloat(0)
@@ -138,61 +181,288 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     var scoresWindowMinY: CGFloat = CGFloat(0)
     var scoresWindowWidth: CGFloat = CGFloat(0)
     var scoresWindowHeight: CGFloat = CGFloat(0)
-    
-    var currentRoundScore = 0
-    var roundScore = 0
-    
-    // MARK: ********** Class Variables Section **********
 
     let physicsContactDelegate = self
-
+    
     // MARK: ********** didMove Section **********
     
     override func didMove(to view: SKView) {
-        physicsWorld.gravity = CGVector(dx: -6.0, dy: 0)
-
-        setupNewGame()
+        setupBackGround()
+        setupGameTable()
+        setupLogo()
+         setupIconWindow()
+        setupScoresWindow()
+        displayMainMenu()
+        displaySettingsMenu()
+    }
+    
+    func displayMainMenu() {
+        mainMenu.texture = GameConstants.Textures.MainMenu
+        mainMenu.name = "MainMenu"
+        mainMenu.position = CGPoint(x: 0, y: 0)
+        mainMenu.size = CGSize(width: frame.size.width / 2, height: frame.size.height / 1.5)
+        mainMenu.zPosition = GameConstants.ZPositions.Menu
+        if gameState == .NewGame {
+            setupMainMenuIcons()
+        }
+    }
+    
+    func displaySettingsMenu() {
+        settingsMenu.texture = GameConstants.Textures.SettingsMenu
+        settingsMenu.name = "SettingsMenu"
+        settingsMenu.position = CGPoint(x: 0, y: 0)
+        settingsMenu.size = CGSize(width: frame.size.width / 2, height: frame.size.height / 1.5)
+        settingsMenu.zPosition = GameConstants.ZPositions.Menu
+        setupSettingsMenuIcons()
+        
     }
 
     // MARK: ********** Touches Section **********
 
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         if let touch = touches.first {
-            touchLocation = touch.location(in: self)
+            currentTouch = touch
+            //setTouchLocation()
+            //touchLocation = currentTouchLocation
+            //touchLocation = locateTouch(touch: currentTouch)
+            //touchLocation = touch.location(in: self)
             iconWindowTouchLocation = touch.location(in: iconWindow)
             gameTableTouchLocation = touch.location(in: gameTable)
+            mainMenuTouchLocation = touch.location(in: mainMenu)
+            settingsMenuTouchLocation = touch.location(in: settingsMenu)
         }
-        wasIconTouched()
-        wasDiceTouched()
+        //handleTouchEvent(touchedLocation: touchLocation)
+        wasMainMenuIconTouched()
+        wasSettingsMenuIconTouched()
+        wasIconWindowIconTouched()
+        //wasDiceTouched()
+    }
+    
+    func locateTouch(touch: UITouch) -> CGPoint {
+        if mainMenu.contains(touchLocation) {
+            print("main menu")
+            touchLocation = touch.location(in: mainMenu)
+        } else if iconWindow.contains(touchLocation) {
+            print("icon window")
+            touchLocation = touch.location(in: iconWindow)
+        } else if settingsMenu.contains(touchLocation) {
+            print("settings menu")
+            touchLocation = touch.location(in: settingsMenu)
+        }
+        return touchLocation
+    }
+    
+    func setTouchLocation() {
+        if self.childNode(withName: "MainMenu") != nil {
+            touchLocation = mainMenuTouchLocation
+            settingsMenuTouchLocation = CGPoint(x: 5000, y: 5000)
+            gameTableTouchLocation = CGPoint(x: 5000, y: 5000)
+            iconWindowTouchLocation = CGPoint(x: 5000, y: 5000)
+        } else if self.childNode(withName: "SettingsMenu") != nil {
+            touchLocation = settingsMenuTouchLocation
+            mainMenuTouchLocation = CGPoint(x: 5000, y: 5000)
+            gameTableTouchLocation = CGPoint(x: 5000, y: 5000)
+            iconWindowTouchLocation = CGPoint(x: 5000, y: 5000)
+        } else if iconWindow.childNode(withName: "Pause") != nil {
+            touchLocation = iconWindowTouchLocation
+            settingsMenuTouchLocation = CGPoint(x: 5000, y: 5000)
+            gameTableTouchLocation = CGPoint(x: 5000, y: 5000)
+            mainMenuTouchLocation = CGPoint(x: 5000, y: 5000)
+        } else {
+            touchLocation = gameTableTouchLocation
+            settingsMenuTouchLocation = CGPoint(x: 5000, y: 5000)
+            iconWindowTouchLocation = CGPoint(x: 5000, y: 5000)
+            mainMenuTouchLocation = CGPoint(x: 5000, y: 5000)
+        }
+    }
+    
+    func handleTouchEvent(touchedLocation: CGPoint) {
+        for icon in mainMenuIconsArray {
+            if icon.contains(touchedLocation) {
+                switch icon.name {
+                case "New Game":
+                    newGameIconTouched()
+                case "Continue":
+                    resumeIconTouched()
+                case "Settings":
+                    settingsIconTouched()
+                case "Exit":
+                    exitIconTouched()
+                case "Info":
+                    infoIconTouched()
+                default:
+                    break
+                }
+            }
+        }
+        for icon in settingsMenuIconsArray {
+            if icon.contains(touchedLocation) {
+                switch icon.name {
+                case "Sound":
+                    soundIconTouched()
+                case "Back":
+                    backIconTouched()
+                default:
+                    break
+                }
+            }
+        }
+        for icon in iconWindowIconsArray {
+            if icon.contains(touchedLocation) {
+                switch icon.name {
+                case "Pause":
+                    pauseIconTouched()
+                case "RollDice":
+                    rollDiceIconTouched()
+                case "KeepScore":
+                    keepScoreIconTouched()
+                default:
+                    break
+                }
+            }
+        }
+    }
+    
+    func wasMainMenuIconTouched() {
+        for icon in mainMenuIconsArray {
+            if icon.contains(mainMenuTouchLocation) {
+                switch icon.name {
+                case "New Game":
+                    newGameIconTouched()
+                case "Continue":
+                    resumeIconTouched()
+                case "Settings":
+                    settingsIconTouched()
+                case "Exit":
+                    exitIconTouched()
+                case "Info":
+                    infoIconTouched()
+                default:
+                    break
+                }
+            }
+        }
+    }
+    
+    func wasSettingsMenuIconTouched() {
+        for icon in settingsMenuIconsArray {
+            if icon.contains(settingsMenuTouchLocation) {
+                switch icon.name {
+                case "Sound":
+                    soundIconTouched()
+                case "Back":
+                    backIconTouched()
+                default:
+                    break
+                }
+            }
+        }
+    }
+    
+    func wasIconWindowIconTouched() {
+         for icon in iconWindowIconsArray {
+            if icon.contains(iconWindowTouchLocation) {
+                switch icon.name {
+                case "Pause":
+                    pauseIconTouched()
+                case "RollDice":
+                    rollDiceIconTouched()
+                case "KeepScore":
+                    keepScoreIconTouched()
+                default:
+                    break
+                }
+            }
+        }
+    }
+
+    
+    func newGameIconTouched() {
+        showIconWindowIcons()
+        if gameState == .InProgress {
+            //displayGameInProgressWarning()
+        } else {
+            showIconWindowIcons()
+            setupNewGame()
+        }
     }
     
     func setupNewGame() {
-        getGameSettings()
-        setupGameScene()
         setupPlayers()
-        setupDice()
+        setupDieFaces()
+        //resetAllGameVariables()
+        gameState = .InProgress
     }
     
-    func setupGameScene() {
-        setupBackGround()
-        setupGameTable()
-        setupLogo()
-        setupIconWindow()
-        setupScoresWindow()
-        setupIcons()
+    func getCurrentGameSettings() {
+        currentGame = Game()
     }
     
-    func getGameSettings() {
-        if game.settingsChanged == true {
-            currentGame.numDice = game.numDice
-            currentGame.numPlayers = game.numPlayers
-            currentGame.targetScore = game.targetScore
-            currentGame.matchTargetScore = game.matchTargetScore
+    func resumeIconTouched() {
+        print("continue icon touched")
+        showIconWindowIcons()
+        if gameState == .NewGame {
+            //displayNoGameInProgreeMessage()
         } else {
-            currentGame.numDice = GameConstants.GameDefaults.dice
-            currentGame.numPlayers = GameConstants.GameDefaults.players
-            currentGame.targetScore = GameConstants.GameDefaults.targetScore
-            currentGame.matchTargetScore = GameConstants.GameDefaults.matchTarget
+            //showIconWindowIcons()
+        }
+    }
+    
+    func settingsIconTouched() {
+        print("settings icon touched")
+        showSettingsMenu()
+
+        /*
+        if gameState == .InProgress {
+            //displaySettingsChangeWillCancelCurrentGameWarning()
+        } else {
+            hideMainMenu()
+            showSettingsMenu()
+        }
+        */
+    }
+    
+    func exitIconTouched() {
+        print("exit icon touched")
+        if gameState == .InProgress {
+            //displayExitGameWarning()
+        } else {
+            //displayConfirmationMessage()
+            exit(0)
+        }
+    }
+    
+    func infoIconTouched() {
+        //displayInfoWindow()
+        print("Info Icon was Touched")
+    }
+    
+    func soundIconTouched() {
+        print("sound icon touched")
+    }
+    
+    func backIconTouched() {
+        print("back icon touched")
+        showMainMenu()
+    }
+    
+    func pauseIconTouched() {
+        if pauseIcon.isPaused != true {
+            print("pause icon touched")
+            showMainMenu()
+        }
+    }
+    
+    func rollDiceIconTouched() {
+        if rollDiceIcon.isPaused != true {
+            print("roll Dice Icon touched")
+        }
+        
+    }
+    
+    func keepScoreIconTouched() {
+        if keepScoreIcon.isPaused != true {
+            print("keep score icon touched")
         }
     }
     
@@ -205,28 +475,55 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     }
     
     func endGame() {
+        gameState = .GameOver
         print("end game")
     }
     
-    func checkGameState() {
-        switch gameState {
-        case .NewGame:
-            //setupNewGame()
-            gameState = .InProgress
-        case .InProgress:
-            print("Game State \(gameState)")
-        case .NewRoll:
-            print("New Roll")
-        case .NewRound:
-            //startNewRound()
-            gameState = .NewRound
-        //case .GameOver:
-            //endGame()
-        default:
-            break
+    func showMainMenu() {
+        hideSettingMenu()
+        hideIconWindowIcons()
+        addMainMenu()
+     }
+    
+    func hideMainMenu() {
+        newGameIcon.removeAllChildren()
+        resumeIcon.removeAllChildren()
+        settingsIcon.removeAllChildren()
+        exitIcon.removeAllChildren()
+        infoIcon.removeAllChildren()
+        mainMenu.removeAllChildren()
+        mainMenu.removeFromParent()
+    }
+    
+    func showSettingsMenu() {
+        hideMainMenu()
+        hideIconWindowIcons()
+        addSettingsMenu()
+    }
+    
+    func hideSettingMenu() {
+        soundIcon.removeAllChildren()
+        backIcon.removeAllChildren()
+        settingsMenu.removeAllChildren()
+        settingsMenu.removeFromParent()
+    }
+    
+    func showIconWindowIcons() {
+        hideMainMenu()
+        hideSettingMenu()
+        addIconWindowIcons()
+        for icon in iconWindowIconsArray {
+            icon.isPaused = false
         }
     }
-
+    
+    func hideIconWindowIcons() {
+        iconWindow.removeAllChildren()
+        for icon in iconWindowIconsArray {
+            icon.isPaused = true
+        }
+    }
+    
     // MARK: ********** Updates Section **********
 
     override func update(_ currentTime: TimeInterval) {

@@ -10,50 +10,26 @@ import SpriteKit
 import UIKit
 
 struct GameConstants {
-    struct GameDefaults {
-        static let targetScore = 10000
-        static let players = 4
-        static let dice = 6
-        static let matchTarget = true
-        static let playerScore = 0
-        static let round = 1
-    }
-
-    struct ScoringComboValues {
-        static let ones = 100
-        static let fives = 50
-        static let multiplier_3456_OfAKind = 100
-        static let straight = 1500
-        static let fullHouse = 750
-        static let threePair = 750
-    }
 
     struct StringConstants {
-        static let player1Name = "Player 1"
-        static let player2Name = "Player 2"
-        static let player3Name = "Player 3"
-        static let player4Name = "Player 4"
+        static let Player1Name = "Player 1"
+        static let Player2Name = "Player 2"
+        static let Player3Name = "Player 3"
+        static let Player4Name = "Player 4"
 
-        static let die1ImageName = "Die1"
-        static let die2ImageName = "Die2"
-        static let die3ImageName = "Die3"
-        static let die4ImageName = "Die4"
-        static let die5ImageName = "Die5"
-        static let die6ImageName = "Die6"
-
-        static let die1Texture = SKTexture(imageNamed: "Die1")
-        static let die2Texture = SKTexture(imageNamed: "Die2")
-        static let die3Texture = SKTexture(imageNamed: "Die3")
-        static let die4Texture = SKTexture(imageNamed: "Die4")
-        static let die5Texture = SKTexture(imageNamed: "Die5")
-        static let die6Texture = SKTexture(imageNamed: "Die6")
-
-        static let die1Name = "Die1"
-        static let die2Name = "Die2"
-        static let die3Name = "Die3"
-        static let die4Name = "Die4"
-        static let die5Name = "Die5"
-        static let die6Name = "Die6"
+        static let Die1Name = "Die1"
+        static let Die2Name = "Die2"
+        static let Die3Name = "Die3"
+        static let Die4Name = "Die4"
+        static let Die5Name = "Die5"
+        static let Die6Name = "Die6"
+        
+        static let BackGroundName = "BackGround"
+        static let GameTableName = "GameTable"
+        static let IconWindowName = "IconWindow"
+        static let ScoresWindowName = "ScoresWindow"
+        static let MainMenuName = "MainMenu"
+        static let SettingsMenuName = "SettingsMenu"
 
         static let IconWindowImageName = "WindowPopup1"
         static let ScoresWindowImageName = "WindowPopup2"
@@ -62,6 +38,43 @@ struct GameConstants {
         static let SettingsMenuImageName = "SettingsMenu"
         static let HelpMenuImageName = "HelpMenu"
         static let BackGroundImageName = "Felt_Green"
+
+        static let FontName = "Marker Felt Wide"
+    }
+    
+    struct Textures {
+        static let Die1 = SKTexture(imageNamed: "Die1")
+        static let Die2 = SKTexture(imageNamed: "Die2")
+        static let Die3 = SKTexture(imageNamed: "Die3")
+        static let Die4 = SKTexture(imageNamed: "Die4")
+        static let Die5 = SKTexture(imageNamed: "Die5")
+        static let Die6 = SKTexture(imageNamed: "Die6")
+        static let MainMenu = SKTexture(imageNamed: "MainMenu")
+        static let SettingsMenu = SKTexture(imageNamed: "SettingsMenu")
+        static let GameTable = SKTexture(imageNamed: "WindowPopup")
+        static let IconWindow = SKTexture(imageNamed: "WindowPopup1")
+        static let ScoresWindow = SKTexture(imageNamed: "WindowPopup2")
+        static let BackGround = SKTexture(imageNamed: "Felt_Green")
+    }
+    
+    struct Sizes {
+        static let Logo1Font = CGFloat(144)
+        static let Logo2Font = CGFloat(34)
+        static let PlayerNameLabelFont = CGFloat(25)
+        static let PlayerScoreLabelFont = CGFloat(25)
+        static let ScoresMenu = CGSize(width: 150, height: 330)
+        static let ScoresMenuFont = CGFloat(34)
+        static let MainMenuFont = CGFloat(34)
+        static let IconLabelFont = CGFloat(18)
+    }
+    
+    struct Colors {
+        static let LogoFont = UIColor.brown
+        static let PlayerNameLabelFont = UIColor.darkText
+        static let PlayerScoreLabelFont = UIColor.darkText
+        static let ScoresMenuFont = UIColor.darkText
+        static let MainMenuFont = UIColor.darkText
+        static let IconLabelFont = UIColor.darkText
     }
 
     struct ZPositions {
@@ -69,18 +82,19 @@ struct GameConstants {
         static let GameTable: CGFloat = 1
         static let Window: CGFloat = 2
         static let Logo: CGFloat = 3
-        static let Icon: CGFloat = 3
-        static let IconLabel: CGFloat = 4
-        static let NameLabel: CGFloat = 4
-        static let Dice: CGFloat = 5
-        static let Message: CGFloat = 6
+        static let Icon: CGFloat = 4
+        static let IconLabel: CGFloat = 5
+        static let NameLabel: CGFloat = 6
+        static let ScoreLabel:  CGFloat = 6
+        static let Dice: CGFloat = 7
+        static let Message: CGFloat = 8
+        static let Menu: CGFloat = 9
+        static let MenuLabel: CGFloat = 10
     }
 
     struct PhysicsCategory {
         static let Dice = UInt32(1)
         static let Frame = UInt32(2)
-        static let World = UInt32(4)
-        static let Other = UInt32(8)
     }
 
     struct Messages {
@@ -91,80 +105,13 @@ struct GameConstants {
         static let Busted = "You must match the target score exactly to win"
         static let Farkle = "No scoring dice"
     }
-
-    struct MainMenu {
-        static let FontName = GameConstants.Logo.FontName
-        static let FontColor = GameConstants.Logo.FontColor
-        static let FontSize = GameConstants.Logo.FontSize2
-    }
-
-    struct ScoresMenu {
-        static let FontName = GameConstants.Logo.FontName
-        static let FontColor = GameConstants.Logo.FontColor
-        static let FontSize = GameConstants.Logo.FontSize2
-        static let ImageName = "WindowPop2"
-        static let Size = CGSize(width: 150, height: 330)
-    }
-
-    struct Icon {
-        static let FontName = "Marker Felt Wide"
-        static let FontColor = UIColor.black
-        static let FontSize: CGFloat = 24
-        static let Size = CGSize(width: 35, height: 35)
-    }
-
-    /*
-    struct Dice {
-        static let PhysicsBody = SKPhysicsBody(rectangleOf: CGSize(width: 64, height: 64))
-        static let Size = CGSize(width: 64, height: 64)
-        static let PhysicsCategoryMask: UInt32 = GameConstants.PhysicsCategory.Dice
-        static let PhysicsContactMask: UInt32 = GameConstants.PhysicsCategory.Frame
-        static let PhysicsCollisionMask: UInt32 = GameConstants.PhysicsCategory.Frame
-
-        static let Gravity = false
-        static let AllowsRotation = true
-        static let Dynamic = true
-    }
-    */
-
-    /*
-    struct GameTable {
-        static let physicsBody = SKPhysicsBody(edgeLoopFrom: CGRect(x: 75, y: 0, width: 750, height: 440))
-        static let ImageName = "WindowPopup"
-
-        static let PhysicsCategoryMask: UInt32 = GameConstants.PhysicsCategory.Frame
-        static let PhysicsContacMask: UInt32 = GameConstants.PhysicsCategory.Dice
-        static let PhysicsCollisionMask: UInt32 = GameConstants.PhysicsCategory.Dice
-
-        static let Gravity = false
-        static let AllowsRotation = true
-        static let Dynamic = true
-    }
-    */
-
-    struct BackGround {
-        static let Name = "BackGround"
-        static let ImageName = "Felt_Green"
-        static let Position = CGPoint(x: 0, y: 0)
-    }
-
-    struct Logo {
-        static let FontName = "Marker Felt Wide"
-        static let FontColor = UIColor.brown
-        static let FontSize1: CGFloat = 144
-        static let FontSize2: CGFloat = 34
+    
+    struct Locations {
+        static let MainMenu = CGPoint(x: 0, y: 0)
+        static let SettingsMenu = CGPoint(x: 0, y: 0)
     }
     
-    struct PlayerNameLabel {
-        static let FontName = "Marker Felt Wide"
-        static let FontColor = UIColor.brown
-        static let FontSize: CGFloat = 25
+    struct TouchLocations {
+        
     }
-    
-    struct PlayerScoreLabel {
-        static let FontName = "Marker Felt Wide"
-        static let FontColor = UIColor.black
-        static let FontSize: CGFloat = 25
-    }
-
 }

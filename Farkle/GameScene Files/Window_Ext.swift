@@ -12,7 +12,6 @@ extension GameScene {
         iconWindow = SKSpriteNode(texture: SKTexture(imageNamed: "WindowPopup1"))
         iconWindow.size = CGSize(width: 165, height: (backGround.size.height / 4))
         iconWindow.position = CGPoint(x: ((backGround.frame.minX) + (iconWindow.size.width / 2)) + 5, y: ((backGround.frame.maxY) - (iconWindow.size.height / 2)) - 10)
-        //(x: ((selfMinX + 5) + (iconWindow.size.width / 2)), y: ((selfMaxY - 10) - (iconWindow.size.height / 2)))
         iconWindow.zPosition = GameConstants.ZPositions.Window
         iconWindow.name = "Icon Window"
 
@@ -22,6 +21,7 @@ extension GameScene {
         iconWindowMinY = iconWindow.frame.minY
 
         backGround.addChild(iconWindow)
+        setupIconWindowIcons()
     }
 
     func setupScoresWindow() {
@@ -39,9 +39,5 @@ extension GameScene {
         scoresWindowHeight = scoresWindow.size.height
 
         backGround.addChild(scoresWindow)
-    }
-    
-    func addPlayerScoresToScoresWindow() {
-
     }
 }

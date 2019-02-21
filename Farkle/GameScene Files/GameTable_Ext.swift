@@ -37,16 +37,16 @@ extension GameScene {
     
     func setupLogo() {
         
-        logo.fontName = GameConstants.Logo.FontName
-        logo.fontColor = GameConstants.Logo.FontColor
-        logo.fontSize = 144
+        logo.fontName = GameConstants.StringConstants.FontName
+        logo.fontColor = GameConstants.Colors.LogoFont
+        logo.fontSize = GameConstants.Sizes.Logo1Font
         logo.alpha = 0.65
         logo.position = CGPoint(x: 0, y: -50)
         logo.zPosition = GameConstants.ZPositions.Logo
         
-        logo2.fontName = GameConstants.Logo.FontName
-        logo2.fontColor = GameConstants.Logo.FontColor
-        logo2.fontSize = 36
+        logo2.fontName = GameConstants.StringConstants.FontName
+        logo2.fontColor = GameConstants.Colors.LogoFont
+        logo2.fontSize = GameConstants.Sizes.Logo2Font
         logo2.alpha = 0.65
         logo2.zRotation = 75
         
