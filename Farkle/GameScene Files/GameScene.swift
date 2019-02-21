@@ -62,13 +62,14 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     
     var currentGame: Game = Game()
     var currentPlayer: Player!
+    var currentPlayerID: Int = 0
     
     var rollAction = SKAction()
     
-    let player1: Player = Player.init(score: 0, hasScoringDice: false)
-    let player2: Player = Player.init(score: 0, hasScoringDice: false)
-    let player3: Player = Player.init(score: 0, hasScoringDice: false)
-    let player4: Player = Player.init(score: 0, hasScoringDice: false)
+    let player1: Player = Player.init(score: 0, currentRollScore: 0, hasScoringDice: false)
+    let player2: Player = Player.init(score: 0, currentRollScore: 0, hasScoringDice: false)
+    let player3: Player = Player.init(score: 0, currentRollScore: 0, hasScoringDice: false)
+    let player4: Player = Player.init(score: 0, currentRollScore: 0, hasScoringDice: false)
     
     var playersArray: [Player]!
     
@@ -190,7 +191,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         setupBackGround()
         setupGameTable()
         setupLogo()
-         setupIconWindow()
+        setupIconWindow()
         setupScoresWindow()
         displayMainMenu()
         displaySettingsMenu()
@@ -378,8 +379,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
 
     
     func newGameIconTouched() {
-        showIconWindowIcons()
         if gameState == .InProgress {
+            print("game in progress")
             //displayGameInProgressWarning()
         } else {
             showIconWindowIcons()
@@ -388,45 +389,54 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     }
     
     func setupNewGame() {
-        setupPlayers()
-        setupDieFaces()
-        //resetAllGameVariables()
         gameState = .InProgress
+        getCurrentGameSettings()
+        setupPlayers()
+        resetAllPlayerVariables()
+        setupDieFaces()
+        currentPlayer = playersArray.first
+        currentPlayerID = 0
     }
     
     func getCurrentGameSettings() {
         currentGame = Game()
     }
     
+    func resetAllPlayerVariables() {
+        currentPlayerID = 0
+        for player in playersArray {
+            player.score = 0
+            player.currentRollScore = 0
+            player.hasScoringDice = false
+        }
+    }
+    
     func resumeIconTouched() {
-        print("continue icon touched")
-        showIconWindowIcons()
         if gameState == .NewGame {
+            print("no game in progress")
             //displayNoGameInProgreeMessage()
         } else {
-            //showIconWindowIcons()
+            print("continue icon touched")
+            showIconWindowIcons()
         }
     }
     
     func settingsIconTouched() {
-        print("settings icon touched")
-        showSettingsMenu()
-
-        /*
         if gameState == .InProgress {
+            print("game in progress")
             //displaySettingsChangeWillCancelCurrentGameWarning()
         } else {
-            hideMainMenu()
+            print("settings icon touched")
             showSettingsMenu()
         }
-        */
     }
     
     func exitIconTouched() {
-        print("exit icon touched")
         if gameState == .InProgress {
+            print("game in progress")
             //displayExitGameWarning()
         } else {
+            print("game exited")
             //displayConfirmationMessage()
             exit(0)
         }
@@ -456,14 +466,27 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     func rollDiceIconTouched() {
         if rollDiceIcon.isPaused != true {
             print("roll Dice Icon touched")
+            currentPlayer.currentRollScore += 1000
         }
-        
     }
     
     func keepScoreIconTouched() {
         if keepScoreIcon.isPaused != true {
             print("keep score icon touched")
+            currentPlayer.score += currentPlayer.currentRollScore
+            currentPlayer.scoreLabel.text = String(currentPlayer.score)
+            currentPlayer.currentRollScore = 0
+            nextPlayer()
         }
+    }
+    
+    func nextPlayer() {
+        if currentPlayerID < playersArray.count - 1 {
+            currentPlayerID += 1
+        } else {
+            currentPlayerID = 0
+        }
+        currentPlayer = playersArray[currentPlayerID]
     }
     
     func continueRound() {

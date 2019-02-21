@@ -11,6 +11,7 @@ import SpriteKit
 extension GameScene {
 
     func setupPlayers() {
+        
         player1.nameLabel.text = "Player 1"
         player2.nameLabel.text = "Player 2"
         player3.nameLabel.text = "Player 3"
@@ -33,66 +34,43 @@ extension GameScene {
             player.name = player.nameLabel.text!
         }
         for player in playersArray {
-            print("player name: \(player.name)")
-            print("player score: \(player.scoreLabel.text!)")
-        }
-        positionPlayerLabels()
-        for player in playersArray {
             scoresWindow.addChild(player.nameLabel)
             scoresWindow.addChild(player.scoreLabel)
         }
+        positionPlayerLabels()
     }
     
     func positionPlayerLabels() {
-        
-        
-    }
-}
-
-        /*
+        for player in playersArray {
+            player.nameLabel.fontName = GameConstants.StringConstants.FontName
+            player.scoreLabel.fontName = GameConstants.StringConstants.FontName
+            player.nameLabel.fontSize = GameConstants.Sizes.PlayerNameLabelFont
+            player.scoreLabel.fontSize = GameConstants.Sizes.PlayerScoreLabelFont
+            player.nameLabel.fontColor = GameConstants.Colors.PlayerNameLabelFont
+            player.scoreLabel.fontColor = GameConstants.Colors.PlayerScoreLabelFont
+            player.nameLabel.zPosition = GameConstants.ZPositions.NameLabel
+            player.scoreLabel.zPosition = GameConstants.ZPositions.ScoreLabel
+            
+            
             switch player.name {
             case "Player 1":
-                player.Label.nameLabel.position = CGPoint(x: 0, y: (scoresWindow.frame.height / 4) + 15)
-                player1.Label.nameLabel.position = player.Label.nameLabel.position
+                player1.nameLabel.position = CGPoint(x: 0, y: (scoresWindow.frame.height / 4) + 15)
                 
-                player.Label.scoreLabel.position = CGPoint(x: player.Label.nameLabel.position.x, y: player.Label.nameLabel.position.y - 30)
-                player1.Label.scoreLabel.position = player.Label.scoreLabel.position
-                
-                player1.Label.nameLabel = player.Label.nameLabel
-                
+                player1.scoreLabel.position = CGPoint(x: player1.nameLabel.position.x, y: player1.nameLabel.position.y - 30)
             case "Player 2":
-                player.Label.nameLabel.position = CGPoint(x: 0, y: player1.Label.nameLabel.position.y - 60)
-                player2.Label.nameLabel.position = player.Label.nameLabel.position
+                player2.nameLabel.position = CGPoint(x: 0, y: player1.nameLabel.position.y - 60)
                 
-                player.Label.scoreLabel.position = CGPoint(x: player1.Label.nameLabel.position.x, y: player2.Label.nameLabel.position.y - 30)
-                player2.Label.scoreLabel.position = player.Label.scoreLabel.position
-                player2.Label.nameLabel = player.Label.nameLabel
-
+                player2.scoreLabel.position = CGPoint(x: player1.nameLabel.position.x, y: player2.nameLabel.position.y - 30)
             case "Player 3":
-                player.Label.nameLabel.position = CGPoint(x: 0, y: player2.Label.nameLabel.position.y - 60)
-                player3.Label.nameLabel.position = player.Label.nameLabel.position
-                
-                player.Label.scoreLabel.position = CGPoint(x: player2.Label.nameLabel.position.x, y: player3.Label.nameLabel.position.y - 30)
-                player3.Label.scoreLabel.position = player.Label.scoreLabel.position
-                player3.Label.nameLabel = player.Label.nameLabel
-
+                player3.nameLabel.position = CGPoint(x: 0, y: player2.nameLabel.position.y - 60)
+                player3.scoreLabel.position = CGPoint(x: player2.nameLabel.position.x, y: player3.nameLabel.position.y - 30)
             case "Player 4":
-                player.Label.nameLabel.position = CGPoint(x: 0, y: player3.Label.nameLabel.position.y - 60)
-                player4.Label.nameLabel.position = player.Label.nameLabel.position
+                player4.nameLabel.position = CGPoint(x: 0, y: player3.nameLabel.position.y - 60)
                 
-                player.Label.scoreLabel.position = CGPoint(x: player3.Label.nameLabel.position.x, y: player4.Label.nameLabel.position.y - 25)
-                player4.Label.scoreLabel.position = player.Label.scoreLabel.position
-                player4.Label.nameLabel = player.Label.nameLabel
-
+                player4.scoreLabel.position = CGPoint(x: player3.nameLabel.position.x, y: player4.nameLabel.position.y - 25)
             default:
                 break
             }
-            scoresWindow.addChild(player.Label.nameLabel)
-            scoresWindow.addChild(player.Label.scoreLabel)
         }
-        
-        for player in players {
-            print("player name: \(player.name!)")
-            scoresWindow.addChild(player.nameLabel)
-            scoresWindow.addChild(player.scoreLabel)
-        }*/
+    }
+}

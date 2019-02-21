@@ -13,12 +13,14 @@ class Player {
     var name: String = ""
 
     var score: Int
+    var currentRollScore: Int
     let scoreLabel: SKLabelNode = SKLabelNode()
     var hasScoringDice: Bool
     
-    init(score: Int, hasScoringDice: Bool)
+    init(score: Int, currentRollScore: Int, hasScoringDice: Bool)
     {
         self.score = score
+        self.currentRollScore = currentRollScore
         self.hasScoringDice = hasScoringDice
     }
 }

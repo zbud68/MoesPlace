@@ -28,6 +28,7 @@ extension GameScene {
         keepScoreIcon.name = "KeepScore"
         keepScoreIcon.size = CGSize(width: 60, height: 40)
         keepScoreIcon.zPosition = GameConstants.ZPositions.Dice
+        
         setupIconWindowIconsArray()
     }
 
