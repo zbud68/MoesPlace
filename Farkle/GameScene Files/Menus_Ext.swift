@@ -96,7 +96,7 @@ extension GameScene {
         backIcon.size = CGSize(width: 32, height: 32)
         backIcon.zPosition = GameConstants.ZPositions.Icon
         backIcon.position = CGPoint(x: -50, y: settingsMenu.frame.midY)
-                
+        
         setupSettingsMenuLabels()
         setupSettingsMenuIconsArray()
     }

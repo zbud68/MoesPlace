@@ -78,27 +78,93 @@ extension GameScene {
             gameTable.addChild(die)
     }
 
-    func rollDice() {
-        if gameState == .InProgress {
-            
-            if let RollAction = SKAction(named: "RollDice") {
-                rollAction = RollAction
-            }
-            let finishRollAction = SKAction.run {
-                //self.setDieFace()
-            }
-            let seq = SKAction.sequence([rollAction, finishRollAction])
-            
+    //MARK: ********** Roll Dice **********
+    
+    func rollDiceAction() {
+        
+        for die in self.diceArray {
             let randomX = CGFloat(arc4random_uniform(5) + 5)
             let randomY = CGFloat(arc4random_uniform(2) + 3)
             
-            for die in diceArray {
-                die.physicsBody?.applyImpulse(CGVector(dx: randomX, dy: randomY))
-                die.physicsBody?.applyTorque(3)
-                die.run(seq)
-            }
+            die.physicsBody?.applyImpulse(CGVector(dx: randomX, dy: randomY))
+            die.physicsBody?.applyTorque(3)
+            
+            rollDice(die: die)
         }
-        playerState = .Idle
+    }
+    
+    func rollDice(die: SKSpriteNode) {
+        let Wait = SKAction.wait(forDuration: 0.75)
+
+        if let RollAction = SKAction(named: "RollDice") {
+            rollAction = RollAction
+        }
+        
+        let setFace = SKAction.run {
+            self.setDieFace(die: die)
+        }
+    
+        let FadeOut = SKAction.fadeAlpha(to: 0, duration: 0.75)
+        let FadeIn = SKAction.fadeAlpha(to: 1, duration: 0.75)
+        
+        let RepositionDice = SKAction.run {
+            self.repositionDice(die: die)
+        }
+        let Seq = SKAction.sequence([rollAction, setFace, Wait, FadeOut, RepositionDice, FadeIn])
+        
+        die.run(Seq)
+    }
+    
+    func setDieFace(die: SKSpriteNode) {
+        let currentDie = Int(arc4random_uniform(6) + 1)
+        print("currentDie: \(currentDie)")
+        
+        switch currentDie {
+        case 1:
+            die.texture = GameConstants.Textures.Die1
+            dieFace1.countThisRoll += 1
+        case 2:
+            die.texture = GameConstants.Textures.Die2
+            dieFace2.countThisRoll += 1
+        case 3:
+            die.texture = GameConstants.Textures.Die3
+            dieFace3.countThisRoll += 1
+        case 4:
+            die.texture = GameConstants.Textures.Die4
+            dieFace4.countThisRoll += 1
+        case 5:
+            die.texture = GameConstants.Textures.Die5
+            dieFace5.countThisRoll += 1
+        case 6:
+            die.texture = GameConstants.Textures.Die6
+            dieFace6.countThisRoll += 1
+        default:
+            break
+        }
+    }
+    
+    func repositionDice(die: SKSpriteNode) {
+        die.zRotation = 0
+        die.zPosition = GameConstants.ZPositions.Dice
+        die.size = CGSize(width: 32, height: 32)
+        
+        switch die.name {
+        case "Die 1":
+            die1.position = CGPoint(x: -(gameTable.size.width / 7), y: gameTable.frame.minY + 100)
+        case "Die 2":
+            die2.position = CGPoint(x: die1.position.x + die2.size.width, y: gameTable.frame.minY + 100)
+        case "Die 3":
+            die3.position = CGPoint(x: die2.position.x + die3.size.width, y: gameTable.frame.minY + 100)
+        case "Die 4":
+            die4.position = CGPoint(x: die3.position.x + die4.size.width, y: gameTable.frame.minY + 100)
+        case "Die 5":
+            die5.position = CGPoint(x: die4.position.x + die5.size.width, y: gameTable.frame.minY + 100)
+        case "Die 6":
+            die6.position = CGPoint(x: die5.position.x + die6.size.width, y: gameTable.frame.minY + 100)
+        default:
+            break
+        }
+        //gameTable.addChild(die)
     }
     
     func setupNewRoll() {

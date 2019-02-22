@@ -23,7 +23,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
 
     
     // MARK: ********** Class Variables Section **********
-
+    // MARK: ********** State Machine **********
     var gameState = GameState.NewGame {
         willSet {
             switch newValue {
@@ -47,7 +47,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
                 case .Idle:
                     print("player idle")
                 case .Rolling:
-                    rollDice()
+                    rollDiceAction()
                 case .Finished:
                     print("Player has finished")
                     //currentPlayer.finished = true
@@ -74,12 +74,12 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     
     var playersArray: [Player]!
     
-    let dieFace1: dieFaceDef = dieFaceDef.init(faceValue: 1, scoring: true)
-    let dieFace2: dieFaceDef = dieFaceDef.init(faceValue: 2, scoring: false)
-    let dieFace3: dieFaceDef = dieFaceDef.init(faceValue: 3, scoring: false)
-    let dieFace4: dieFaceDef = dieFaceDef.init(faceValue: 4, scoring: false)
-    let dieFace5: dieFaceDef = dieFaceDef.init(faceValue: 5, scoring: true)
-    let dieFace6: dieFaceDef = dieFaceDef.init(faceValue: 6, scoring: false)
+    let dieFace1: dieFaceDef = dieFaceDef.init(name: "DieFace1", faceValue: 1, scoring: true)
+    let dieFace2: dieFaceDef = dieFaceDef.init(name: "DieFace2", faceValue: 2, scoring: false)
+    let dieFace3: dieFaceDef = dieFaceDef.init(name: "DieFace3", faceValue: 3, scoring: false)
+    let dieFace4: dieFaceDef = dieFaceDef.init(name: "DieFace4", faceValue: 4, scoring: false)
+    let dieFace5: dieFaceDef = dieFaceDef.init(name: "DieFace5", faceValue: 5, scoring: true)
+    let dieFace6: dieFaceDef = dieFaceDef.init(name: "DieFace6", faceValue: 6, scoring: false)
     
     var dieFaceArray: [dieFaceDef]!
     
@@ -134,11 +134,13 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     var menuIcon: SKSpriteNode = SKSpriteNode()
     var resumeIcon: SKSpriteNode = SKSpriteNode()
     var settingsIcon: SKSpriteNode = SKSpriteNode()
-    var homeIcon: SKSpriteNode = SKSpriteNode()
+    //var homeIcon: SKSpriteNode = SKSpriteNode()
     var backIcon: SKSpriteNode = SKSpriteNode()
     var iconTouched: String = String("")
     var rollDiceIcon: SKSpriteNode = SKSpriteNode()
     var keepScoreIcon: SKSpriteNode = SKSpriteNode()
+    
+    var homeIcon: UIButton = UIButton()
 
     var iconWindow: SKSpriteNode = SKSpriteNode()
     var scoresWindow: SKSpriteNode = SKSpriteNode()
@@ -287,7 +289,6 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         }
     }
 
-    
     func newGameIconTouched() {
         if gameState == .InProgress {
             print("game in progress")
@@ -396,22 +397,14 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         if currentPlayerID < playersArray.count - 1 {
             currentPlayerID += 1
         } else {
+            gameState = .NewRound
             currentPlayerID = 0
         }
         currentPlayer = playersArray[currentPlayerID]
     }
     
-    func continueRound() {
-        print("continue round")
-    }
-    
     func startNewRound() {
         print("start new round")
-    }
-    
-    func endGame() {
-        gameState = .GameOver
-        print("end game")
     }
     
     func showMainMenu() {
