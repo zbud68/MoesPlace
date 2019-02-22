@@ -12,14 +12,16 @@ class dieFaceDef {
     
     let name: String
     var faceValue: Int
+    let points: Int
     var scoring: Bool
     
     var countThisRoll: Int = Int(0)
     
-    init(name: String, faceValue: Int, scoring: Bool)
+    init(name: String, faceValue: Int, points: Int, scoring: Bool)
     {
         self.name = name
         self.faceValue = faceValue
+        self.points = points
         self.scoring = scoring
     }
 }

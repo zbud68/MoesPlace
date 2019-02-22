@@ -26,6 +26,7 @@
 		4DE4A2342211D87100671D07 /* Window_Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4DE4A2332211D87100671D07 /* Window_Ext.swift */; };
 		4DE4A2362211D8EA00671D07 /* Icon_Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4DE4A2352211D8EA00671D07 /* Icon_Ext.swift */; };
 		4DE4A2382211D96D00671D07 /* Dice_Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4DE4A2372211D96D00671D07 /* Dice_Ext.swift */; };
+		4DFDFC6C222063D000439E67 /* Die.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4DFDFC6B222063D000439E67 /* Die.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -50,6 +51,7 @@
 		4DE4A2332211D87100671D07 /* Window_Ext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Window_Ext.swift; sourceTree = "<group>"; };
 		4DE4A2352211D8EA00671D07 /* Icon_Ext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Icon_Ext.swift; sourceTree = "<group>"; };
 		4DE4A2372211D96D00671D07 /* Dice_Ext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Dice_Ext.swift; sourceTree = "<group>"; };
+		4DFDFC6B222063D000439E67 /* Die.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Die.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -69,6 +71,7 @@
 				4D10179E2213C4730060FBA2 /* DieFaceDef.swift */,
 				4D10179A2213A9170060FBA2 /* Player.swift */,
 				4DA971762215E2E500CEB115 /* Game.swift */,
+				4DFDFC6B222063D000439E67 /* Die.swift */,
 			);
 			path = "Class Files";
 			sourceTree = "<group>";
@@ -235,6 +238,7 @@
 				4DE4A2342211D87100671D07 /* Window_Ext.swift in Sources */,
 				4DE4A2382211D96D00671D07 /* Dice_Ext.swift in Sources */,
 				4DA3FF62220A9EFB008B7BC4 /* GameConstants.swift in Sources */,
+				4DFDFC6C222063D000439E67 /* Die.swift in Sources */,
 				4DE4A2312211D82800671D07 /* GameTable_Ext.swift in Sources */,
 				4DA971772215E2E500CEB115 /* Game.swift in Sources */,
 				4D374D1F221E104A00834241 /* Menus_Ext.swift in Sources */,

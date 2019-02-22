@@ -49,6 +49,13 @@ struct GameConstants {
         static let Die4 = SKTexture(imageNamed: "Die4")
         static let Die5 = SKTexture(imageNamed: "Die5")
         static let Die6 = SKTexture(imageNamed: "Die6")
+        static let Die1Selected = SKTexture(imageNamed: "Die1")
+        static let Die2Selected = SKTexture(imageNamed: "Die2")
+        static let Die3Selected = SKTexture(imageNamed: "Die3")
+        static let Die4Selected = SKTexture(imageNamed: "Die4")
+        static let Die5Selected = SKTexture(imageNamed: "Die5")
+        static let Die6Selected = SKTexture(imageNamed: "Die6")
+
         static let MainMenu = SKTexture(imageNamed: "MainMenu")
         static let SettingsMenu = SKTexture(imageNamed: "SettingsMenu")
         static let GameTable = SKTexture(imageNamed: "WindowPopup")

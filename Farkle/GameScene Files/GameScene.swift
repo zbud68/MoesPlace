@@ -8,7 +8,6 @@
 
 import SpriteKit
 
-
 // MARK: ********** Global Variables Section **********
 
 enum GameState {
@@ -20,10 +19,9 @@ enum PlayerState {
 }
 
 class GameScene: SKScene, SKPhysicsContactDelegate {
-
-    
     // MARK: ********** Class Variables Section **********
     // MARK: ********** State Machine **********
+
     var gameState = GameState.NewGame {
         willSet {
             switch newValue {
@@ -32,7 +30,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
                 case .InProgress:
                     print("game in progress")
                 case .NewRoll:
-                    break
+                    startNewRoll()
                 case .NewRound:
                     startNewRound()
                 case .GameOver:
@@ -55,8 +53,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
                     print("Player has one final roll")
                     //currentPlayer.finalRoll = true
                 case .Farkle:
-                    print("Player farkled, next players turn")
-                    //nextPlayer()
+                    farkle()
             }
         }
     }
@@ -74,30 +71,28 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     
     var playersArray: [Player]!
     
-    let dieFace1: dieFaceDef = dieFaceDef.init(name: "DieFace1", faceValue: 1, scoring: true)
-    let dieFace2: dieFaceDef = dieFaceDef.init(name: "DieFace2", faceValue: 2, scoring: false)
-    let dieFace3: dieFaceDef = dieFaceDef.init(name: "DieFace3", faceValue: 3, scoring: false)
-    let dieFace4: dieFaceDef = dieFaceDef.init(name: "DieFace4", faceValue: 4, scoring: false)
-    let dieFace5: dieFaceDef = dieFaceDef.init(name: "DieFace5", faceValue: 5, scoring: true)
-    let dieFace6: dieFaceDef = dieFaceDef.init(name: "DieFace6", faceValue: 6, scoring: false)
+    let dieFace1: dieFaceDef = dieFaceDef.init(name: "DieFace1", faceValue: 1, points: 100, scoring: true)
+    let dieFace2: dieFaceDef = dieFaceDef.init(name: "DieFace2", faceValue: 2, points: 0, scoring: false)
+    let dieFace3: dieFaceDef = dieFaceDef.init(name: "DieFace3", faceValue: 3, points: 0, scoring: false)
+    let dieFace4: dieFaceDef = dieFaceDef.init(name: "DieFace4", faceValue: 4, points: 0, scoring: false)
+    let dieFace5: dieFaceDef = dieFaceDef.init(name: "DieFace5", faceValue: 5, points: 50, scoring: true)
+    let dieFace6: dieFaceDef = dieFaceDef.init(name: "DieFace6", faceValue: 6, points: 0, scoring: false)
     
     var dieFaceArray: [dieFaceDef]!
     
-    var die1: SKSpriteNode = SKSpriteNode()
-    var die2: SKSpriteNode = SKSpriteNode()
-    var die3: SKSpriteNode = SKSpriteNode()
-    var die4: SKSpriteNode = SKSpriteNode()
-    var die5: SKSpriteNode = SKSpriteNode()
-    var die6: SKSpriteNode = SKSpriteNode()
+    var die1: Die = Die()
+    var die2: Die = Die()
+    var die3: Die = Die()
+    var die4: Die = Die()
+    var die5: Die = Die()
+    var die6: Die = Die()
     
-    var diceArray: [SKSpriteNode] = [SKSpriteNode]()
-    var currentDice: [SKSpriteNode] = [SKSpriteNode]()
+    var diceArray: [Die] = [Die]()
+    var currentDice: [Die] = [Die]()
     
     let logo = SKLabelNode(text: "Farkle")
     let logo2 = SKLabelNode(text: "Plus")
     
-    //let LabelColor = UIColor(red: 161, green: 0, blue: 0, alpha: 1)
-   
     var mainMenuHolder: SKNode = SKNode()
     var settingsMenuHolder: SKNode = SKNode()
     var iconWindowIconsHolder: SKNode = SKNode()
@@ -233,7 +228,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         wasMainMenuIconTouched()
         wasSettingsMenuIconTouched()
         wasIconWindowIconTouched()
-        //wasDiceTouched()
+        wasDiceTouched()
     }
     
     func wasMainMenuIconTouched() {
@@ -288,6 +283,50 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             }
         }
     }
+    
+    func wasDiceTouched() {
+        for die in currentDice {
+            if die.contains(gameTableTouchLocation) {
+                die.isSelected = true
+                
+                switch die.name {
+                case "Die1":
+                    die1.texture = GameConstants.Textures.Die1Selected
+                case "Die2":
+                    die2.texture = GameConstants.Textures.Die2Selected
+                case "Die3":
+                    die3.texture = GameConstants.Textures.Die3Selected
+                case "Die4":
+                    die4.texture = GameConstants.Textures.Die4Selected
+                case "Die5":
+                    die5.texture = GameConstants.Textures.Die5Selected
+                case "Die6":
+                    die6.texture = GameConstants.Textures.Die6Selected
+                default:
+                    break
+                }
+            } else {
+                die.isSelected = false
+                
+                switch die.name {
+                case "Die1":
+                    die1.texture = GameConstants.Textures.Die1
+                case "Die2":
+                    die2.texture = GameConstants.Textures.Die2
+                case "Die3":
+                    die3.texture = GameConstants.Textures.Die3
+                case "Die4":
+                    die4.texture = GameConstants.Textures.Die4
+                case "Die5":
+                    die5.texture = GameConstants.Textures.Die5
+                case "Die6":
+                    die6.texture = GameConstants.Textures.Die6
+                default:
+                    break
+                }
+            }
+        }
+    }
 
     func newGameIconTouched() {
         if gameState == .InProgress {
@@ -305,7 +344,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         getCurrentGameSettings()
         setupPlayers()
         setupDice()
-        resetAllPlayerVariables()
+        prepareForNewRound()
         setupDieFaces()
         currentPlayer = playersArray.first
         currentPlayerID = 0
@@ -315,7 +354,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         currentGame = Game()
     }
     
-    func resetAllPlayerVariables() {
+    func prepareForNewRound() {
         currentPlayerID = 0
         for player in playersArray {
             player.score = 0
@@ -377,23 +416,19 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         }
     }
     
-    /*
-    func rollDiceIconTouched() {
-        playerState = .Rolling
-    }
-    */
-    
     func keepScoreIconTouched() {
-        if keepScoreIcon.isPaused != true {
+        //if keepScoreIcon.isPaused != true {
             print("keep score icon touched")
             currentPlayer.score += currentPlayer.currentRollScore
             currentPlayer.scoreLabel.text = String(currentPlayer.score)
             currentPlayer.currentRollScore = 0
+            currentPlayer.hasScoringDice = false
             nextPlayer()
-        }
+        //}
     }
     
     func nextPlayer() {
+        resetDice()
         if currentPlayerID < playersArray.count - 1 {
             currentPlayerID += 1
         } else {
@@ -403,7 +438,18 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         currentPlayer = playersArray[currentPlayerID]
     }
     
+    func startNewRoll() {
+        currentPlayer.currentRollScore = 0
+        currentPlayer.hasScoringDice = false
+        currentDice = diceArray
+        
+        for dieFace in dieFaceArray {
+            dieFace.countThisRoll = 0
+        }
+    }
+    
     func startNewRound() {
+        prepareForNewRound()
         print("start new round")
     }
     
@@ -450,6 +496,16 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         for icon in iconWindowIconsArray {
             icon.isPaused = true
         }
+    }
+    
+    func farkle() {
+        showMessage(msg: "Farkle")
+        nextPlayer()
+        
+    }
+    
+    func showMessage(msg: String) {
+        print("player farkled")
     }
     
     // MARK: ********** Updates Section **********
