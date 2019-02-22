@@ -145,6 +145,5 @@ extension GameScene {
         soundIcon.addChild(soundIconLabel)
         settingsMenu.addChild(backIcon)
         backIcon.addChild(backIconLabel)
-
     }
 }

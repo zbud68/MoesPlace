@@ -16,7 +16,7 @@ enum GameState {
 }
 
 enum PlayerState {
-    case Rolling, FinalRoll, Finished, Farkle
+    case Idle, Rolling, FinalRoll, Finished, Farkle
 }
 
 class GameScene: SKScene, SKPhysicsContactDelegate {
@@ -30,7 +30,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
                 case .NewGame:
                     setupNewGame()
                 case .InProgress:
-                    break
+                    print("game in progress")
                 case .NewRoll:
                     break
                 case .NewRound:
@@ -41,12 +41,13 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         }
     }
     
-    var playerState = PlayerState.Rolling {
+    var playerState = PlayerState.Idle {
         willSet {
             switch newValue {
+                case .Idle:
+                    print("player idle")
                 case .Rolling:
-                    print("Player Rolling")
-                    //rollDice()
+                    rollDice()
                 case .Finished:
                     print("Player has finished")
                     //currentPlayer.finished = true
@@ -90,6 +91,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     var die6: SKSpriteNode = SKSpriteNode()
     
     var diceArray: [SKSpriteNode] = [SKSpriteNode]()
+    var currentDice: [SKSpriteNode] = [SKSpriteNode]()
     
     let logo = SKLabelNode(text: "Farkle")
     let logo2 = SKLabelNode(text: "Plus")
@@ -215,113 +217,21 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         settingsMenu.size = CGSize(width: frame.size.width / 2, height: frame.size.height / 1.5)
         settingsMenu.zPosition = GameConstants.ZPositions.Menu
         setupSettingsMenuIcons()
-        
     }
 
     // MARK: ********** Touches Section **********
 
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         if let touch = touches.first {
-            currentTouch = touch
-            //setTouchLocation()
-            //touchLocation = currentTouchLocation
-            //touchLocation = locateTouch(touch: currentTouch)
-            //touchLocation = touch.location(in: self)
             iconWindowTouchLocation = touch.location(in: iconWindow)
             gameTableTouchLocation = touch.location(in: gameTable)
             mainMenuTouchLocation = touch.location(in: mainMenu)
             settingsMenuTouchLocation = touch.location(in: settingsMenu)
         }
-        //handleTouchEvent(touchedLocation: touchLocation)
         wasMainMenuIconTouched()
         wasSettingsMenuIconTouched()
         wasIconWindowIconTouched()
         //wasDiceTouched()
-    }
-    
-    func locateTouch(touch: UITouch) -> CGPoint {
-        if mainMenu.contains(touchLocation) {
-            print("main menu")
-            touchLocation = touch.location(in: mainMenu)
-        } else if iconWindow.contains(touchLocation) {
-            print("icon window")
-            touchLocation = touch.location(in: iconWindow)
-        } else if settingsMenu.contains(touchLocation) {
-            print("settings menu")
-            touchLocation = touch.location(in: settingsMenu)
-        }
-        return touchLocation
-    }
-    
-    func setTouchLocation() {
-        if self.childNode(withName: "MainMenu") != nil {
-            touchLocation = mainMenuTouchLocation
-            settingsMenuTouchLocation = CGPoint(x: 5000, y: 5000)
-            gameTableTouchLocation = CGPoint(x: 5000, y: 5000)
-            iconWindowTouchLocation = CGPoint(x: 5000, y: 5000)
-        } else if self.childNode(withName: "SettingsMenu") != nil {
-            touchLocation = settingsMenuTouchLocation
-            mainMenuTouchLocation = CGPoint(x: 5000, y: 5000)
-            gameTableTouchLocation = CGPoint(x: 5000, y: 5000)
-            iconWindowTouchLocation = CGPoint(x: 5000, y: 5000)
-        } else if iconWindow.childNode(withName: "Pause") != nil {
-            touchLocation = iconWindowTouchLocation
-            settingsMenuTouchLocation = CGPoint(x: 5000, y: 5000)
-            gameTableTouchLocation = CGPoint(x: 5000, y: 5000)
-            mainMenuTouchLocation = CGPoint(x: 5000, y: 5000)
-        } else {
-            touchLocation = gameTableTouchLocation
-            settingsMenuTouchLocation = CGPoint(x: 5000, y: 5000)
-            iconWindowTouchLocation = CGPoint(x: 5000, y: 5000)
-            mainMenuTouchLocation = CGPoint(x: 5000, y: 5000)
-        }
-    }
-    
-    func handleTouchEvent(touchedLocation: CGPoint) {
-        for icon in mainMenuIconsArray {
-            if icon.contains(touchedLocation) {
-                switch icon.name {
-                case "New Game":
-                    newGameIconTouched()
-                case "Continue":
-                    resumeIconTouched()
-                case "Settings":
-                    settingsIconTouched()
-                case "Exit":
-                    exitIconTouched()
-                case "Info":
-                    infoIconTouched()
-                default:
-                    break
-                }
-            }
-        }
-        for icon in settingsMenuIconsArray {
-            if icon.contains(touchedLocation) {
-                switch icon.name {
-                case "Sound":
-                    soundIconTouched()
-                case "Back":
-                    backIconTouched()
-                default:
-                    break
-                }
-            }
-        }
-        for icon in iconWindowIconsArray {
-            if icon.contains(touchedLocation) {
-                switch icon.name {
-                case "Pause":
-                    pauseIconTouched()
-                case "RollDice":
-                    rollDiceIconTouched()
-                case "KeepScore":
-                    keepScoreIconTouched()
-                default:
-                    break
-                }
-            }
-        }
     }
     
     func wasMainMenuIconTouched() {
@@ -367,7 +277,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
                 case "Pause":
                     pauseIconTouched()
                 case "RollDice":
-                    rollDiceIconTouched()
+                    playerState = .Rolling
                 case "KeepScore":
                     keepScoreIconTouched()
                 default:
@@ -390,8 +300,10 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     
     func setupNewGame() {
         gameState = .InProgress
+        playerState = .Idle
         getCurrentGameSettings()
         setupPlayers()
+        setupDice()
         resetAllPlayerVariables()
         setupDieFaces()
         currentPlayer = playersArray.first
@@ -458,17 +370,17 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     
     func pauseIconTouched() {
         if pauseIcon.isPaused != true {
+        
             print("pause icon touched")
             showMainMenu()
         }
     }
     
+    /*
     func rollDiceIconTouched() {
-        if rollDiceIcon.isPaused != true {
-            print("roll Dice Icon touched")
-            currentPlayer.currentRollScore += 1000
-        }
+        playerState = .Rolling
     }
+    */
     
     func keepScoreIconTouched() {
         if keepScoreIcon.isPaused != true {

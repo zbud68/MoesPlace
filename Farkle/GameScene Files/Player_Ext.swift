@@ -30,10 +30,9 @@ extension GameScene {
             playersArray = [player1, player2]
         }
         for player in playersArray {
+            player.name = player.nameLabel.text!
             player.scoreLabel.text = String(player.score)
             player.name = player.nameLabel.text!
-        }
-        for player in playersArray {
             scoresWindow.addChild(player.nameLabel)
             scoresWindow.addChild(player.scoreLabel)
         }

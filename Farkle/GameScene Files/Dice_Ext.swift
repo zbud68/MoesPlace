@@ -36,89 +36,69 @@ extension GameScene {
         default:
             break
         }
+        
+        currentDice = diceArray
     
-        for dice in diceArray {
-            dice.physicsBody = SKPhysicsBody(texture: SKTexture(imageNamed: "Die1"), size: (CGSize(width: 32, height: 32)))
-            dice.physicsBody?.affectedByGravity = false
-            dice.physicsBody?.isDynamic = true
-            dice.physicsBody?.allowsRotation = true
-            dice.physicsBody?.categoryBitMask = 1
-            dice.physicsBody?.contactTestBitMask = 1
-            dice.physicsBody?.collisionBitMask = 1
-            dice.physicsBody?.restitution = 0.5
-            dice.physicsBody?.linearDamping = 4
-            dice.physicsBody?.angularDamping = 5
+        for die in currentDice {
+            die.physicsBody = SKPhysicsBody(texture: SKTexture(imageNamed: "Die1"), size: (CGSize(width: 32, height: 32)))
+            die.physicsBody?.affectedByGravity = false
+            die.physicsBody?.isDynamic = true
+            die.physicsBody?.allowsRotation = true
+            die.physicsBody?.categoryBitMask = 1
+            die.physicsBody?.contactTestBitMask = 1
+            die.physicsBody?.collisionBitMask = 1
+            die.physicsBody?.restitution = 0.5
+            die.physicsBody?.linearDamping = 4
+            die.physicsBody?.angularDamping = 5
+            positionDice(die: die)
         }
-        positionDice()
     }
     
-    func positionDice() {
-        for dice in diceArray {
-            dice.zRotation = 0
-            dice.zPosition = GameConstants.ZPositions.Dice
-            dice.size = CGSize(width: 32, height: 32)
+    func positionDice(die: SKSpriteNode) {
+            die.zRotation = 0
+            die.zPosition = GameConstants.ZPositions.Dice
+            die.size = CGSize(width: 32, height: 32)
             
-            switch dice.name {
+            switch die.name {
             case "Die 1":
-                dice.position = CGPoint(x: -(gameTable.size.width / 7), y: gameTable.frame.minY + 100)
-                die1.position = dice.position
+                die1.position = CGPoint(x: -(gameTable.size.width / 7), y: gameTable.frame.minY + 100)
             case "Die 2":
-                dice.position = CGPoint(x: die1.position.x + dice.size.width, y: gameTable.frame.minY + 100)
-                die2.position = dice.position
+                die2.position = CGPoint(x: die1.position.x + die2.size.width, y: gameTable.frame.minY + 100)
             case "Die 3":
-                dice.position = CGPoint(x: die2.position.x + dice.size.width, y: gameTable.frame.minY + 100)
-                die3.position = dice.position
+                die3.position = CGPoint(x: die2.position.x + die3.size.width, y: gameTable.frame.minY + 100)
             case "Die 4":
-                dice.position = CGPoint(x: die3.position.x + dice.size.width, y: gameTable.frame.minY + 100)
-                die4.position = dice.position
+                die4.position = CGPoint(x: die3.position.x + die4.size.width, y: gameTable.frame.minY + 100)
             case "Die 5":
-                dice.position = CGPoint(x: die4.position.x + dice.size.width, y: gameTable.frame.minY + 100)
-                die5.position = dice.position
+                die5.position = CGPoint(x: die4.position.x + die5.size.width, y: gameTable.frame.minY + 100)
             case "Die 6":
-                dice.position = CGPoint(x: die5.position.x + dice.size.width, y: gameTable.frame.minY + 100)
-                die6.position = dice.position
+                die6.position = CGPoint(x: die5.position.x + die6.size.width, y: gameTable.frame.minY + 100)
             default:
                 break
             }
-            gameTable.addChild(dice)
-        }
+            gameTable.addChild(die)
     }
-}
-
-/*
 
     func rollDice() {
-        if gameState == .InProgress{
-            playerState = .Rolling
+        if gameState == .InProgress {
             
             if let RollAction = SKAction(named: "RollDice") {
                 rollAction = RollAction
             }
             let finishRollAction = SKAction.run {
-                self.setDieFace()
+                //self.setDieFace()
             }
             let seq = SKAction.sequence([rollAction, finishRollAction])
             
             let randomX = CGFloat(arc4random_uniform(5) + 5)
             let randomY = CGFloat(arc4random_uniform(2) + 3)
             
-            for dieNode in dice {
-                if dieNode.selected == true {
-                    player.scoringDice.append(dieNode)
-                } else {
-                    dieNode.physicsBody?.applyImpulse(CGVector(dx: randomX, dy: randomY))
-                    dieNode.physicsBody?.applyTorque(3)
-                    dieNode.run(seq)
-                }
+            for die in diceArray {
+                die.physicsBody?.applyImpulse(CGVector(dx: randomX, dy: randomY))
+                die.physicsBody?.applyTorque(3)
+                die.run(seq)
             }
-            player.Roll.diceRemaining -= player.scoringDice.count
-        } else {
-            gameState = .InProgress
         }
-        if player.Roll.diceRemaining == 0 {
-            setupNewRoll()
-        }
-            
+        playerState = .Idle
     }
     
     func setupNewRoll() {
@@ -126,88 +106,53 @@ extension GameScene {
         
     }
     
+    /*
     func wasDiceTouched() {
-        for dieNode in dice {
-            if dieNode.contains(gameTableTouchLocation) {
-                if dieNode.selected == false {
-                    switch dieNode.faceValue {
+        for die in diceArray {
+            if die.contains(gameTableTouchLocation) {
+                if die.selected == false {
+                    switch die.faceValue {
                     case 1:
-                        dieNode.texture = SKTexture(imageNamed: "Selectable_Die1")
+                        die.texture = SKTexture(imageNamed: "Selectable_Die1")
                     case 2:
-                        dieNode.texture = SKTexture(imageNamed: "Selectable_Die2")
+                        die.texture = SKTexture(imageNamed: "Selectable_Die2")
                     case 3:
-                        dieNode.texture = SKTexture(imageNamed: "Selectable_Die3")
+                        die.texture = SKTexture(imageNamed: "Selectable_Die3")
                     case 4:
-                        dieNode.texture = SKTexture(imageNamed: "Selectable_Die4")
+                        die.texture = SKTexture(imageNamed: "Selectable_Die4")
                     case 5:
-                        dieNode.texture = SKTexture(imageNamed: "Selectable_Die5")
+                        die.texture = SKTexture(imageNamed: "Selectable_Die5")
                     case 6:
-                        dieNode.texture = SKTexture(imageNamed: "Selectable_Die6")
+                        die.texture = SKTexture(imageNamed: "Selectable_Die6")
                     default:
                         break
                     }
-                    dieNode.selected = true
+                    die.selected = true
                 } else {
-                    switch dieNode.faceValue {
+                    switch die.faceValue {
                     case 1:
-                        dieNode.texture = SKTexture(imageNamed: "Die1")
+                        die.texture = SKTexture(imageNamed: "Die1")
                     case 2:
-                        dieNode.texture = SKTexture(imageNamed: "Die2")
+                        die.texture = SKTexture(imageNamed: "Die2")
                     case 3:
-                        dieNode.texture = SKTexture(imageNamed: "Die3")
+                        die.texture = SKTexture(imageNamed: "Die3")
                     case 4:
-                        dieNode.texture = SKTexture(imageNamed: "Die4")
+                        die.texture = SKTexture(imageNamed: "Die4")
                     case 5:
-                        dieNode.texture = SKTexture(imageNamed: "Die5")
+                        die.texture = SKTexture(imageNamed: "Die5")
                     case 6:
-                        dieNode.texture = SKTexture(imageNamed: "Die6")
+                        die.texture = SKTexture(imageNamed: "Die6")
                     default:
                         break
                     }
-                    dieNode.selected = false
+                    die.selected = false
                 }
             }
         }
     }
+*/
 
-    
-    func setDieFace() {
-        for die in dice {
-            if die.selected != true {
-                die.faceValue = Int(arc4random_uniform(6)) + 1
-                switch die.faceValue {
-                case 1:
-                    die.scoringDie = true
-                    die.texture = GameConstants.StringConstants.die1Texture
-                case 2:
-                    die.texture = GameConstants.StringConstants.die2Texture
-                case 3:
-                    die.texture = GameConstants.StringConstants.die3Texture
-                case 4:
-                    die.texture = GameConstants.StringConstants.die4Texture
-                case 5:
-                    die.scoringDie = true
-                    die.texture = GameConstants.StringConstants.die5Texture
-                case 6:
-                    die.texture = GameConstants.StringConstants.die6Texture
-                default:
-                    break
-                }
-                if die.scoringDie == false {
-                    checkForScoringCombos()
-                }
-            }
-            if playerState != .Farkle {
-                if player.Roll.diceRemaining == 0 {
-                    playerState = .Rolling
-                }
-            } else {
-                gameState = .NewRound
-            }
-        }
-    }
-    
-    func checkForScoringCombos() {
+/*    func checkForScoringCombos() {
         var ones = 0
         var twos = 0
         var threes = 0
@@ -234,7 +179,7 @@ extension GameScene {
         var currentRoll = [ones, twos, threes, fours, fives, sixes]
         //var currentRoundScores: [Int] = []
         
-        for die in dice {
+        for die in diceArray {
             switch die.faceValue {
             case 1:
                 ones += 1
@@ -255,6 +200,7 @@ extension GameScene {
             }
         }
         currentRoll = currentRoll.sorted()
+
         
         if game.numDice == 5 {
             if currentRoll == lowStraight || currentRoll == highStraight {
@@ -359,7 +305,5 @@ extension GameScene {
         checkForScoringCombos()
         }
     }
+ */
 }
-
-*/
-
