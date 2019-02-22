@@ -79,11 +79,13 @@ extension GameScene {
     }
     
     func resetDice() {
-        for die in currentDice {
-            die.removeFromParent()
+        currentDice.removeAll()
+        currentScore = 0
+        currentPlayer.currentRollScore = 0
+        for dieFace in dieFaceArray {
+            dieFace.countThisRoll = 0
         }
-        gameTable.removeAllChildren()
-        
+    
         for die in diceArray {
             die.zRotation = 0
             die.zPosition = GameConstants.ZPositions.Dice
@@ -92,20 +94,25 @@ extension GameScene {
             switch die.name {
             case "Die 1":
                 die1.position = CGPoint(x: -(gameTable.size.width / 7), y: gameTable.frame.minY + 100)
+                die1.texture = GameConstants.Textures.Die1
             case "Die 2":
                 die2.position = CGPoint(x: die1.position.x + die2.size.width, y: gameTable.frame.minY + 100)
+                die2.texture = GameConstants.Textures.Die2
             case "Die 3":
                 die3.position = CGPoint(x: die2.position.x + die3.size.width, y: gameTable.frame.minY + 100)
+                die3.texture = GameConstants.Textures.Die3
             case "Die 4":
                 die4.position = CGPoint(x: die3.position.x + die4.size.width, y: gameTable.frame.minY + 100)
+                die4.texture = GameConstants.Textures.Die4
             case "Die 5":
                 die5.position = CGPoint(x: die4.position.x + die5.size.width, y: gameTable.frame.minY + 100)
+                die5.texture = GameConstants.Textures.Die5
             case "Die 6":
                 die6.position = CGPoint(x: die5.position.x + die6.size.width, y: gameTable.frame.minY + 100)
+                die6.texture = GameConstants.Textures.Die6
             default:
                 break
             }
-            gameTable.addChild(die)
         }
         currentDice = diceArray
     }
@@ -113,6 +120,22 @@ extension GameScene {
     //MARK: ********** Roll Dice **********
     
     func rollDiceAction() {
+        
+        for die in currentDice {
+            rollDice(die: die)
+            currentPlayer.currentRollScore += currentScore
+            currentScore = 0
+            for dieFace in dieFaceArray {
+                dieFace.countThisRoll = 0
+            }
+        }
+        currentPlayer.score += currentPlayer.currentRollScore
+        currentPlayer.currentRollScore = 0
+        currentPlayer.scoreLabel.text = String(currentPlayer.score)
+
+
+        
+        /*
         for die in currentDice {
                 for die in currentDice {
                     die.position = CGPoint(x: 0, y: 0)
@@ -125,17 +148,26 @@ extension GameScene {
                 die.physicsBody?.applyTorque(3)
                 
                 rollDice(die: die)
-            }
         }
+        */
     }
     
     func rollDice(die: SKSpriteNode) {
+        
         let Wait = SKAction.wait(forDuration: 0.75)
 
         if let RollAction = SKAction(named: "RollDice") {
             rollAction = RollAction
         }
         
+        let MoveAction = SKAction.run {
+            let randomX = CGFloat(arc4random_uniform(5) + 5)
+            let randomY = CGFloat(arc4random_uniform(2) + 3)
+            
+            die.physicsBody?.applyImpulse(CGVector(dx: randomX, dy: randomY))
+            die.physicsBody?.applyTorque(3)
+        }
+
         let setFace = SKAction.run {
             self.setDieFace(die: die)
         }
@@ -146,14 +178,21 @@ extension GameScene {
         let RepositionDice = SKAction.run {
             self.repositionDice(die: die)
         }
-        let Seq = SKAction.sequence([rollAction, setFace, Wait, FadeOut, RepositionDice, FadeIn])
+        
+        let Group = SKAction.group([rollAction, MoveAction])
+        
+        let Seq = SKAction.sequence([Group, setFace, Wait, FadeOut, RepositionDice, FadeIn])
+        
+        for die in currentDice {
+                die.position = CGPoint(x: 0, y: 0)
+            }
         
         die.run(Seq)
     }
     
     func setDieFace(die: SKSpriteNode) {
+
         let currentDie = Int(arc4random_uniform(6) + 1)
-        print("currentDie: \(currentDie)")
         
         switch currentDie {
         case 1:
@@ -177,7 +216,9 @@ extension GameScene {
         default:
             break
         }
-        checkForFarkle()
+        getScore()
+
+        //checkForFarkle()
     }
     
     func repositionDice(die: SKSpriteNode) {
@@ -226,32 +267,33 @@ extension GameScene {
     
     func getScore() {
         for dieFace in dieFaceArray {
-            var score = 0
+            print("\(dieFace.name) count: \(dieFace.countThisRoll)")
+        }
+        currentScore = 0
+
+        for dieFace in dieFaceArray {
             let value = dieFace.faceValue
             let points = dieFace.points
             let count = dieFace.countThisRoll
             
             switch count {
             case 1:
-                score = count * points
+                currentScore += count * points
             case 2:
-                score = count * points
+                currentScore += count * points
             case 3:
-                score = value * 100
+                currentScore += value * 100
             case 4:
-                score = (value * 100) * 2
+                currentScore += (value * 100) * 2
             case 5:
-                score = (value * 100) * 3
+                currentScore += (value * 100) * 3
             case 6:
-                score = (value * 100) * 4
+                currentScore += (value * 100) * 4
             default:
                 break
             }
-            currentPlayer.currentRollScore = score
-            currentPlayer.score += currentPlayer.currentRollScore
-            currentPlayer.currentRollScore = 0
+            print("currentScore: \(currentScore)")
         }
-        print("current Roll score: \(currentPlayer.currentRollScore)")
     }
     
     func setupNewRoll() {

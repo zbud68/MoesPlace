@@ -184,6 +184,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
 
     let physicsContactDelegate = self
     
+    var currentScore: Int = 0
+    
     // MARK: ********** didMove Section **********
     
     override func didMove(to view: SKView) {
@@ -357,9 +359,16 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     func prepareForNewRound() {
         currentPlayerID = 0
         for player in playersArray {
-            player.score = 0
             player.currentRollScore = 0
             player.hasScoringDice = false
+        }
+    }
+    
+    func prepareForNewRoll() {
+        currentPlayer.hasScoringDice = false
+        currentDice = diceArray
+        for dieFace in dieFaceArray {
+            dieFace.countThisRoll = 0
         }
     }
     
@@ -419,6 +428,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     func keepScoreIconTouched() {
         //if keepScoreIcon.isPaused != true {
             print("keep score icon touched")
+            currentPlayer.currentRollScore += currentScore
             currentPlayer.score += currentPlayer.currentRollScore
             currentPlayer.scoreLabel.text = String(currentPlayer.score)
             currentPlayer.currentRollScore = 0
