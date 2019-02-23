@@ -16,6 +16,7 @@ class Player {
     var currentRollScore: Int
     let scoreLabel: SKLabelNode = SKLabelNode()
     var hasScoringDice: Bool
+    var firstRoll: Bool = true
     
     init(score: Int, currentRollScore: Int, hasScoringDice: Bool)
     {

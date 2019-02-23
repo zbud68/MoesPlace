@@ -11,5 +11,6 @@ import SpriteKit
 class Die: SKSpriteNode {
     
     var isSelected: Bool = false
+    var face: Int = Int(0)
     
 }

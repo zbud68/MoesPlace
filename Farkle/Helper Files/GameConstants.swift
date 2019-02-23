@@ -49,12 +49,12 @@ struct GameConstants {
         static let Die4 = SKTexture(imageNamed: "Die4")
         static let Die5 = SKTexture(imageNamed: "Die5")
         static let Die6 = SKTexture(imageNamed: "Die6")
-        static let Die1Selected = SKTexture(imageNamed: "Die1")
-        static let Die2Selected = SKTexture(imageNamed: "Die2")
-        static let Die3Selected = SKTexture(imageNamed: "Die3")
-        static let Die4Selected = SKTexture(imageNamed: "Die4")
-        static let Die5Selected = SKTexture(imageNamed: "Die5")
-        static let Die6Selected = SKTexture(imageNamed: "Die6")
+        static let Die1Selected = SKTexture(imageNamed: "Die1Selected")
+        static let Die2Selected = SKTexture(imageNamed: "Die2Selected")
+        static let Die3Selected = SKTexture(imageNamed: "Die3Selected")
+        static let Die4Selected = SKTexture(imageNamed: "Die4Selected")
+        static let Die5Selected = SKTexture(imageNamed: "Die5Selected")
+        static let Die6Selected = SKTexture(imageNamed: "Die6Selected")
 
         static let MainMenu = SKTexture(imageNamed: "MainMenu")
         static let SettingsMenu = SKTexture(imageNamed: "SettingsMenu")
@@ -73,6 +73,7 @@ struct GameConstants {
         static let ScoresMenuFont = CGFloat(34)
         static let MainMenuFont = CGFloat(34)
         static let IconLabelFont = CGFloat(18)
+        static let Dice = CGSize(width: 48, height: 48)
     }
     
     struct Colors {
