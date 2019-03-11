@@ -12,6 +12,7 @@
 		4D374D1A221DD69800834241 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 4D374D19221DD69800834241 /* Main.storyboard */; };
 		4D374D1D221DD6E800834241 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 4D374D1B221DD6E800834241 /* LaunchScreen.storyboard */; };
 		4D374D1F221E104A00834241 /* Menus_Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D374D1E221E104A00834241 /* Menus_Ext.swift */; };
+		4D4FFA71222348190002E1CB /* GenericFunctions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D4FFA70222348190002E1CB /* GenericFunctions.swift */; };
 		4D63969F220165CB004B6718 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D63969E220165CB004B6718 /* AppDelegate.swift */; };
 		4D6396A3220165CB004B6718 /* Actions.sks in Resources */ = {isa = PBXBuildFile; fileRef = 4D6396A2220165CB004B6718 /* Actions.sks */; };
 		4D6396A5220165CB004B6718 /* GameScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D6396A4220165CB004B6718 /* GameScene.swift */; };
@@ -35,6 +36,7 @@
 		4D374D19221DD69800834241 /* Main.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = Main.storyboard; path = "Farkle/Story Boards/Base.lproj/Main.storyboard"; sourceTree = SOURCE_ROOT; };
 		4D374D1C221DD6E800834241 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		4D374D1E221E104A00834241 /* Menus_Ext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Menus_Ext.swift; sourceTree = "<group>"; };
+		4D4FFA70222348190002E1CB /* GenericFunctions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GenericFunctions.swift; sourceTree = "<group>"; };
 		4D63969B220165CB004B6718 /* Farkle.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Farkle.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		4D63969E220165CB004B6718 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		4D6396A2220165CB004B6718 /* Actions.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = Actions.sks; sourceTree = "<group>"; };
@@ -95,10 +97,8 @@
 		4D63969D220165CB004B6718 /* Farkle */ = {
 			isa = PBXGroup;
 			children = (
-				4D1017A02213DE8A0060FBA2 /* Class Files */,
 				4D6396AB220165CE004B6718 /* Assets.xcassets */,
 				4DE4A22F2211D7CE00671D07 /* GameScene Files */,
-				4DE4A23E22123D5100671D07 /* Helper Files */,
 				4DE4A23B22123C8B00671D07 /* SKS Files */,
 				4DE4A23D22123CE000671D07 /* Story Boards */,
 				4DE4A23C22123CB500671D07 /* Support Files */,
@@ -110,6 +110,8 @@
 		4DE4A22F2211D7CE00671D07 /* GameScene Files */ = {
 			isa = PBXGroup;
 			children = (
+				4DE4A23E22123D5100671D07 /* Helper Files */,
+				4D1017A02213DE8A0060FBA2 /* Class Files */,
 				4D9394EC2216A99D00E12EFC /* Player_Ext.swift */,
 				4D6396A4220165CB004B6718 /* GameScene.swift */,
 				4DE4A22D2211D74300671D07 /* BackGround_Ext.swift */,
@@ -153,6 +155,7 @@
 			isa = PBXGroup;
 			children = (
 				4DA3FF61220A9EFB008B7BC4 /* GameConstants.swift */,
+				4D4FFA70222348190002E1CB /* GenericFunctions.swift */,
 			);
 			path = "Helper Files";
 			sourceTree = "<group>";
@@ -237,6 +240,7 @@
 				4DE4A22E2211D74300671D07 /* BackGround_Ext.swift in Sources */,
 				4DE4A2342211D87100671D07 /* Window_Ext.swift in Sources */,
 				4DE4A2382211D96D00671D07 /* Dice_Ext.swift in Sources */,
+				4D4FFA71222348190002E1CB /* GenericFunctions.swift in Sources */,
 				4DA3FF62220A9EFB008B7BC4 /* GameConstants.swift in Sources */,
 				4DFDFC6C222063D000439E67 /* Die.swift in Sources */,
 				4DE4A2312211D82800671D07 /* GameTable_Ext.swift in Sources */,

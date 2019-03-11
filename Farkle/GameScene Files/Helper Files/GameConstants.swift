@@ -43,6 +43,7 @@ struct GameConstants {
     }
     
     struct Textures {
+        //static let DieTexture = SKTexture(imageNamed: "\(die.dieName)")
         static let Die1 = SKTexture(imageNamed: "Die1")
         static let Die2 = SKTexture(imageNamed: "Die2")
         static let Die3 = SKTexture(imageNamed: "Die3")

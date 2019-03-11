@@ -13,6 +13,8 @@ class Game {
     var numPlayers = 2
     var targetScore = 10000
     var matchTargetScore = true
+    var numRollableDice = 5
+    var numRounds = 1
     
     let defaults: Defaults = Defaults.init()
 }
@@ -22,5 +24,6 @@ struct Defaults {
     let numPlayers: Int = Int(2)
     let targetScore: Int = Int(10000)
     let matchTargetScore: Bool = Bool(true)
+    let numRollableDice: Int = Int(5)
 }
 
