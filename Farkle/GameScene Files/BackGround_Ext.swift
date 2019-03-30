@@ -15,12 +15,14 @@ extension GameScene {
         backGround.name = GameConstants.StringConstants.BackGroundName
         backGround.position = CGPoint(x: 0, y: 0)
 
+        /*
         backGroundMaxX = backGround.frame.maxX
         backGroundMaxY = backGround.frame.maxY
         backGroundMinX = backGround.frame.minX
         backGroundMinY = backGround.frame.minY
         backGroundWidth = backGround.size.width
         backGroundHeight = backGround.size.height
+        */
 
         addChild(backGround)
     }

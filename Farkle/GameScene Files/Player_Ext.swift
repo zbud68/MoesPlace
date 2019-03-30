@@ -11,7 +11,6 @@ import SpriteKit
 extension GameScene {
 
     func setupPlayers() {
-        
         player1.nameLabel.text = "Player 1"
         player2.nameLabel.text = "Player 2"
         player3.nameLabel.text = "Player 3"
@@ -27,15 +26,16 @@ extension GameScene {
         case 4:
             playersArray = [player1, player2, player3, player4]
         default:
-            playersArray = [player1, player2]
+            break
         }
+        
         for player in playersArray {
             player.name = player.nameLabel.text!
             player.scoreLabel.text = String(player.score)
-            player.name = player.nameLabel.text!
             scoresWindow.addChild(player.nameLabel)
             scoresWindow.addChild(player.scoreLabel)
         }
+        currentPlayer = playersArray.first
         positionPlayerLabels()
     }
     
@@ -50,7 +50,6 @@ extension GameScene {
             player.nameLabel.zPosition = GameConstants.ZPositions.NameLabel
             player.scoreLabel.zPosition = GameConstants.ZPositions.ScoreLabel
             
-            
             switch player.name {
             case "Player 1":
                 player1.nameLabel.position = CGPoint(x: 0, y: (scoresWindow.frame.height / 4) + 15)
@@ -62,6 +61,7 @@ extension GameScene {
                 player2.scoreLabel.position = CGPoint(x: player1.nameLabel.position.x, y: player2.nameLabel.position.y - 30)
             case "Player 3":
                 player3.nameLabel.position = CGPoint(x: 0, y: player2.nameLabel.position.y - 60)
+                
                 player3.scoreLabel.position = CGPoint(x: player2.nameLabel.position.x, y: player3.nameLabel.position.y - 30)
             case "Player 4":
                 player4.nameLabel.position = CGPoint(x: 0, y: player3.nameLabel.position.y - 60)

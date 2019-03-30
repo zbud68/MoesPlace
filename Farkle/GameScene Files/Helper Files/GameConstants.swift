@@ -50,12 +50,6 @@ struct GameConstants {
         static let Die4 = SKTexture(imageNamed: "Die4")
         static let Die5 = SKTexture(imageNamed: "Die5")
         static let Die6 = SKTexture(imageNamed: "Die6")
-        static let Die1Selected = SKTexture(imageNamed: "Die1Selected")
-        static let Die2Selected = SKTexture(imageNamed: "Die2Selected")
-        static let Die3Selected = SKTexture(imageNamed: "Die3Selected")
-        static let Die4Selected = SKTexture(imageNamed: "Die4Selected")
-        static let Die5Selected = SKTexture(imageNamed: "Die5Selected")
-        static let Die6Selected = SKTexture(imageNamed: "Die6Selected")
 
         static let MainMenu = SKTexture(imageNamed: "MainMenu")
         static let SettingsMenu = SKTexture(imageNamed: "SettingsMenu")
@@ -120,7 +114,4 @@ struct GameConstants {
         static let SettingsMenu = CGPoint(x: 0, y: 0)
     }
     
-    struct TouchLocations {
-        
-    }
 }
