@@ -131,7 +131,7 @@ extension GameScene {
         mainMenu.addChild(settingsIcon)
         mainMenu.addChild(exitIcon)
         mainMenu.addChild(infoIcon)
-        mainMenu.addChild(mainMenuLabel)
+        //mainMenu.addChild(mainMenuLabel)
         newGameIcon.addChild(newGameIconLabel)
         resumeIcon.addChild(resumeIconLabel)
         settingsIcon.addChild(settingsIconLabel)
@@ -140,7 +140,7 @@ extension GameScene {
     
     func addSettingsMenu() {
         self.addChild(settingsMenu)
-        settingsMenu.addChild(settingsMenuLabel)
+        //settingsMenu.addChild(settingsMenuLabel)
         settingsMenu.addChild(soundIcon)
         soundIcon.addChild(soundIconLabel)
         settingsMenu.addChild(backIcon)
