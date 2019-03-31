@@ -43,7 +43,7 @@
 		4D6396AB220165CE004B6718 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		4D6396B0220165CE004B6718 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		4D7BD9E222110B02005D6D78 /* GameScene.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = GameScene.sks; sourceTree = "<group>"; };
-		4D815DB7224F245000E1B59B /* com.apple.dt.Xcode.playground */ = {isa = PBXFileReference; lastKnownFileType = file.playground; name = com.apple.dt.Xcode.playground; path = Playground/com.apple.dt.Xcode.playground; sourceTree = SOURCE_ROOT; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
+		4D842891224F34A400DF6C78 /* Farkle.playground */ = {isa = PBXFileReference; lastKnownFileType = file.playground; name = Farkle.playground; path = Playground/Farkle.playground; sourceTree = SOURCE_ROOT; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		4D9394EC2216A99D00E12EFC /* Player_Ext.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Player_Ext.swift; sourceTree = "<group>"; };
 		4DA3FF61220A9EFB008B7BC4 /* GameConstants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameConstants.swift; sourceTree = "<group>"; };
 		4DA971762215E2E500CEB115 /* Game.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Game.swift; sourceTree = "<group>"; };
@@ -109,7 +109,7 @@
 		4DE4A22F2211D7CE00671D07 /* GameScene Files */ = {
 			isa = PBXGroup;
 			children = (
-				4D815DB7224F245000E1B59B /* com.apple.dt.Xcode.playground */,
+				4D842891224F34A400DF6C78 /* Farkle.playground */,
 				4DE4A23E22123D5100671D07 /* Helper Files */,
 				4D1017A02213DE8A0060FBA2 /* Class Files */,
 				4D9394EC2216A99D00E12EFC /* Player_Ext.swift */,
