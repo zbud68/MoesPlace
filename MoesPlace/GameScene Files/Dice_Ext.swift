@@ -91,44 +91,19 @@ extension GameScene {
     // MARK: ********** Roll Dice **********
 
     func rollDice() {
+        resetDice()
+        //resetCounters()
         getDieSides()
-        calcDieRoll()
-        if !currentPlayer.hasScoringDice {
-            print("Farkle")
-            nextPlayer()
-        }
-        if straight {
-            startNewRoll()
-        } else if fullHouse {
-            startNewRoll()
-        } else if threePair {
-            startNewRoll()
-        } else if currentGame.numDice == 5 {
-            if fiveOAK {
-                startNewRoll()
-            }
-        } else if currentGame.numDice == 6 {
-            if sixOAK {
-                startNewRoll()
-            }
-        } else {
-            resetDice()
-        }
+        evalDice()
+        getCurrentRollScore()
+        currentScoreLabel.text = String(currentPlayer.currentRollScore)
+        print("Current Roll Score: \(currentPlayer.currentRollScore)")
+        currentPlayer.currentRollScore = 0
     }
-    
-    func removeCountedDice() -> Bool {
-        for _ in currentDiceArray {
-            if currentDiceArray.isEmpty {
-                currentDiceArray = diceArray
-            } else {
-                currentDiceArray.removeAll(where: { $0.counted == true })
-            }
-        }
-        return currentPlayer.hasScoringDice
-    }
-    
+
     func getDieSides() {
         var dieSideCount = 0
+        dieSidesArray.removeAll()
         for die in currentDiceArray {
             let value = Int(arc4random_uniform(6)+1)
 
@@ -137,28 +112,34 @@ extension GameScene {
                 dieSide1.count += 1
                 dieSideCount = dieSide1.count
                 die.dieSide = dieSide1
+                appendDieSidesArray(dieSide: dieSide1)
                 currentPlayer.hasScoringDice = true
             case 2:
                 dieSide2.count += 1
                 dieSideCount = dieSide2.count
                 die.dieSide = dieSide2
+                appendDieSidesArray(dieSide: dieSide1)
             case 3:
                 dieSide3.count += 1
                 dieSideCount = dieSide3.count
                 die.dieSide = dieSide3
+                appendDieSidesArray(dieSide: dieSide1)
             case 4:
                 dieSide4.count += 1
                 dieSideCount = dieSide4.count
                 die.dieSide = dieSide4
+                appendDieSidesArray(dieSide: dieSide1)
             case 5:
                 dieSide5.count += 1
                 dieSideCount = dieSide5.count
                 die.dieSide = dieSide5
                 currentPlayer.hasScoringDice = true
+                appendDieSidesArray(dieSide: dieSide1)
             case 6:
                 dieSide6.count += 1
                 dieSideCount = dieSide6.count
                 die.dieSide = dieSide6
+                appendDieSidesArray(dieSide: dieSide1)
             default:
                 break
             }
@@ -168,155 +149,168 @@ extension GameScene {
         for die in currentDiceArray {
             print("current Roll: \(die.dieSide!.value), count: \(die.dieSide!.count)")
         }
+        for dieSide in dieSidesArray {
+            print("curren Die Side: \(dieSide.value), count: \(dieSide.count)")
+        }
     }
     
-    func calcDieRoll() {
-        currentPlayer.hasScoringDice = checkForStraight()
-        currentPlayer.hasScoringDice = checkForPairs()
-        currentPlayer.hasScoringDice = checkForLikeDice()
-        //currentPlayer.hasScoringDice = checkForPairs(currentDie: die)
-        //currentPlayer.hasScoringDice = checkForFullHouse()
-        currentPlayer.hasScoringDice = checkForScoringDice()
-        
-        if currentDiceArray.isEmpty {
-            currentDiceArray.removeAll()
-            currentDiceArray = diceArray
-        } else {
-            for die in currentDiceArray {
-                die.dieSide!.count = 0
-                die.counted = false
+    func appendDieSidesArray(dieSide: DieSide) {
+        for currendDieSide in dieSidesArray {
+            if dieSide.name != currendDieSide.name {
+                dieSidesArray.append(dieSide)
             }
         }
-        showScoreTotal()
+    }
+    
+    func evalDice() {
+        checkForStraight()
+        checkForLikeDice()
+        checkForScoringDice()
+        //resetCounters()
+    }
+    
+    func getCurrentRollScore() {
+        if straight {
+            print("Straight")
+            currentPlayer.currentRollScore += 1500
+            currentScoreLabel.text = String(currentPlayer.currentRollScore)
+            straight = false
+        } else if fullHouse {
+            print("full house")
+            currentPlayer.currentRollScore += 1250
+            currentScoreLabel.text = String(currentPlayer.currentRollScore)
+            fullHouse = false
+        } else if threePair {
+            print("three pair")
+            currentPlayer.currentRollScore += 500
+            currentScoreLabel.text = String(currentPlayer.currentRollScore)
+            threePair = false
+        }
+        //currentScoreLabel.text = String(currentPlayer.currentRollScore)
+    }
+    
+    func resetCounters() {
+        for die in currentDiceArray {
+            die.dieSide!.count = 0
+            die.dieSide!.counted = false
+            die.counted = false
+        }
     }
 
-    func checkForStraight() -> Bool {
+    func checkForStraight() {
         var dieValues = [Int]()
-        for die in currentDiceArray where !die.counted {
+        for die in currentDiceArray {
             dieValues.append(die.dieSide!.value)
         }
         dieValues = dieValues.sorted()
         
         if dieValues ==  [1,2,3,4,5] || dieValues == [2,3,4,5,6] || dieValues == [1,2,3,4,5,6] {
-            currentPlayer.currentRollScore += 1500
+            //currentPlayer.currentRollScore += 1500
             straight = true
-            currentPlayer.hasScoringDice = true
+            //currentPlayer.hasScoringDice = true
         }
-        if straight {
-            for die in currentDiceArray {
-                die.counted = true
-                straight = false
-            }
-        }
-        return currentPlayer.hasScoringDice
+        //resetCounters()
     }
     
-    func checkForLikeDice() -> Bool {
-        var value = 0
-        threeOAK = false
+    func checkForLikeDice() {
+        //countDice()
+        //getPairs()
+
         for die in currentDiceArray {
-            let currentDie = die
-            if currentDie.dieSide!.count == 3 {
-                value = currentDie.dieSide!.value
-                if pairs != 1 {
-                    threeOAK = true
-                } else {
-                    currentPlayer.currentRollScore += 750
-                    fullHouse = true
-                }
-            
-                for die in currentDiceArray {
-                    if die.dieSide!.value == currentDie.dieSide!.value {
-                        die.dieSide!.count = 0
-                        die.counted = true
+            switch die.dieSide!.count {
+            case 3:
+                print("pairs: \(pairs)")
+                threeOAKValue = die.dieSide!.value
+                if !die.counted {
+                    if pairs == 1 {
+                        fullHouse = true
+                        //pairs = 0
                     } else {
-                        if die.dieSide!.count == 2 {
-                            die.dieSide!.count = 0
-                        }
+                        print("three OAK")
+                        threeOAK = true
+                        die.dieSide!.count = 0
+                        currentPlayer.currentRollScore += (die.dieSide!.points * 100)
                     }
+                    die.counted = true
                 }
-                currentPlayer.hasScoringDice = true
-            }
-        }
-        for die in currentDiceArray {
-            if die.dieSide!.count == 4 {
+                break
+            case 4:
+                fourOAKValue = die.dieSide!.value
                 if !die.counted {
-                    currentPlayer.currentRollScore += (die.dieSide!.points * 100) * 2
-                    die.counted = true
+                    print("four OAK")
+                    fourOAK = true
                     die.dieSide!.count = 0
+                    currentPlayer.currentRollScore += ((die.dieSide!.points * 100) * 2)
                 }
-                fourOAK = true
-                currentPlayer.hasScoringDice = true
-            }
-        }
-        for die in currentDiceArray {
-            if die.dieSide!.count == 5 {
-                if !die.dieSide!.counted {
-                    currentPlayer.currentRollScore += (die.dieSide!.points * 100) * 3
-                    die.counted = true
-                    die.dieSide!.count = 0
-                }
-                fiveOAK = true
-                currentPlayer.hasScoringDice = true
-            }
-        }
-        for die in currentDiceArray {
-            if die.dieSide!.count == 6 {
+                die.counted = true
+                break
+            case 5:
+                fiveOAKValue = die.dieSide!.value
                 if !die.counted {
-                    currentPlayer.currentRollScore += (die.dieSide!.points * 100) * 4
-                    die.counted = true
+                    print("five OAK")
+                    fiveOAK = true
                     die.dieSide!.count = 0
+                    if currentGame.numDice == 5 {
+                        startNewRoll()
+                    }
+                    currentPlayer.currentRollScore += ((die.dieSide!.points * 100) * 3)
                 }
-                sixOAK = true
-                currentPlayer.hasScoringDice = true
+                die.counted = true
+                break
+            case 6:
+                sixOAKValue = die.dieSide!.value
+                if !die.counted {
+                    print("six OAK")
+                    sixOAK = true
+                    die.dieSide!.count = 0
+                    currentPlayer.currentRollScore += ((die.dieSide!.points * 100) * 4)
+                    startNewRoll()
+                }
+                die.counted = true
+                break
+            default:
+                break
             }
         }
-        return currentPlayer.hasScoringDice
+        //currentDie.dieSide!.count = 0
+        resetCounters()
     }
     
-    func checkForPairs() -> Bool {
+    /*
+    func checkForPairs() {
+        for dieSide in dieSidesArray {
+            if dieSide.count == 2 {
+                pairs += 1
+            }
+        }
+        /*
         for die in currentDiceArray {
             pairs = 0
             if die.dieSide!.count == 2 {
                 pairs += 1
+                die.dieSide!.count = 0
             }
         }
-        if pairs > 0 || threeOAK == true {
-            print("3oak: \(threeOAK)")
-            print("pairs: \(pairs)")
-        }
-
-        if pairs == 3 {
-            currentPlayer.currentRollScore += 500
-            currentPlayer.hasScoringDice = true
-            startNewRoll()
-        }
-        return currentPlayer.hasScoringDice
+        */
     }
+    */
     
-    func checkForFullHouse() -> Bool {
-        if threeOAK == true && pairs == 1 {
-            currentPlayer.currentRollScore += 750
-            threeOAK = false
-            fullHouse = true
-            currentPlayer.hasScoringDice = true
-        }
-        for die in currentDiceArray where die.dieSide!.count == 2 {
-            die.counted = true
-        }
-        return currentPlayer.hasScoringDice
-    }
-    
-    func checkForScoringDice() -> Bool {
+    func checkForScoringDice() {
         for die in currentDiceArray {
             if !die.counted {
                 switch die.dieSide!.value {
                 case 1:
+                    if die.dieSide!.value == threeOAKValue || die.dieSide!.value == fourOAKValue || die.dieSide!.value == fiveOAKValue || die.dieSide!.value == sixOAKValue {
+                        break
+                    }
                     currentPlayer.currentRollScore += 100
                     currentPlayer.hasScoringDice = true
                     die.counted = true
                     die.dieSide!.count = 0
                 case 5:
+                    if die.dieSide!.value == threeOAKValue || die.dieSide!.value == fourOAKValue || die.dieSide!.value == fiveOAKValue || die.dieSide!.value == sixOAKValue {
+                        break
+                    }
                     currentPlayer.currentRollScore += 50
                     currentPlayer.hasScoringDice = true
                     die.counted = true
@@ -326,7 +320,17 @@ extension GameScene {
                 }
             }
         }
-        return currentPlayer.hasScoringDice
+    }
+    
+    func countDice() {
+        for die in currentDiceArray {
+            die.dieSide!.count += 1
+        }
+    }
+    
+    func getPairs() {
+        print("getPairs:")
+        print("pairs: \(pairs)")
     }
 
     func rollDiceAction(die: Die, isComplete: (Bool) -> Void) {

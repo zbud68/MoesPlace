@@ -205,7 +205,11 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     var mainMenuTouchLocation: CGPoint = CGPoint(x: 0, y: 0)
     var settingsMenuTouchLocation: CGPoint = CGPoint(x: 0, y: 0)
     
-    
+    var threeOAKValue = 0
+    var fourOAKValue = 0
+    var fiveOAKValue = 0
+    var sixOAKValue = 0
+
     // MARK: ********** didMove Section **********
     override func didMove(to view: SKView) {
         setupBackGround()
@@ -221,7 +225,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         for die in currentDiceArray {
             gameTable.addChild(die)
         }
-        setupDieSides()
+        //setupDieSides()
     }
     
     func displayMainMenu() {
@@ -330,7 +334,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     }
     
     func setupNewGame() {
-        resetDice()
+        //resetDice()
         gameState = .InProgress
         currentGame = Game()
         currentPlayerID = 0
@@ -394,7 +398,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         currentPlayer.score += currentPlayer.currentRollScore
         currentPlayer.scoreLabel.text = String(currentPlayer.score)
         resetCurrentScoreVariables()
-        resetDice()
+        //resetDice()
         nextPlayer()
     }
     
@@ -408,7 +412,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         currentPlayer = playersArray[currentPlayerID]
         currentPlayer.firstRoll = true
         
-        resetDice()
+        //resetDice()
         for die in currentDiceArray {
             die.physicsBody?.categoryBitMask = 1
             repositionDice(die: die)
@@ -420,7 +424,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     func startNewRoll() {
         currentDiceArray = diceArray
         currentPlayer.firstRoll = true
-        resetDice()
+        //resetDice()
         
         for die in currentDiceArray {
             die.physicsBody?.categoryBitMask = 1
@@ -436,7 +440,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             player.currentRollScore = 0
             player.firstRoll = true
         }
-        resetDice()
+        //resetDice()
         for die in currentDiceArray {
             die.physicsBody?.categoryBitMask = 1
             repositionDice(die: die)
@@ -542,6 +546,12 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             die.position = diePositionsArray[positionID]
             positionID += 1
         }
+        
+        for dieSide in dieSidesArray {
+            dieSide.count = 0
+            dieSide.counted = false
+        }
+        /*
         straight = false
         threeOAK = false
         fourOAK = false
@@ -551,6 +561,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         threePair = false
         pairs = 0
         reducedPositionArray = diePositionsArray
+        */
     }
     
     func showScoreTotal() {
@@ -570,6 +581,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     // MARK: ********** Updates Section **********
     
     override func update(_ currentTime: TimeInterval) {
+        currentScoreLabel.text = String(currentPlayer.currentRollScore)
+
         //while playerState == .Rolling {
           //  currentPlayer.scoreLabel.text = intToString(int: currentPlayer.score)
        // }
