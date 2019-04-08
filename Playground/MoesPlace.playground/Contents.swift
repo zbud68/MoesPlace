@@ -227,7 +227,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     func checkForLikeDice() -> Bool {
         for dieSide in currentDieSidesArray where dieSide.count == 3 {
             if !dieSide.counted {
-                currentRollScore += dieSide.points * 100
+                currentRollScore += (dieSide.points * 100)
                 dieSide.counted = true
                 if currentDiceArray.isEmpty {
                     setupDice()

@@ -312,7 +312,6 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     func wasDiceTouched() {
         for die in currentDiceArray {
             if die.contains(gameTableTouchLocation) {
-                //die.physicsBody?.isDynamic = false
                 die.physicsBody?.categoryBitMask = 100
                 die.selectable = false
                 die.selected = true
@@ -326,7 +325,6 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     func newGameIconTouched() {
         if gameState == .InProgress {
             print("game in progress")
-            //displayGameInProgressWarning()
         } else {
             showIconWindowIcons()
             setupNewGame()
@@ -334,7 +332,6 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     }
     
     func setupNewGame() {
-        //resetDice()
         gameState = .InProgress
         currentGame = Game()
         currentPlayerID = 0
@@ -343,7 +340,6 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     func resumeIconTouched() {
         if gameState == .NewGame {
             print("no game in progress")
-            //displayNoGameInProgreeMessage()
         } else {
             print("continue icon touched")
             showIconWindowIcons()
@@ -372,7 +368,6 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     }
     
     func infoIconTouched() {
-        //displayInfoWindow()
         print("Info Icon was Touched")
     }
     
@@ -394,58 +389,45 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     
     func keepScoreIconTouched() {
         print("keep score icon touched")
-        currentPlayer.currentRollScore += currentScore
         currentPlayer.score += currentPlayer.currentRollScore
         currentPlayer.scoreLabel.text = String(currentPlayer.score)
-        resetCurrentScoreVariables()
-        //resetDice()
         nextPlayer()
     }
     
     func nextPlayer() {
+        currentDiceArray.removeAll()
+        currentDiceArray = diceArray
         if currentPlayerID < playersArray.count - 1 {
             currentPlayerID += 1
         } else {
-            gameState = .NewRound
+            //gameState = .NewRound
             currentPlayerID = 0
         }
         currentPlayer = playersArray[currentPlayerID]
         currentPlayer.firstRoll = true
-        
-        //resetDice()
-        for die in currentDiceArray {
-            die.physicsBody?.categoryBitMask = 1
-            repositionDice(die: die)
-            positionID += 1
-        }
+        resetDice()
+        resetCurrentScoreVariables()
+        resetCounters()
+        resetArrays()
         playerNameLabel.text = "\(currentPlayer.name):"
     }
     
     func startNewRoll() {
         currentDiceArray = diceArray
         currentPlayer.firstRoll = true
-        //resetDice()
-        
-        for die in currentDiceArray {
-            die.physicsBody?.categoryBitMask = 1
-            repositionDice(die: die)
-            positionID += 1
-        }
+        resetDice()
     }
     
     func startNewRound() {
         print("start new round")
+        currentDiceArray.removeAll()
+        currentDiceArray = diceArray
         currentPlayerID = 0
         for player in playersArray {
             player.currentRollScore = 0
             player.firstRoll = true
         }
-        //resetDice()
-        for die in currentDiceArray {
-            die.physicsBody?.categoryBitMask = 1
-            repositionDice(die: die)
-            positionID += 1
-        }
+        resetDice()
         currentGame.numRounds += 1
     }
     
@@ -544,6 +526,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             die.physicsBody?.categoryBitMask = 1
         
             die.position = diePositionsArray[positionID]
+            repositionDice(die: die)
             positionID += 1
         }
         
@@ -551,23 +534,10 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             dieSide.count = 0
             dieSide.counted = false
         }
-        /*
-        straight = false
-        threeOAK = false
-        fourOAK = false
-        fiveOAK = false
-        sixOAK = false
-        fullHouse = false
-        threePair = false
-        pairs = 0
-        reducedPositionArray = diePositionsArray
-        */
+
     }
     
     func showScoreTotal() {
-        //if currentPlayer.currentRollScore == 0 {
-         //   currentPlayer.hasScoringDice = false
-        //}
         currentPlayer.score += currentPlayer.currentRollScore
         print("current roll score: \(currentPlayer.currentRollScore)")
         currentPlayer.currentRollScore = 0
@@ -582,9 +552,5 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     
     override func update(_ currentTime: TimeInterval) {
         currentScoreLabel.text = String(currentPlayer.currentRollScore)
-
-        //while playerState == .Rolling {
-          //  currentPlayer.scoreLabel.text = intToString(int: currentPlayer.score)
-       // }
     }
 }

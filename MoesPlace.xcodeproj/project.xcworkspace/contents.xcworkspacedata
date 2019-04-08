@@ -2,9 +2,6 @@
 <Workspace
    version = "1.0">
    <FileRef
-      location = "group:../MoesPlace/Info.plist">
-   </FileRef>
-   <FileRef
       location = "self:/Users/mark/Desktop/iOS Development/Current Projects/MoesPlace-Clone/MoesPlace.xcodeproj">
    </FileRef>
 </Workspace>
