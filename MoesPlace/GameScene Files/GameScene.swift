@@ -477,8 +477,25 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     }
     
     func farkle() {
+        runFarkleAction()
         showMessage(msg: "Farkle")
         nextPlayer()
+    }
+    
+    func runFarkleAction() {
+        let fadeOut = SKAction.fadeOut(withDuration: 0.5)
+        let changeColorToRed = SKAction.run {
+            self.logo.fontColor = UIColor.red
+            self.logo2.fontColor = UIColor.red
+        }
+        let changeColorBack = SKAction.run {
+            self.logo.fontColor = GameConstants.Colors.LogoFont
+            self.logo2.fontColor = GameConstants.Colors.LogoFont
+        }
+        let fadeIn = SKAction.fadeIn(withDuration: 0.5)
+        let fadeTo = SKAction.fadeAlpha(to: 0.65, duration: 0.5)
+        let seq = SKAction.sequence([fadeOut, changeColorToRed, fadeIn, fadeOut, fadeIn, fadeOut, changeColorBack, fadeTo])
+        logo.run(seq)
     }
     
     func calcCurrentScore() {
