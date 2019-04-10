@@ -25,15 +25,6 @@ extension GameScene {
         gameTable.physicsBody?.collisionBitMask = 1
         gameTable.physicsBody?.contactTestBitMask = 1
 
-        /*
-        gameTableMaxX = gameTable.frame.maxX
-        gameTableMaxY = gameTable.frame.maxY
-        gameTableMinX = gameTable.frame.minX
-        gameTableMinY = gameTable.frame.minY
-        gameTableWidth = gameTable.size.width
-        gameTableHeight = gameTable.size.height
-        */
-
         backGround.addChild(gameTable)
     }
     

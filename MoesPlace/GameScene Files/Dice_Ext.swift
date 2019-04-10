@@ -37,7 +37,7 @@ extension GameScene {
             
             die.selected = false
             die.selectable = true
-
+            
             die.physicsBody = SKPhysicsBody(rectangleOf: GameConstants.Sizes.Dice)
             die.physicsBody?.affectedByGravity = false
             die.physicsBody?.isDynamic = true
@@ -48,10 +48,10 @@ extension GameScene {
             die.physicsBody?.restitution = 0.5
             die.physicsBody?.linearDamping = 4
             die.physicsBody?.angularDamping = 5
-            //gameTable.addChild(die)
+
+            gameTable.addChild(die)
             positionDice(die: die)
         }
-        reducedPositionArray = diePositionsArray
     }
     
     func positionDice(die: Die) {
@@ -81,8 +81,11 @@ extension GameScene {
         default:
             break
         }
-        diePositionsArray.append(die.position)
-        reducedPositionArray.append(die.position)
+        positionsArray = [diePosition1, diePosition2, diePosition3, diePosition4, diePosition5]
+        if currentGame.numDice == 6 {
+            positionsArray.append(diePosition6)
+        }
+        diePositionsArray = positionsArray
     }
 
     // MARK: ********** Roll Dice **********
@@ -111,7 +114,8 @@ extension GameScene {
 
         for die in currentDiceArray {
             value = Int(arc4random_uniform(6)+1)
-            
+            rollDiceAction(die: die, isComplete: handlerBlock)
+
             switch value {
             case 1:
                 dieSide1.count += 1
@@ -141,50 +145,17 @@ extension GameScene {
                 dieSidesArray.append(dieSide6)
             default:
                 break
-                
             }
             print("current Roll: \(die.dieSide!.value), count: \(die.dieSide!.count)")
         }
     }
     
     func evalDice() {
-        /*
-        die1.dieSide!.count = 3
-        die5.dieSide!.count = 2
-        die2.dieSide!.count = 0
-        die3.dieSide!.count = 0
-        die4.dieSide!.count = 0
-        pairs = 1
-        */
-
         checkForStraight()
         checkForPairs()
-        //checkForFullHouse()
         checkForLikeDice()
         checkForScoringDice()
     }
-    
-    /*
-    func getCurrentRollScore() {
-        if straight {
-            print("Straight")
-            currentScore += 1500
-            currentScoreLabel.text = String(currentPlayer.currentRollScore)
-            straight = false
-        } else if fullHouse {
-            print("full house")
-            currentScore += 1250
-            currentScoreLabel.text = String(currentPlayer.currentRollScore)
-            fullHouse = false
-        } else if threePair {
-            print("three pair")
-            currentScore += 500
-            currentScoreLabel.text = String(currentPlayer.currentRollScore)
-            threePair = false
-        }
-        currentScoreLabel.text = String(currentPlayer.currentRollScore)
-    }
-    */
     
     func checkForStraight() {
         var dieValues = [Int]()
@@ -225,23 +196,6 @@ extension GameScene {
         }
     }
     
-    func checkForFullHouse(die: Die) {
-        //for die in currentDiceArray where die.dieSide!.count == 3 {
-            if pairs == 1 {
-                fullHouse = true
-                currentScore += 1250
-                currentDiceArray.removeAll()
-                currentScore = 0
-            } else {
-                print("three OAK")
-                threeOAK = true
-                die.dieSide!.count = 0
-                currentScore += (die.dieSide!.points * 100)
-                currentDiceArray.removeAll(where: { $0.dieSide!.value == die.dieSide!.value } )
-            }
-        //}
-    }
-    
     func checkForLikeDice() {
         print("pairs: \(pairs)")
 
@@ -250,15 +204,18 @@ extension GameScene {
             case 1, 2:
                 if die.dieSide!.value == 1 {
                     currentScore += 100
+                    scoringDiceArray.append(die)
                     currentDiceArray.removeAll(where: { $0.dieSide!.value == die.dieSide!.value })
                 } else if die.dieSide!.value == 5 {
                     currentScore += 50
+                    scoringDiceArray.append(die)
                     currentDiceArray.removeAll(where: { $0.dieSide!.value == die.dieSide!.value })
                 }
                 break
             case 3:
                 currentScore += (die.dieSide!.points * 100)
                 die.dieSide!.count = 0
+                scoringDiceArray.append(die)
                 currentDiceArray.removeAll(where: { $0.dieSide!.value == die.dieSide!.value } )
             case 4:
                 fourOAKValue = die.dieSide!.value
@@ -266,6 +223,7 @@ extension GameScene {
                 fourOAK = true
                 die.dieSide!.count = 0
                 currentScore += ((die.dieSide!.points * 100) * 2)
+                scoringDiceArray.append(die)
                 currentDiceArray.removeAll(where: { $0.dieSide!.value == die.dieSide!.value } )
                 break
             case 5:
@@ -277,6 +235,7 @@ extension GameScene {
                 if currentGame.numDice == 5 {
                     currentDiceArray.removeAll()
                 } else {
+                    scoringDiceArray.append(die)
                     currentDiceArray.removeAll(where: { $0.dieSide!.value == die.dieSide!.value })
                 }
                 break
@@ -296,29 +255,31 @@ extension GameScene {
     }
     
     func checkForScoringDice() {
-            for die in currentDiceArray {
+        for die in currentDiceArray {
             switch die.dieSide!.value {
             case 1:
                 if die.dieSide!.value == threeOAKValue || die.dieSide!.value == fourOAKValue || die.dieSide!.value == fiveOAKValue || die.dieSide!.value == sixOAKValue {
-                    currentDiceArray.removeAll(where: { $0.dieSide!.value == die.dieSide!.value })
+                    scoringDiceArray.append(die)
+                    currentDiceArray.removeAll(where: { $0.dieSide!.value == die.dieSide!.value } )
                     break
                 } else {
                     currentScore += 100
                     currentPlayer.hasScoringDice = true
-                    //die.counted = true
                     die.dieSide!.count = 0
+                    scoringDiceArray.append(die)
                     currentDiceArray.removeAll(where: { $0.dieSide!.value == die.dieSide!.value } )
                 }
             case 5:
                 if die.dieSide!.value == threeOAKValue || die.dieSide!.value == fourOAKValue || die.dieSide!.value == fiveOAKValue || die.dieSide!.value == sixOAKValue {
-                    currentDiceArray.removeAll(where: { $0.dieSide!.value == die.dieSide!.value })
+                    scoringDiceArray.append(die)
+                    currentDiceArray.removeAll(where: { $0.dieSide!.value == die.dieSide!.value } )
                     break
                 } else {
                     currentScore += 50
                     currentPlayer.hasScoringDice = true
-                    //die.counted = true
                     die.dieSide!.count = 0
-                    currentDiceArray.removeAll(where: { $0.dieSide!.value == die.dieSide!.value })
+                    scoringDiceArray.append(die)
+                    currentDiceArray.removeAll(where: { $0.dieSide!.value == die.dieSide!.value } )
                 }
             default:
                 break
@@ -326,17 +287,6 @@ extension GameScene {
         }
     }
     
-    func countDice() {
-        for die in currentDiceArray {
-            die.dieSide!.count += 1
-        }
-    }
-    
-    func getPairs() {
-        print("getPairs:")
-        print("pairs: \(pairs)")
-    }
-
     func resetCounters() {
         pairs = 0
         for die in currentDiceArray {
@@ -344,50 +294,115 @@ extension GameScene {
             die.dieSide!.counted = false
         }
     }
-
+    
     func rollDiceAction(die: Die, isComplete: (Bool) -> Void) {
+        var rollAction: SKAction = SKAction()
         let Wait = SKAction.wait(forDuration: 0.75)
+        
         if let RollAction = SKAction(named: "RollDice") {
             rollAction = RollAction
         }
+        
         let MoveAction = SKAction.run {
-            let _ = SKAction.move(to: CGPoint(x: 0, y: 0), duration: 0)
             let randomX = CGFloat(arc4random_uniform(5) + 5)
             let randomY = CGFloat(arc4random_uniform(2) + 3)
+            
             die.physicsBody?.applyImpulse(CGVector(dx: randomX, dy: randomY))
             die.physicsBody?.applyTorque(3)
         }
-        let FadeOut = SKAction.fadeAlpha(to: 0, duration: 0.25)
-        let FadeIn = SKAction.fadeAlpha(to: 1, duration: 0.25)
         let getDieSides = SKAction.run {
-            self.setDieSides()
+            self.setDieSides(die: die)
         }
         let Group = SKAction.group([rollAction, MoveAction])
-        let Seq = SKAction.sequence([Group, Wait, FadeOut, getDieSides, FadeIn])
+        
+        let Seq = SKAction.sequence([Group, Wait, getDieSides])
+        
+        die.position = CGPoint(x: 0, y: 0)
+        
         die.run(Seq)
+        
         isComplete(true)
     }
 
-    func repositionDice(die: Die) {
+    func repositionDice(die: Die, isComplete: (Bool) -> Void) {
+        if diePositionsArray.isEmpty {
+            diePositionsArray = positionsArray
+        }
+
         die.zRotation = 0
         die.zPosition = GameConstants.ZPositions.Dice - 0.5
         die.size = GameConstants.Sizes.Dice
         die.physicsBody?.categoryBitMask = 100
+        die.physicsBody?.isDynamic = false
         
+        die.position = diePositionsArray.first!
+        diePositionsArray.removeFirst()
+        
+        isComplete(true)
     }
     
-    func getPositionID() -> Int {
-        if positionID >= currentGame.numDice {
-            positionID = 0
-        } else {
-            positionID += 1
+    func setDieSides(die: Die) {
+        switch die.dieSide!.value {
+        case 1:
+            die.texture = GameConstants.Textures.Die1
+        case 2:
+            die.texture = GameConstants.Textures.Die2
+        case 3:
+            die.texture = GameConstants.Textures.Die3
+        case 4:
+            die.texture = GameConstants.Textures.Die4
+        case 5:
+            die.texture = GameConstants.Textures.Die5
+        case 6:
+            die.texture = GameConstants.Textures.Die6
+        default:
+            break
         }
-        return positionID
     }
-
-    func setDieSides() {
-        for die in currentDiceArray {
-            die.texture = dieSidesArray[die.dieSide!.value - 1].texture
+    
+    func farkle() {
+        currentDiceArray = diceArray
+        self.removeDice()
+        runFarkleAction(isComplete: handlerBlock)
+        nextPlayer()
+    }
+    
+    func runFarkleAction(isComplete: (Bool) -> Void) {
+        let wait = SKAction.wait(forDuration: 1)
+        let fadeOut = SKAction.fadeOut(withDuration: 0.5)
+        let changeColorToRed = SKAction.run {
+            self.logo.zPosition = GameConstants.ZPositions.Dice + 0.5
+            self.logo.fontColor = UIColor.red
+            self.logo2.zPosition = self.logo.zPosition
+            self.logo2.fontColor = UIColor.red
+        }
+        let changeColorBack = SKAction.run {
+            self.logo.zPosition = GameConstants.ZPositions.Logo
+            self.logo.fontColor = GameConstants.Colors.LogoFont
+            self.logo2.fontColor = GameConstants.Colors.LogoFont
+            self.logo2.zPosition = GameConstants.ZPositions.Logo
+        }
+        
+        let displayMsg = SKAction.run {
+            self.farkleMessage(on: self.scene!, title: "Farkle", message: GameConstants.Messages.Farkle)
+            self.setupDice()
+        }
+        let fadeIn = SKAction.fadeIn(withDuration: 0.5)
+        let fadeTo = SKAction.fadeAlpha(to: 0.65, duration: 0.5)
+        let seq = SKAction.sequence([wait, fadeOut, changeColorToRed, fadeIn, fadeOut, fadeIn, fadeOut, changeColorBack, fadeTo, displayMsg])
+        logo.run(seq)
+        
+        isComplete(true)
+    }
+    
+    func removeDice() {
+        die1.removeFromParent()
+        die2.removeFromParent()
+        die3.removeFromParent()
+        die4.removeFromParent()
+        die5.removeFromParent()
+        if currentGame.numDice == 6 {
+            die6.removeFromParent()
         }
     }
 }
