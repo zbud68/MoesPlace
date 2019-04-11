@@ -177,7 +177,6 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         displaySettingsMenu()
         setupPlayers()
         setupCurrentRollScoreLabel()
-        setupDice()
     }
     
     func displayMainMenu() {
@@ -275,7 +274,6 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
                     die.position = diePositionsArray.first!
                     diePositionsArray.removeFirst()
                 }
-                print("die touched")
             }
         }
     }
@@ -290,6 +288,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     }
     
     func setupNewGame() {
+        setupDice()
         gameState = .InProgress
         currentGame = Game()
         currentPlayerID = 0
@@ -353,6 +352,9 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         diePositionsArray.removeAll()
         currentDiceArray.removeAll()
         currentDiceArray = diceArray
+        for die in currentDiceArray {
+            die.physicsBody?.allowsRotation = true
+        }
         if currentPlayerID < playersArray.count - 1 {
             currentPlayerID += 1
         } else {
@@ -360,7 +362,6 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         }
         currentPlayer = playersArray[currentPlayerID]
         currentPlayer.firstRoll = true
-        resetDice()
         resetCurrentScoreVariables()
         resetCounters()
         resetArrays()
@@ -372,7 +373,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         diePositionsArray = positionsArray
         currentDiceArray = diceArray
         currentPlayer.firstRoll = true
-        resetDice()
+        rollDice()
     }
     
     func startNewRound() {
@@ -461,6 +462,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             die.selectable = true
 
             die.zRotation = 0
+            die.physicsBody?.allowsRotation = true
             die.zPosition = GameConstants.ZPositions.Dice
             die.size = GameConstants.Sizes.Dice
             

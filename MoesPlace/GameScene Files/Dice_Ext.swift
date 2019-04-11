@@ -17,17 +17,23 @@ extension GameScene {
         
         die1.name = "Die 1"
         die1.dieSide = dieSide1
+        die1.texture = GameConstants.Textures.Die1
         die2.name = "Die 2"
         die2.dieSide = dieSide2
+        die2.texture = GameConstants.Textures.Die2
         die3.name = "Die 3"
         die3.dieSide = dieSide3
+        die3.texture = GameConstants.Textures.Die3
         die4.name = "Die 4"
         die4.dieSide = dieSide4
+        die4.texture = GameConstants.Textures.Die4
         die5.name = "Die 5"
         die5.dieSide = dieSide5
+        die5.texture = GameConstants.Textures.Die5
         die6.name = "Die 6"
         die6.dieSide = dieSide6
-        
+        die6.texture = GameConstants.Textures.Die6
+
         if currentGame.numDice == 6 {
             diceArray.append(die6)
         }
@@ -37,7 +43,7 @@ extension GameScene {
             
             die.selected = false
             die.selectable = true
-            
+
             die.physicsBody = SKPhysicsBody(rectangleOf: GameConstants.Sizes.Dice)
             die.physicsBody?.affectedByGravity = false
             die.physicsBody?.isDynamic = true
@@ -100,6 +106,7 @@ extension GameScene {
             evalDice()
             if currentScore == 0 {
                 farkle()
+                return
             }
         }
         currentPlayer.currentRollScore += currentScore
@@ -114,7 +121,6 @@ extension GameScene {
 
         for die in currentDiceArray {
             value = Int(arc4random_uniform(6)+1)
-            rollDiceAction(die: die, isComplete: handlerBlock)
 
             switch value {
             case 1:
@@ -146,6 +152,7 @@ extension GameScene {
             default:
                 break
             }
+            rollDiceAction(die: die, isComplete: handlerBlock)
             print("current Roll: \(die.dieSide!.value), count: \(die.dieSide!.count)")
         }
     }
@@ -155,6 +162,9 @@ extension GameScene {
         checkForPairs()
         checkForLikeDice()
         checkForScoringDice()
+        for die in scoringDiceArray {
+            die.zPosition = GameConstants.ZPositions.Dice - 0.5
+        }
     }
     
     func checkForStraight() {
@@ -205,11 +215,11 @@ extension GameScene {
                 if die.dieSide!.value == 1 {
                     currentScore += 100
                     scoringDiceArray.append(die)
-                    currentDiceArray.removeAll(where: { $0.dieSide!.value == die.dieSide!.value })
+                    currentDiceArray.removeAll(where: { $0.dieSide!.value == die.dieSide!.value } )
                 } else if die.dieSide!.value == 5 {
                     currentScore += 50
                     scoringDiceArray.append(die)
-                    currentDiceArray.removeAll(where: { $0.dieSide!.value == die.dieSide!.value })
+                    currentDiceArray.removeAll(where: { $0.dieSide!.value == die.dieSide!.value } )
                 }
                 break
             case 3:
@@ -236,7 +246,7 @@ extension GameScene {
                     currentDiceArray.removeAll()
                 } else {
                     scoringDiceArray.append(die)
-                    currentDiceArray.removeAll(where: { $0.dieSide!.value == die.dieSide!.value })
+                    currentDiceArray.removeAll(where: { $0.dieSide!.value == die.dieSide!.value } )
                 }
                 break
             case 6:
@@ -297,7 +307,7 @@ extension GameScene {
     
     func rollDiceAction(die: Die, isComplete: (Bool) -> Void) {
         var rollAction: SKAction = SKAction()
-        let Wait = SKAction.wait(forDuration: 0.75)
+        let Wait = SKAction.wait(forDuration: 0.50)
         
         if let RollAction = SKAction(named: "RollDice") {
             rollAction = RollAction
@@ -313,6 +323,7 @@ extension GameScene {
         let getDieSides = SKAction.run {
             self.setDieSides(die: die)
         }
+
         let Group = SKAction.group([rollAction, MoveAction])
         
         let Seq = SKAction.sequence([Group, Wait, getDieSides])
@@ -362,9 +373,7 @@ extension GameScene {
     
     func farkle() {
         currentDiceArray = diceArray
-        self.removeDice()
         runFarkleAction(isComplete: handlerBlock)
-        nextPlayer()
     }
     
     func runFarkleAction(isComplete: (Bool) -> Void) {
@@ -382,27 +391,73 @@ extension GameScene {
             self.logo2.fontColor = GameConstants.Colors.LogoFont
             self.logo2.zPosition = GameConstants.ZPositions.Logo
         }
-        
-        let displayMsg = SKAction.run {
-            self.farkleMessage(on: self.scene!, title: "Farkle", message: GameConstants.Messages.Farkle)
-            self.setupDice()
+
+        let moveDie1 = SKAction.move(to: CGPoint(x: -(gameTable.size.width / 7), y: gameTable.frame.minY + 100), duration: 0.25)
+        let moveDie2 = SKAction.move(to: CGPoint(x: -(gameTable.size.width / 7) + die2.size.width, y: gameTable.frame.minY + 100), duration: 0.25)
+        let moveDie3 = SKAction.move(to: CGPoint(x: -(gameTable.size.width / 7) + (die3.size.width * 2), y: gameTable.frame.minY + 100), duration: 0.25)
+        let moveDie4 = SKAction.move(to: CGPoint(x: -(gameTable.size.width / 7) + (die4.size.width * 3), y: gameTable.frame.minY + 100), duration: 0.25)
+        let moveDie5 = SKAction.move(to: CGPoint(x: -(gameTable.size.width / 7) + (die5.size.width * 4), y: gameTable.frame.minY + 100), duration: 0.25)
+        let moveDie6 = SKAction.move(to: CGPoint(x: -(gameTable.size.width / 7) + (die6.size.width * 5), y: gameTable.frame.minY + 100), duration: 0.25)
+
+        let nextPlayer = SKAction.run {
+            self.nextPlayer()
         }
+
+        let rotateDice = SKAction.run {
+            self.die1.zRotation = 0
+            self.die2.zRotation = 0
+            self.die3.zRotation = 0
+            self.die4.zRotation = 0
+            self.die5.zRotation = 0
+            self.die6.zRotation = 0
+            for die in self.currentDiceArray {
+                die.physicsBody?.allowsRotation = false
+            }
+        }
+
+        let moveDice1 = SKAction.run {
+            for die in self.currentDiceArray {
+                die.run(rotateDice)
+            }
+            self.die1.run(moveDie1)
+            self.die2.run(moveDie2)
+            self.die3.run(moveDie3)
+            self.die4.run(moveDie4)
+            self.die5.run(moveDie5)
+        }
+
+        let moveDice2 = SKAction.run {
+            self.die1.run(moveDie1)
+            self.die2.run(moveDie2)
+            self.die3.run(moveDie3)
+            self.die4.run(moveDie4)
+            self.die5.run(moveDie5)
+            self.die6.run(moveDie6)
+        }
+
+        let resetDice = SKAction.run {
+            self.resetDice()
+        }
+
         let fadeIn = SKAction.fadeIn(withDuration: 0.5)
         let fadeTo = SKAction.fadeAlpha(to: 0.65, duration: 0.5)
-        let seq = SKAction.sequence([wait, fadeOut, changeColorToRed, fadeIn, fadeOut, fadeIn, fadeOut, changeColorBack, fadeTo, displayMsg])
-        logo.run(seq)
-        
+
+        let seq1 = SKAction.sequence([wait, fadeOut, changeColorToRed, fadeIn, fadeOut, fadeIn, fadeOut, changeColorBack, fadeTo, wait, moveDice1, nextPlayer, resetDice])
+
+        let seq2 = SKAction.sequence([wait, fadeOut, changeColorToRed, fadeIn, fadeOut, fadeIn, fadeOut, changeColorBack, fadeTo, wait, moveDice2, nextPlayer, resetDice])
+
+        if currentGame.numDice == 5 {
+            logo.run(seq1)
+        } else {
+            logo.run(seq2)
+        }
+
         isComplete(true)
     }
     
-    func removeDice() {
-        die1.removeFromParent()
-        die2.removeFromParent()
-        die3.removeFromParent()
-        die4.removeFromParent()
-        die5.removeFromParent()
-        if currentGame.numDice == 6 {
-            die6.removeFromParent()
+    func lowerZPosition() {
+        for die in currentDiceArray {
+            die.zPosition = GameConstants.ZPositions.Logo - 0.5
         }
     }
 }
