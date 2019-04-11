@@ -352,6 +352,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         diePositionsArray.removeAll()
         currentDiceArray.removeAll()
         currentDiceArray = diceArray
+        returnDiceToHomePosition()
+
         for die in currentDiceArray {
             die.physicsBody?.allowsRotation = true
         }

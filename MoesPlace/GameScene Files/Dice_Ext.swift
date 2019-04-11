@@ -375,9 +375,82 @@ extension GameScene {
         currentDiceArray = diceArray
         runFarkleAction(isComplete: handlerBlock)
     }
+
+    func returnDiceToHomePosition() {
+        let moveDie1 = SKAction.move(to: CGPoint(x: -(gameTable.size.width / 7), y: gameTable.frame.minY + 100), duration: 0.25)
+        let moveDie2 = SKAction.move(to: CGPoint(x: -(gameTable.size.width / 7) + die2.size.width, y: gameTable.frame.minY + 100), duration: 0.25)
+        let moveDie3 = SKAction.move(to: CGPoint(x: -(gameTable.size.width / 7) + (die3.size.width * 2), y: gameTable.frame.minY + 100), duration: 0.25)
+        let moveDie4 = SKAction.move(to: CGPoint(x: -(gameTable.size.width / 7) + (die4.size.width * 3), y: gameTable.frame.minY + 100), duration: 0.25)
+        let moveDie5 = SKAction.move(to: CGPoint(x: -(gameTable.size.width / 7) + (die5.size.width * 4), y: gameTable.frame.minY + 100), duration: 0.25)
+        let moveDie6 = SKAction.move(to: CGPoint(x: -(gameTable.size.width / 7) + (die6.size.width * 4.9), y: gameTable.frame.minY + 100), duration: 0.25)
+
+        let rotateDice = SKAction.run {
+            self.die1.zRotation = 0
+            self.die2.zRotation = 0
+            self.die3.zRotation = 0
+            self.die4.zRotation = 0
+            self.die5.zRotation = 0
+            self.die6.zRotation = 0
+            for die in self.currentDiceArray {
+                die.physicsBody?.allowsRotation = false
+            }
+        }
+
+        let moveDice1 = SKAction.run {
+            for die in self.currentDiceArray {
+                die.physicsBody?.collisionBitMask = 2
+                die.physicsBody?.isDynamic = false
+                die.run(rotateDice)
+            }
+            self.die1.run(moveDie1)
+            self.die2.run(moveDie2)
+            self.die3.run(moveDie3)
+            self.die4.run(moveDie4)
+            self.die5.run(moveDie5)
+        }
+
+        let moveDice2 = SKAction.run {
+            for die in self.currentDiceArray {
+                die.physicsBody?.collisionBitMask = 2
+                die.physicsBody?.isDynamic = false
+                die.run(rotateDice)
+            }
+            self.die1.run(moveDie1)
+            self.die2.run(moveDie2)
+            self.die3.run(moveDie3)
+            self.die4.run(moveDie4)
+            self.die5.run(moveDie5)
+            self.die6.run(moveDie6)
+        }
+
+        let resetDice = SKAction.run {
+            self.resetDice()
+        }
+
+        let wait = SKAction.wait(forDuration: 1)
+        /*
+        let fadeOut = SKAction.fadeOut(withDuration: 0.5)
+
+        let fadeIn = SKAction.fadeIn(withDuration: 0.5)
+        let fadeTo = SKAction.fadeAlpha(to: 0.65, duration: 0.5)
+        */
+
+        let seq1 = SKAction.sequence([wait, moveDice1, resetDice])
+
+        let seq2 = SKAction.sequence([wait, moveDice2, resetDice])
+
+        for die in currentDiceArray {
+            if currentGame.numDice == 5 {
+                die.run(seq1)
+            } else {
+                die.run(seq2)
+            }
+        }
+
+    }
     
     func runFarkleAction(isComplete: (Bool) -> Void) {
-        let wait = SKAction.wait(forDuration: 1)
+        let wait = SKAction.wait(forDuration: 0.5)
         let fadeOut = SKAction.fadeOut(withDuration: 0.5)
         let changeColorToRed = SKAction.run {
             self.logo.zPosition = GameConstants.ZPositions.Dice + 0.5
@@ -398,6 +471,7 @@ extension GameScene {
         let moveDie4 = SKAction.move(to: CGPoint(x: -(gameTable.size.width / 7) + (die4.size.width * 3), y: gameTable.frame.minY + 100), duration: 0.25)
         let moveDie5 = SKAction.move(to: CGPoint(x: -(gameTable.size.width / 7) + (die5.size.width * 4), y: gameTable.frame.minY + 100), duration: 0.25)
         let moveDie6 = SKAction.move(to: CGPoint(x: -(gameTable.size.width / 7) + (die6.size.width * 5), y: gameTable.frame.minY + 100), duration: 0.25)
+
 
         let nextPlayer = SKAction.run {
             self.nextPlayer()
