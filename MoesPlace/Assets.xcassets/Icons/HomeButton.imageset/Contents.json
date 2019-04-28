@@ -2,12 +2,11 @@
   "images" : [
     {
       "idiom" : "universal",
-      "filename" : "Felt_Green.png",
       "scale" : "1x"
     },
     {
       "idiom" : "universal",
-      "filename" : "Felt_Green1@2x.png",
+      "filename" : "GreenHome.png",
       "scale" : "2x"
     },
     {

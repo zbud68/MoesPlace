@@ -102,16 +102,21 @@ struct GameConstants {
 
     struct Messages {
         static let GameInProgress = "There is currently a game in progress. Press 'Continue' to abandon game in progress and return to main menu, or 'Cancel' and press 'Resume Game' from main menu to contiue the game in progress"
-        static let NoGameInProgress = "There is no game in progress, select 'Play' from the main menu to start a new game"
+        static let NoGameInProgress = "There is no game in progress, select 'New Game' from the main menu to start a new game"
         static let Winner = "has won the game."
         static let GameOver = "Has finished the game.\n Remaining players have 1 final roll."
         static let Busted = "You must match the target score exactly to win"
         static let Farkle = "No scoring dice"
+        static let Settings = "There is currently a game in progress, if you continue the current game will be aborted.  Press 'Continue' to abandon game in progress and continue to the Settings Menu, or 'Cancel' and press 'Resume Game' from main menu to contiue the game in progress"
     }
     
     struct Locations {
         static let MainMenu = CGPoint(x: 0, y: 0)
         static let SettingsMenu = CGPoint(x: 0, y: 0)
+    }
+
+    struct Positions {
+        static let MainMenu = CGPoint(x: 500, y: 0)
     }
     
 }

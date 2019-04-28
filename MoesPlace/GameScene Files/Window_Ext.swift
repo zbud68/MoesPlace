@@ -8,24 +8,39 @@
 import SpriteKit
 
 extension GameScene {
-    func setupIconWindow() {
-        iconWindow = SKSpriteNode(texture: SKTexture(imageNamed: "WindowPopup1"))
-        iconWindow.size = CGSize(width: 165, height: (backGround.size.height / 4))
-        iconWindow.position = CGPoint(x: ((backGround.frame.minX) + (iconWindow.size.width / 2)) + 5, y: ((backGround.frame.maxY) - (iconWindow.size.height / 2)) - 10)
-        iconWindow.zPosition = GameConstants.ZPositions.Window
-        iconWindow.name = "Icon Window"
+    func setupButtonWindow() {
+        if let ButtonWindow = background.childNode(withName: "ButtonsWindow") as? SKSpriteNode {
+            buttonWindow = ButtonWindow
+        } else {
+            print("Button window not found")
+        }
 
-        backGround.addChild(iconWindow)
-        setupIconWindowIcons()
+
+        //iconWindow = SKSpriteNode(texture: SKTexture(imageNamed: "WindowPopup1"))
+        //iconWindow.size = CGSize(width: 165, height: ((background.size.height) / 4))
+        //iconWindow.position = CGPoint(x: (((background.frame.minX)) + (iconWindow.size.width / 2)) + 5, y: (((background.frame.maxY)) - (iconWindow.size.height / 2)) - 10)
+        //iconWindow.zPosition = GameConstants.ZPositions.Window
+        //iconWindow.name = "Icon Window"
+
+        //background.addChild(iconWindow)
+        setupButtonWindowButtons()
     }
 
     func setupScoresWindow() {
+        if let ScoresWindow = background.childNode(withName: "ScoresWindow") as? SKSpriteNode {
+            scoresWindow = ScoresWindow
+        } else {
+            print("scores windows not found")
+        }
+
+        /*
         scoresWindow = SKSpriteNode(texture: SKTexture(imageNamed: "WindowPopup2"))
-        scoresWindow.size = CGSize(width: 165, height: (backGround.size.height / 4) * 3)
+        scoresWindow.size = CGSize(width: 165, height: ((background.size.height) / 4) * 3)
         scoresWindow.position = CGPoint(x: iconWindow.position.x, y: (iconWindow.position.y - (iconWindow.size.height * 2) + 10))
         scoresWindow.zPosition = GameConstants.ZPositions.Window
         scoresWindow.name = "Player Scores Window"
 
-        backGround.addChild(scoresWindow)
+        background.addChild(scoresWindow)
+        */
     }
 }

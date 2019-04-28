@@ -10,22 +10,52 @@ import SpriteKit
 extension GameScene {
         
     func setupGameTable() {
-        gameTable = SKSpriteNode(imageNamed: "WindowPopup")
-        gameTable.name = "Game Table"
-        gameTable.zPosition = GameConstants.ZPositions.GameTable
-        gameTable.size = CGSize(width: backGround.size.width - 75, height: backGround.size.height + 20)
-        gameTable.position = CGPoint(x: (backGround.frame.maxX - (gameTable.size.width / 2) + 40), y: 0)
-        gameTable.physicsBody = SKPhysicsBody(edgeLoopFrom: CGRect(origin: CGPoint(x: gameTable.frame.minX - 15, y: gameTable.frame.minY + 40), size: CGSize(width: gameTable.size.width - 140, height: gameTable.size.height - 80)))
-        gameTable.physicsBody?.affectedByGravity = false
-        gameTable.physicsBody?.allowsRotation = false
-        gameTable.physicsBody?.isDynamic = true
-        gameTable.physicsBody?.restitution = 0.75
+        if let GameTable = background.childNode(withName: "GameTable") as? SKSpriteNode {
+            gameTable = GameTable
+        } else {
+            print("game table not found")
+        }
 
-        gameTable.physicsBody?.categoryBitMask = 1
-        gameTable.physicsBody?.collisionBitMask = 1
-        gameTable.physicsBody?.contactTestBitMask = 1
+        /*
+        if let CurrentRollScoreLabel =  gameTable.childNode(withName: "CurrentRollScoreLabel") as? SKLabelNode {
+            currentRollScoreLabel = CurrentRollScoreLabel
+        } else {
+            print("CurrentRollScoreLabel not found")
+        }
+        */
 
-        backGround.addChild(gameTable)
+
+        //gameTable = SKSpriteNode(imageNamed: "WindowPopup")
+        //gameTable.name = "Game Table"
+        //gameTable.zPosition = GameConstants.ZPositions.GameTable
+        //gameTable.size = CGSize(width: backGround.size.width - 75, height: backGround.size.height + 20)
+        //gameTable.position = CGPoint(x: (backGround.frame.maxX - (gameTable.size.width / 2) + 40), y: 0)
+        //gameTable.physicsBody = SKPhysicsBody(edgeLoopFrom: CGRect(origin: CGPoint(x: gameTable.frame.minX - 15, y: gameTable.frame.minY + 40), size: CGSize(width: gameTable.size.width - 140, height: gameTable.size.height - 80)))
+        //gameTable.physicsBody?.affectedByGravity = false
+        //gameTable.physicsBody?.allowsRotation = false
+        //gameTable.physicsBody?.isDynamic = true
+        //gameTable.physicsBody?.restitution = 0.75
+
+        //gameTable.physicsBody?.categoryBitMask = 1
+        //gameTable.physicsBody?.collisionBitMask = 1
+        //gameTable.physicsBody?.contactTestBitMask = 1
+
+        //background.addChild(gameTable)
+    }
+
+    func animateGameTitle(isComplete: (Bool) -> Void) {
+        var animateTitle = SKAction()
+        if let animation = SKAction(named: "AnimateGameTitle") {
+            animateTitle = animation
+        } else {
+            print("Animation not found")
+        }
+        let wait = SKAction.wait(forDuration: 3)
+
+        animateTitle = SKAction.group([animateTitle, wait])
+        logo.run(animateTitle)
+        logo2.run(animateTitle)
+        isComplete(true)
     }
     
     func setupLogo() {
@@ -50,23 +80,39 @@ extension GameScene {
     }
     
     func setupCurrentRollScoreLabel() {
+        /*
+        if let CurrentRollScoreLabel = gameTable.childNode(withName: "CurrentRollScoreLabel") as? SKLabelNode {
+            currentRollScoreLabel = CurrentRollScoreLabel
+        } else {
+            print("current roll score lable not found")
+        }
+
+        if let CurrentPlayerNameLabel = gameTable.childNode(withName: "CurrentPlayerNameLabel") as? SKLabelNode {
+            currentPlayerNameLabel = CurrentPlayerNameLabel
+        } else {
+            print("Player Name Label not found")
+        }
+        currentPlayerNameLabel.text = "\(currentPlayer.name)"
+        */
+
         playerNameLabel.text = "\(currentPlayer.name):"
         playerNameLabel.fontName = GameConstants.StringConstants.FontName
         playerNameLabel.fontColor = GameConstants.Colors.LogoFont
         playerNameLabel.fontSize = GameConstants.Sizes.PlayerNameLabelFont
-        playerNameLabel.position = CGPoint(x: gameTable.frame.minX + (gameTable.size.width / 3), y: gameTable.frame.maxY / 2)
+        playerNameLabel.position = CGPoint(x: (gameTable.frame.minX) + ((gameTable.size.width) / 3), y: (gameTable.frame.maxY) / 2)
         playerNameLabel.zPosition = GameConstants.ZPositions.Logo
         playerNameLabel.alpha = 0.65
         
-        currentScoreLabel.text = String(currentPlayer.currentRollScore)
-        currentScoreLabel.fontName = GameConstants.StringConstants.FontName
-        currentScoreLabel.fontColor = GameConstants.Colors.LogoFont
-        currentScoreLabel.fontSize = GameConstants.Sizes.PlayerScoreLabelFont
-        currentScoreLabel.position = CGPoint(x: playerNameLabel.position.x + 110, y: playerNameLabel.position.y)
-        currentScoreLabel.zPosition = GameConstants.ZPositions.Logo
-        currentScoreLabel.alpha = 0.65
+        //currentRollScoreLabel.text = String(currentPlayer.currentRollScore)
+        currentRollScoreLabel.fontName = GameConstants.StringConstants.FontName
+        currentRollScoreLabel.fontColor = GameConstants.Colors.LogoFont
+        currentRollScoreLabel.fontSize = GameConstants.Sizes.PlayerScoreLabelFont
+        currentRollScoreLabel.position = CGPoint(x: playerNameLabel.position.x + 110, y: playerNameLabel.position.y)
+        currentRollScoreLabel.zPosition = (gameTable.zPosition + 0.5)
+        currentRollScoreLabel.alpha = 0.65
         
-        gameTable.addChild(currentScoreLabel)
+        gameTable.addChild(currentRollScoreLabel)
         gameTable.addChild(playerNameLabel)
+
     }
 }

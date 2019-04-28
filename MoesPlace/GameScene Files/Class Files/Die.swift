@@ -9,6 +9,7 @@
 import SpriteKit
 
 class Die: SKSpriteNode {
+
     var selected: Bool = false
     var selectable: Bool = true
     var counted: Bool = false

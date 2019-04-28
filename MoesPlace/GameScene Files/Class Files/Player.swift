@@ -10,16 +10,17 @@ import SpriteKit
 
 class Player {
     let nameLabel: SKLabelNode = SKLabelNode()
-    var name: String = ""
+    var name: String
 
     var score: Int
     var currentRollScore: Int
-    let scoreLabel: SKLabelNode = SKLabelNode()
+    var scoreLabel: SKLabelNode = SKLabelNode()
     var hasScoringDice: Bool
     var firstRoll: Bool = true
     
-    init(score: Int, currentRollScore: Int, hasScoringDice: Bool)
+    init(name: String, score: Int, currentRollScore: Int, hasScoringDice: Bool)
     {
+        self.name = name
         self.score = score
         self.currentRollScore = currentRollScore
         self.hasScoringDice = hasScoringDice

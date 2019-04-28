@@ -53,5 +53,24 @@ extension GameScene {
         scene.view?.window?.rootViewController?.present(alert, animated: true, completion: nil)
     }
 
+    func settingsMessage(on scene: SKScene, title: String, message: String) {
+        let alert = UIAlertController(title: "Game In Progress", message: GameConstants.Messages.Settings, preferredStyle: .alert)
+
+        alert.addAction(UIAlertAction(title: "Continue", style: .destructive, handler: { (action) in
+            alert.dismiss(animated: true, completion: nil)
+            self.gameState = .NewGame
+            self.hideMenu(menu: self.mainMenu)
+            self.showMenu(menu: self.settingsMenu)
+        }))
+
+        alert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: { (action) in
+            alert.dismiss(animated: true, completion: nil)
+            self.showMenu(menu: self.mainMenu)
+        }))
+
+        scene.view?.window?.rootViewController?.present(alert, animated: true, completion: nil)
+
+    }
+
 }
 

@@ -11,10 +11,15 @@ import SpriteKit
 extension GameScene {
 
     func setupPlayers() {
-        player1.nameLabel.text = "Player 1"
-        player2.nameLabel.text = "Player 2"
-        player3.nameLabel.text = "Player 3"
-        player4.nameLabel.text = "Player 4"
+        player1.name = "Player 1"
+        player2.name = "Player 2"
+        player3.name = "Player 3"
+        player4.name = "Player 4"
+
+        player1.nameLabel.text = player1.name
+        player2.nameLabel.text = player2.name
+        player3.nameLabel.text = player3.name
+        player4.nameLabel.text = player4.name
         
         switch currentGame.numPlayers {
         case 1:
@@ -29,12 +34,26 @@ extension GameScene {
             break
         }
         
+        if let Player1ScoreLabel = scoresWindow.childNode(withName: "Player1ScoreLabel") as? SKLabelNode {
+            player1.scoreLabel = Player1ScoreLabel
+        }
+        if let Player2ScoreLabel = scoresWindow.childNode(withName: "Player2ScoreLabel") as? SKLabelNode {
+            player2.scoreLabel = Player2ScoreLabel
+        }
+        if let Player3ScoreLabel = scoresWindow.childNode(withName: "Player3ScoreLabel") as? SKLabelNode {
+            player3.scoreLabel = Player3ScoreLabel
+        }
+        if let Player4ScoreLabel = scoresWindow.childNode(withName: "Player4ScoreLabel") as? SKLabelNode {
+            player4.scoreLabel = Player4ScoreLabel
+        }
+
         for player in playersArray {
-            player.name = player.nameLabel.text!
+            //player.name = player.nameLabel.text!
             player.scoreLabel.text = String(player.score)
             scoresWindow.addChild(player.nameLabel)
             scoresWindow.addChild(player.scoreLabel)
         }
+
         currentPlayer = playersArray.first
         positionPlayerLabels()
     }
