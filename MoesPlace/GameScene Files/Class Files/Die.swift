@@ -13,5 +13,5 @@ class Die: SKSpriteNode {
     var selected: Bool = false
     var selectable: Bool = true
     var counted: Bool = false
-    var dieSide: DieSide?
+    var dieFace: DieFace?
 }

@@ -8,9 +8,17 @@
 import SpriteKit
 
 extension GameScene {
-    func setupDieSides() {
-        dieSidesArray = [dieSide1, dieSide2, dieSide3, dieSide4, dieSide5, dieSide6]
+    func setupDieFacesArray() {
+        dieFacesArray = [dieFace1, dieFace2, dieFace3, dieFace4, dieFace5, dieFace6]
+        //dieSidesArray = [dieSide1, dieSide2, dieSide3, dieSide4, dieSide5, dieSide6]
     }
+
+    /*
+    func setupDieCountDict() {
+        dieCountDict = ["Ones":0, "Twos":0, "Threes":0, "Fours":0, "Fives":0]
+
+    }
+    */
 
     func getPlaceHolders() {
         if let Die1PlaceHolder = gameTable.childNode(withName: "Die1PlaceHolder") as? SKSpriteNode {
@@ -39,37 +47,40 @@ extension GameScene {
     }
 
     func setupDice() {
+        /*
+        dieCountDict = ["Ones":0, "Twos":0, "Threes":0, "Fours":0, "Fives":0]
+        if currentGame.numDice == 6 {
+            dieCountDict["Sixes"] = 0
+        }
+        */
+        currentDieValuesArray = [ones, twos, threes, fours, fives, sixes]
+
         if let Die1 = gameTable.childNode(withName: "Die1") as? Die {
             die1 = Die1
-            //die1.position = die1PlaceHolder.position
         } else {
             print("die1 not found")
         }
 
         if let Die2 = gameTable.childNode(withName: "Die2") as? Die {
             die2 = Die2
-            //die2.position = die2PlaceHolder.position
         } else {
             print("die2 not found")
         }
 
         if let Die3 = gameTable.childNode(withName: "Die3") as? Die {
             die3 = Die3
-            //die3.position = die3PlaceHolder.position
         } else {
             print("die3 not found")
         }
 
         if let Die4 = gameTable.childNode(withName: "Die4") as? Die {
             die4 = Die4
-            //die4.position = die4PlaceHolder.position
         } else {
             print("die4 not found")
         }
 
         if let Die5 = gameTable.childNode(withName: "Die5") as? Die {
             die5 = Die5
-            //die5.position = die5PlaceHolder.position
         } else {
             print("die5 not found")
         }
@@ -77,24 +88,30 @@ extension GameScene {
         if currentGame.numDice == 6 {
             if let Die6 = gameTable.childNode(withName: "Die6") as? Die {
                 die6 = Die6
-                //die6.position = die6PlaceHolder.position
             } else {
                 print("die6 not found")
             }
         }
 
-        die1.dieSide = dieSide1
+        //die1.dieSide = dieSide1
         die1.texture = GameConstants.Textures.Die1
-        die2.dieSide = dieSide2
+        //die2.dieSide = dieSide2
         die2.texture = GameConstants.Textures.Die2
-        die3.dieSide = dieSide3
+        //die3.dieSide = dieSide3
         die3.texture = GameConstants.Textures.Die3
-        die4.dieSide = dieSide4
+        //die4.dieSide = dieSide4
         die4.texture = GameConstants.Textures.Die4
-        die5.dieSide = dieSide5
+        //die5.dieSide = dieSide5
         die5.texture = GameConstants.Textures.Die5
-        die6.dieSide = dieSide6
+        //die6.dieSide = dieSide6
         die6.texture = GameConstants.Textures.Die6
+
+        die1.dieFace = dieFace1
+        die2.dieFace = dieFace2
+        die3.dieFace = dieFace3
+        die4.dieFace = dieFace4
+        die5.dieFace = dieFace5
+        die6.dieFace = dieFace6
 
         diceArray = [die1, die2, die3, die4, die5]
 
@@ -106,9 +123,7 @@ extension GameScene {
         }
         currentDiceArray = diceArray
         positionDice()
-        //returnDiceToHomePosition()
     }
-
 
     func positionDice() {
         for die in currentDiceArray {
@@ -116,7 +131,6 @@ extension GameScene {
             die.physicsBody?.velocity = CGVector(dx: 0, dy: 0)
             die.zRotation = 0
             die.size = GameConstants.Sizes.Dice
-
 
             switch die.name {
             case "Die1":
@@ -138,208 +152,248 @@ extension GameScene {
         resetDiePhysics()
     }
 
-    // MARK: ********** Roll Dice **********
-
-    /*
     func rollDice() {
-        if currentDiceArray.isEmpty {
-            resetDice()
-            currentPlayer.hasScoringDice = false
-            /*
-            currentDiceArray = diceArray
-            */
-        }
         resetDiePhysics()
-        rollDiceAction()
-        getDieSides()
-        firstRoll: if currentPlayer.firstRoll {
-            //checkForStraight()
-           // checkForFullHouse()
-
-            if straight {
-                currentScore += 1500
-                currentPlayer.currentRollScore += currentScore
-                currentScore = 0
-                break firstRoll
-            } else if fullHouse {
-                currentScore += 1500
-                currentPlayer.currentRollScore += currentScore
-                currentScore = 0
-                break firstRoll
-            }
-        } else {
-            evalDice()//(dice: selectedDieArray)
-            if currentPlayer.hasScoringDice == false {
-                farkle()
-            }
-        }
-        print("currentScore: \(currentScore)")
-        print("currentPlayerRollScore: \(currentPlayer.currentRollScore)")
-
-        //currentPlayer.currentRollScore += currentScore
-        currentRollScoreLabel.text = String(currentPlayer.currentRollScore)
-        //currentScore = 0
-        //resetCounters()
-    }
-    */
-
-    func rollDice() {
         print("\(currentPlayer.name)")
         if currentDiceArray.isEmpty {
+            print("new roll started")
             startNewRoll()
         } else {
-            //resetDice()
-            returnDiceToHomePosition()
-            resetCounters()
             getDieSides()
-            evalDice()
-            //if currentScore == 0 {
-                //farkle()
-                //return
-            //}
+            //evalDice()
         }
         print("current score: \(currentScore)")
         print("current player current roll score: \(currentPlayer.currentRollScore)")
         print("current roll score label: \(currentRollScoreLabel.text!)")
         currentPlayer.currentRollScore += currentScore
-        //currentRollScoreLabel.text = String(currentPlayer.currentRollScore)
-        //print("Current Roll Score: \(currentPlayer.currentRollScore)")
         currentScore = 0
-        //currentPlayer.currentRollScore = 0
     }
 
-    /*
     func getDieSides() {
-        dieSidesArray.removeAll()
-        var value = Int()
-        for die in currentDiceArray {
-            value = Int(arc4random_uniform(6) + 1)
-            switch value {
-            case 1:
-                dieSide1.count += 1
-                die.dieSide = dieSide1
-                dieSidesArray.append(dieSide1)
-                currentPlayer.hasScoringDice = true
-            case 2:
-                dieSide2.count += 1
-                die.dieSide = dieSide2
-                dieSidesArray.append(dieSide2)
-            case 3:
-                dieSide3.count += 1
-                die.dieSide = dieSide3
-                dieSidesArray.append(dieSide3)
-            case 4:
-                dieSide4.count += 1
-                die.dieSide = dieSide4
-                dieSidesArray.append(dieSide4)
-            case 5:
-                dieSide5.count += 1
-                die.dieSide = dieSide5
-                dieSidesArray.append(dieSide5)
-                currentPlayer.hasScoringDice = true
-            case 6:
-                dieSide6.count += 1
-                die.dieSide = dieSide6
-                dieSidesArray.append(dieSide6)
-            default:
-                break
-            }
-            print("current Roll: \(die.dieSide!.value), count: \(die.dieSide!.count)")
-        }
-        for die in currentDiceArray {
-            if die.dieSide!.count >= 3 {
-                currentPlayer.hasScoringDice = true
-            }
-        }
+        //returnDiceToHomePosition()
         resetCounters()
-    }
-    */
-
-    func getDieSides() {
-        dieSidesArray.removeAll()
-        countDice()
         resetScoringCombos()
-        var id = 0
-        for dieSide in dieSidesArray {
-            print("dieSide count: \(dieSide.count)")
+        dieFacesArray.removeAll()
+        countDice(isComplete: handlerBlock)
+        /*
+        if currentPlayer.firstRoll {
+            evalDice()
+            currentPlayer.firstRoll = false
+        }
+        */
+        getScoringCombos()
 
-            switch dieSide.count {
-            case 2:
-                pairs += 1
-                dieSidesArray[id].count = 0
-            case 3:
-                threeOAK = true
-                dieSidesArray[id].count = 0
-            case 4:
-                fourOAK = true
-                dieSidesArray[id].count = 0
-            case 5:
-                fiveOAK = true
-                dieSidesArray[id].count = 0
-            case 6:
-                sixOAK = true
-                dieSidesArray[id].count = 0
-            default:
-                break
-            }
+        print("pairs: \(pairs)")
+        var id = 0
+        for _ in currentDieValuesArray {
+            currentDieValuesArray[id] = 0
             id += 1
         }
-    }
 
-    func countDice() {
-        var value = Int()
+        /*
         for die in currentDiceArray {
-            value = Int(arc4random_uniform(6)+1)
-            switch value {
-            case 1:
-                dieSide1.count += 1
-                die.dieSide = dieSide1
-                dieSidesArray.append(dieSide1)
-            //currentPlayer.hasScoringDice = true
+            switch die.dieSide!.count {
             case 2:
-                dieSide2.count += 1
-                die.dieSide = dieSide2
-                dieSidesArray.append(dieSide2)
+                pairs += 1
+                die.dieSide!.count = 0
             case 3:
-                dieSide3.count += 1
-                die.dieSide = dieSide3
-                dieSidesArray.append(dieSide3)
+                threeOAK = true
+                die.dieSide!.count = 0
             case 4:
-                dieSide4.count += 1
-                die.dieSide = dieSide4
-                dieSidesArray.append(dieSide4)
+                fourOAK = true
+                die.dieSide!.count = 0
             case 5:
-                dieSide5.count += 1
-                die.dieSide = dieSide5
-                dieSidesArray.append(dieSide5)
-            //currentPlayer.hasScoringDice = true
+                fiveOAK = true
+                die.dieSide!.count = 0
             case 6:
-                dieSide6.count += 1
-                die.dieSide = dieSide6
-                dieSidesArray.append(dieSide6)
+                sixOAK = true
+                die.dieSide!.count = 0
             default:
                 break
             }
-            rollDiceAction(die: die, isComplete: handlerBlock)
-            print("current Roll: \(die.dieSide!.value), count: \(die.dieSide!.count)")
         }
+        */
     }
 
-    /*
-    func evalDice(dice: [Die]) {
-        //checkForStraight()
-        //checkForPairs()
-        checkForLikeDice(dice: dice)
-        checkForScoringDice(dice: dice)
-        if currentPlayer.hasScoringDice == false {
+    func getScoringCombos() {
+        for die in currentDiceArray {
+            let dieFaceCount = die.dieFace?.countThisRoll
+            print("dieFaceValue: \(die.dieFace!.faceValue), dieCount: \(dieFaceCount!)")
+
+            switch dieFaceCount {
+            case 1:
+                if die.dieFace?.faceValue == 1 || die.dieFace?.faceValue == 5 {
+                    currentPlayer.hasScoringDice = true
+                }
+            case 2:
+                print("pair of \(die.dieFace!.faceValue)'s found")
+                pairs += 1
+                die.dieFace?.countThisRoll = 0
+            case 3:
+                print("three of a kind")
+                threeOAK = true
+                die.dieFace?.countThisRoll = 0
+                currentPlayer.hasScoringDice = true
+            case 4:
+                print("four of a kind")
+                fourOAK = true
+                die.dieFace?.countThisRoll = 0
+                currentPlayer.hasScoringDice = true
+            case 5:
+                print("five of a kind")
+                fiveOAK = true
+                die.dieFace?.countThisRoll = 0
+                currentPlayer.hasScoringDice = true
+            case 6:
+                print("six of a kind")
+                sixOAK = true
+                die.dieFace?.countThisRoll = 0
+                currentPlayer.hasScoringDice = true
+            default:
+                break
+            }
+        }
+        if pairs == 1 && threeOAK == true {
+            threeOAK = false
+            pairs = 0
+            fullHouse = true
+        } else if pairs == 3 {
+            threePair = true
+            pairs = 0
+        }
+        currentDieValuesArray.removeAll()
+        for die in currentDiceArray {
+            currentDieValuesArray.append(die.dieFace!.faceValue)
+        }
+        if currentPlayer.firstRoll {
+            let sortedDieValues = currentDieValuesArray.sorted()
+            if sortedDieValues == lowStraight || sortedDieValues == highStraight || sortedDieValues == sixDieStraight {
+                straight = true
+                currentPlayer.hasScoringDice = true
+            }
+        } else {
+            straight = false
+        }
+        if currentPlayer.hasScoringDice {
+            scoreDice()
+            currentPlayer.hasScoringDice = false
+        } else {
             farkle()
         }
     }
 
+    func countDice(isComplete: (Bool) -> Void) {
+        resetDieCount()
+        var value = Int()
+        for die in currentDiceArray {
+            value = Int(arc4random_uniform(6)+1)
+            print("currentDieValue: \(value)")
+            switch value {
+            case 1:
+                ones += 1
+                dieFace1.countThisRoll += 1
+                die.dieFace = dieFace1
+                //die.dieSide = dieSide1
+                /*
+                if let oldValue = dieCountDict.updateValue(ones, forKey: "Ones") {
+                    print("Ones: \(ones)")
+                    print("dieValue: \((die.dieFace?.dieValue["Ones"])!), oldValue: \(oldValue), newValue: \(dieCountDict["Ones"]!)")
+                }
+                */
+                dieFacesArray.append(die.dieFace!)
+            case 2:
+                twos += 1
+                dieFace2.countThisRoll += 1
+                die.dieFace = dieFace2
+                /*
+                die.dieFace?.dieValue["Twos"] = twos
+                //die.dieSide = dieSide2
+                if let oldValue = dieCountDict.updateValue(twos, forKey: "Twos") {
+                    print("Twos: \(twos)")
+                    print("dieValue: \((die.dieFace?.dieValue["Twos"])!), oldValue: \(oldValue), newValue: \(dieCountDict["Twos"]!)")
+                }
+                */
+                dieFacesArray.append(die.dieFace!)
+            case 3:
+                threes += 1
+                dieFace3.countThisRoll += 1
+                die.dieFace = dieFace3
+               /*
+                die.dieFace?.dieValue["Threes"] = threes
+                //die.dieSide = dieSide3
+                if let oldValue = dieCountDict.updateValue(threes, forKey: "Threes") {
+                    print("Threes: \(threes)")
+                    print("dieValue: \((die.dieFace?.dieValue["Threes"])!), oldValue: \(oldValue), newValue: \(dieCountDict["Threes"]!)")
+                }
+                */
+                dieFacesArray.append(die.dieFace!)
+            case 4:
+                fours += 1
+                dieFace4.countThisRoll += 1
+                die.dieFace = dieFace4
+                /*
+                die.dieSide?.dieValue["Fours"] = fours
+                //die.dieSide = dieSide4
+                if let oldValue = dieCountDict.updateValue(fours, forKey: "Fours") {
+                    print("Fours: \(fours)")
+                    print("dieValue: \((die.dieSide?.dieValue["Fours"])!), oldValue: \(oldValue), newValue: \(dieCountDict["Fours"]!)")
+                }
+                */
+                dieFacesArray.append(die.dieFace!)
+            case 5:
+                fives += 1
+                dieFace5.countThisRoll += 1
+                die.dieFace = dieFace5
+                /*
+                die.dieSide?.dieValue["Fives"] = fives
+                //die.dieSide = dieSide5
+                if let oldValue = dieCountDict.updateValue(fives, forKey: "Fives") {
+                    print("Fives: \(fives)")
+                    print("dieValue: \((die.dieSide?.dieValue["Fives"])!), oldValue: \(oldValue), newValue: \(dieCountDict["Fives"]!)")
+                }
+                */
+                dieFacesArray.append(die.dieFace!)
+            case 6:
+                sixes += 1
+                dieFace6.countThisRoll += 1
+                die.dieFace = dieFace6
+                /*
+                die.dieSide?.dieValue["Sixes"] = sixes
+                //die.dieSide = dieSide6
+                if let oldValue = dieCountDict.updateValue(sixes, forKey: "Sixes") {
+                    print("Sixes: \(sixes)")
+                    print("dieValue: \((die.dieSide?.dieValue["Sixes"])!), oldValue: \(oldValue), newValue: \(dieCountDict["Sixes"]!)")
+                }
+                */
+                dieFacesArray.append(die.dieFace!)
+            default:
+                break
+            }
+            print("dieValue: \(die.dieFace!.faceValue), dieCount: \(die.dieFace!.countThisRoll)")
+
+            //print("die value: \(die.dieSide!.value),   die count: \(die.dieSide!.count)")
+
+            rollDiceAction()//die: die, isComplete: handlerBlock)
+            //print("current Roll: \(die.dieSide!.value), count: \(die.dieSide!.count)")
+        }
+        //evalDice()
+        isComplete(true)
+    }
+
+    func resetDieCount() {
+        for die in currentDiceArray {
+            die.dieFace?.countThisRoll = 0
+        }
+        for die in selectedDieArray {
+            die.dieFace?.countThisRoll = 0
+        }
+    }
+
+    /*
     func checkForStraight() {
         var dieValues = [Int]()
         for die in currentDiceArray {
-            dieValues.append(die.dieSide!.value)
+            dieValues.append(die.dieFace!.faceValue)
         }
         dieValues = dieValues.sorted()
 
@@ -351,7 +405,9 @@ extension GameScene {
             print("Straight Found")
         }
     }
+    */
 
+    /*
     func checkForFullHouse() {
         if pairs == 1 && threeOAK {
             fullHouse = true
@@ -359,130 +415,78 @@ extension GameScene {
         }
     }
 
-    /*
-    func checkForPairs(dice: [Die]) {
-        if !currentDiceArray.isEmpty {
-            for die in currentDiceArray {
-                if die.dieSide!.count == 2 {
-                    pairs += 1
-                    die.dieSide!.count = 0
-                    print("Pair Found")
-                }
-            }
-            if pairs == 3 {
-                currentScore += 500
-                pairs = 0
-                print("3 Pair Found")
-            } else if pairs == 1 {
-                for die in currentDiceArray {
-                    if die.dieSide!.count == 3 {
-                        fullHouse = true
-                        currentScore += 1250
-                        currentPlayer.currentRollScore += currentScore
-                        currentScore = 0
-                        die.dieSide!.count = 0
-                        print("Full House Found")
-                    }
-                }
-            }
-        }
-    }
-    */
-
-    func checkForLikeDice(dice: [Die]) {
+     func checkForLikeDice(dice: [Die]) {
         for die in dice {
-            //if die.selected {
-                switch die.dieSide!.count {
-                case 1:
-                    if die.dieSide!.value == 1 && !die.counted {
-                        currentScore += 100
-                        die.counted = true
-                        currentPlayer.currentRollScore += currentScore
-                        currentScore = 0
-                        //scoringDiceArray.append(die)
-                        //currentDiceArray.removeAll(where: { $0.dieSide!.value == die.dieSide!.value } )
-                    } else if die.dieSide!.value == 5 && !die.counted {
-                        currentScore += 50
-                        die.counted = true
-                        currentPlayer.currentRollScore += currentScore
-                        currentScore = 0
-                        //scoringDiceArray.append(die)
-                        //currentDiceArray.removeAll(where: { $0.dieSide!.value == die.dieSide!.value } )
-                    }
-                    break
-                case 2:
-                    print("pair found")
-                    pairs += 1
-                    if die.dieSide!.value == 1 && !die.counted {
-                        currentScore += 100
-                        die.counted = true
-                        currentPlayer.currentRollScore += currentScore
-                        currentScore = 0
-                        //scoringDiceArray.append(die)
-                        //currentDiceArray.removeAll(where: { $0.dieSide!.value == die.dieSide!.value } )
-                    } else if die.dieSide!.value == 5 && !die.counted {
-                        currentScore += 50
-                        die.counted = true
-                        currentPlayer.currentRollScore += currentScore
-                        currentScore = 0
-                        //scoringDiceArray.append(die)
-                        //currentDiceArray.removeAll(where: { $0.dieSide!.value == die.dieSide!.value } )
-                    }
-                    break
-                case 3:
-                    print("3 of a Kind Found")
-                    threeOAKValue = die.dieSide!.value
-                    threeOAK = true
-                    currentScore += (die.dieSide!.points * 100)
+            switch die.dieSide!.count {
+            case 1:
+                if die.dieSide!.value == 1 && !die.counted {
+                    currentScore += 100
+                    die.counted = true
+                    currentPlayer.currentRollScore += currentScore
+                } else if die.dieSide!.value == 5 && !die.counted {
+                    currentScore += 50
                     die.counted = true
                     currentPlayer.currentRollScore += currentScore
                     currentScore = 0
-                    die.dieSide!.count = 0
-                    //scoringDiceArray.append(die)
-                    //currentDiceArray.removeAll(where: { $0.dieSide!.value == die.dieSide!.value } )
-                    break
-                case 4:
-                    print("4 of a Kind Found")
-                    fourOAKValue = die.dieSide!.value
-                    fourOAK = true
-                    die.dieSide!.count = 0
-                    currentScore += ((die.dieSide!.points * 100) * 2)
-                    die.counted = true
-                    currentPlayer.currentRollScore += currentScore
-                    currentScore = 0
-                    //scoringDiceArray.append(die)
-                    //currentDiceArray.removeAll(where: { $0.dieSide!.value == die.dieSide!.value } )
-                    break
-                case 5:
-                    print("5 of a Kind Founc")
-                    fiveOAKValue = die.dieSide!.value
-                    fiveOAK = true
-                    die.dieSide!.count = 0
-                    currentScore += ((die.dieSide!.points * 100) * 3)
-                    die.counted = true
-                    currentPlayer.currentRollScore += currentScore
-                    currentScore = 0
-                    if currentGame.numDice == 5 {
-                        //currentDiceArray.removeAll()
-                    } else {
-                        //scoringDiceArray.append(die)
-                        //currentDiceArray.removeAll(where: { $0.dieSide!.value == die.dieSide!.value } )
-                    }
-                    break
-                case 6:
-                    sixOAKValue = die.dieSide!.value
-                    sixOAK = true
-                    die.dieSide!.count = 0
-                    currentScore += ((die.dieSide!.points * 100) * 4)
-                    die.counted = true
-                    currentPlayer.currentRollScore += currentScore
-                    currentScore = 0
-                    //currentDiceArray.removeAll()
-                    break
-                default:
-                    break
                 }
-            //}
+                break
+            case 2:
+                print("pair found")
+                pairs += 1
+                if die.dieSide!.value == 1 && !die.counted {
+                    currentScore += 100
+                    die.counted = true
+                    currentPlayer.currentRollScore += currentScore
+                    currentScore = 0
+                } else if die.dieSide!.value == 5 && !die.counted {
+                    currentScore += 50
+                    die.counted = true
+                    currentPlayer.currentRollScore += currentScore
+                    currentScore = 0
+                }
+                break
+            case 3:
+                print("3 of a Kind Found")
+                threeOAKValue = die.dieSide!.value
+                threeOAK = true
+                currentScore += (die.dieSide!.points * 100)
+                die.counted = true
+                currentPlayer.currentRollScore += currentScore
+                currentScore = 0
+                die.dieSide!.count = 0
+                break
+            case 4:
+                print("4 of a Kind Found")
+                fourOAKValue = die.dieSide!.value
+                fourOAK = true
+                die.dieSide!.count = 0
+                currentScore += ((die.dieSide!.points * 100) * 2)
+                die.counted = true
+                currentPlayer.currentRollScore += currentScore
+                currentScore = 0
+                break
+            case 5:
+                print("5 of a Kind Founc")
+                fiveOAKValue = die.dieSide!.value
+                fiveOAK = true
+                die.dieSide!.count = 0
+                currentScore += ((die.dieSide!.points * 100) * 3)
+                die.counted = true
+                currentPlayer.currentRollScore += currentScore
+                currentScore = 0
+                break
+            case 6:
+                sixOAKValue = die.dieSide!.value
+                sixOAK = true
+                die.dieSide!.count = 0
+                currentScore += ((die.dieSide!.points * 100) * 4)
+                die.counted = true
+                currentPlayer.currentRollScore += currentScore
+                currentScore = 0
+                break
+            default:
+                break
+            }
         }
         if pairs == 3 {
             currentScore += 500
@@ -503,62 +507,41 @@ extension GameScene {
 
     func checkForScoringDice(dice: [Die]) {
         for die in dice {
-            //if die.selected {
-                switch die.dieSide!.value {
-                case 1:
-                    if die.dieSide!.value == threeOAKValue || die.dieSide!.value == fourOAKValue || die.dieSide!.value == fiveOAKValue || die.dieSide!.value == sixOAKValue {
-                        //scoringDiceArray.append(die)
-                        //currentDiceArray.removeAll(where: { $0.dieSide!.value == die.dieSide!.value } )
-                        break
-                    } else {
-                        currentScore += 100
-                        die.counted = true
-                        currentPlayer.currentRollScore += currentScore
-                        currentScore = 0
-                        currentPlayer.hasScoringDice = true
-                        die.dieSide!.count = 0
-                        //scoringDiceArray.append(die)
-                        //currentDiceArray.removeAll(where: { $0.dieSide!.value == die.dieSide!.value } )
-                    }
-                case 5:
-                    if die.dieSide!.value == threeOAKValue || die.dieSide!.value == fourOAKValue || die.dieSide!.value == fiveOAKValue || die.dieSide!.value == sixOAKValue {
-                        //scoringDiceArray.append(die)
-                        //currentDiceArray.removeAll(where: { $0.dieSide!.value == die.dieSide!.value } )
-                        break
-                    } else {
-                        currentScore += 50
-                        die.counted = true
-                        currentPlayer.currentRollScore += currentScore
-                        currentScore = 0
-                        currentPlayer.hasScoringDice = true
-                        die.dieSide!.count = 0
-                        //scoringDiceArray.append(die)
-                        //currentDiceArray.removeAll(where: { $0.dieSide!.value == die.dieSide!.value } )
-                    }
-                default:
+            switch die.dieSide!.value {
+            case 1:
+                if die.dieSide!.value == threeOAKValue || die.dieSide!.value == fourOAKValue || die.dieSide!.value == fiveOAKValue || die.dieSide!.value == sixOAKValue {
                     break
+                } else {
+                    currentScore += 100
+                    die.counted = true
+                    currentPlayer.currentRollScore += currentScore
+                    currentScore = 0
+                    currentPlayer.hasScoringDice = true
+                    die.dieSide!.count = 0
                 }
-            //}
+            case 5:
+                if die.dieSide!.value == threeOAKValue || die.dieSide!.value == fourOAKValue || die.dieSide!.value == fiveOAKValue || die.dieSide!.value == sixOAKValue {
+                    break
+                } else {
+                    currentScore += 50
+                    die.counted = true
+                    currentPlayer.currentRollScore += currentScore
+                    currentScore = 0
+                    currentPlayer.hasScoringDice = true
+                    die.dieSide!.count = 0
+                }
+            default:
+                break
+            }
         }
     }
     */
 
+    /*
     func evalDice() {
         print("evaluating dice")
         currentPlayer.hasScoringDice = false
-        currentScore = 0
-        if pairs == 1 {
-            if threeOAK == true {
-                fullHouse = true
-                threeOAK = false
-                pairs = 0
-                currentPlayer.hasScoringDice = true
-            }
-        } else if pairs == 3 {
-            threePair = true
-            currentPlayer.hasScoringDice = true
-        }
-
+        //currentScore = 0
         if pairs == 0 {
             straight = checkForStraight()
             if straight {
@@ -566,8 +549,20 @@ extension GameScene {
             }
         }
 
-        for dieSide in dieSidesArray {
-            if dieSide.value == 1 || dieSide.value == 5 {
+        if threeOAK == true {
+            if pairs == 1 {
+                fullHouse = true
+                threeOAK = false
+                //pairs = 0
+                currentPlayer.hasScoringDice = true
+            } else if pairs == 3 {
+                threePair = true
+                currentPlayer.hasScoringDice = true
+            }
+        }
+
+        for die in currentDiceArray {
+            if die.dieFace?.faceValue == 1 || die.dieFace?.faceValue == 5 {
                 currentPlayer.hasScoringDice = true
             }
         }
@@ -576,16 +571,10 @@ extension GameScene {
             farkle()
         } else {
             scoreDice()
-            currentPlayer.hasScoringDice = false
+            //currentPlayer.hasScoringDice = false
         }
-
-        //checkForPairs()
-        //checkForLikeDice()
-        //checkForScoringDice()
-        //for die in scoringDiceArray {
-            //die.zPosition = GameConstants.ZPositions.Dice - 0.5
-        //}
     }
+    */
 
     func scoreDice() {
         if fullHouse {
@@ -601,143 +590,91 @@ extension GameScene {
             currentScore += 500
             threePair = false
         } else if threeOAK {
-            for die in currentDiceArray {//} where die.dieSide!.count == 3 {
+            for die in currentDiceArray where die.dieFace?.countThisRoll == 3 {
+                if die.dieFace?.faceValue == 1 {
+                    currentScore += 1000
+                } else {
+                    currentScore += (die.dieFace!.faceValue * 100)
+                }
+            }
+            threeOAK = false
+            currentPlayer.hasScoringDice = true
 
+            /*
+            for die in selectedDieArray {
                 if die.selected && die.dieSide!.count == 3 {
                     print("three of a kind found")
                     currentScore += (die.dieSide!.points * 100)
                     die.dieSide!.count = 0
                 }
             }
+            */
         } else if fourOAK {
-            for die in currentDiceArray where die.dieSide!.count == 4 {
+            for die in currentDiceArray where die.dieFace?.countThisRoll == 4 {
+                if die.dieFace?.faceValue == 1 {
+                    currentScore += 2000
+                } else {
+                    currentScore += ((die.dieFace!.faceValue * 100) * 2)
+                }
+            }
+            fourOAK = false
+            currentPlayer.hasScoringDice = true
+
+            /*
+            for die in selectedDieArray where die.dieSide!.count == 4 {
                 if die.selected {
                     print("three of a kind found")
                     currentScore += ((die.dieSide!.points * 100) * 2)
                     die.dieSide!.count = 0
                 }
             }
+            */
         } else if fiveOAK {
-            for die in currentDiceArray where die.dieSide!.count == 5 {
+            for die in currentDiceArray where die.dieFace?.countThisRoll == 5 {
+                if die.dieFace?.faceValue == 1 {
+                    currentScore += 3000
+                } else {
+                    currentScore += ((die.dieFace!.faceValue * 100) * 3)
+                }
+            }
+            fiveOAK = false
+            currentPlayer.hasScoringDice = true
+
+            /*
+            for die in selectedDieArray where die.dieSide!.count == 5 {
                 if die.selected {
                     print("three of a kind found")
                     currentScore += ((die.dieSide!.points * 100) * 3)
                     die.dieSide!.count = 0
                 }
             }
+            */
         } else if sixOAK {
-            for die in currentDiceArray where die.dieSide!.count == 5 {
+            for die in currentDiceArray where die.dieFace?.countThisRoll == 6 {
+                if die.dieFace?.faceValue == 1 {
+                    currentScore += 4000
+                } else {
+                    currentScore += ((die.dieFace!.faceValue * 100) * 4)
+                }
+            }
+            sixOAK = false
+            currentPlayer.hasScoringDice = true
+
+            /*
+            for die in selectedDieArray where die.dieSide!.count == 5 {
                 if die.selected {
                     print("three of a kind found")
                     currentScore += ((die.dieSide!.points * 100) * 4)
                     die.dieSide!.count = 0
                 }
             }
+            */
         } else {
-            for die in currentDiceArray where die.dieSide!.value == 1 || die.dieSide!.value == 5 {
-                if die.dieSide!.value == 1 && !die.counted {
-                    print("a 1 found")
-                    currentScore += 100
-                    die.counted = true
-                } else if die.dieSide!.value == 5 && !die.counted {
-                    print("a 5 found")
-                    currentScore += 50
-                    die.counted = true
-                }
-                die.dieSide!.count = 0
-            }
+            currentPlayer.hasScoringDice = false
+            resetScoringCombos()
+            resetDieCount()
         }
-        resetScoringCombos()
-
-/*
-        var scoringCombos = [fullHouse, straight, threePair, threeOAK, fourOAK, fiveOAK, sixOAK]
-        var id = 0
-
-        for combo in scoringCombos {
-            print("current scoring combo: \(combo)")
-            switch combo {
-            case fullHouse == true:
-                print("full house found")
-                currentScore += 1250
-                scoringCombos[id] = false
-            case straight == true:
-                print("straight found")
-                currentScore += 1500
-                scoringCombos[id] = false
-            case threePair == true:
-                print("three pair found")
-                currentScore += 500
-                scoringCombos[id] = false
-            case threeOAK == true:
-                for die in currentDiceArray where die.dieSide!.count == 3 {
-                    if die.selected {
-                        print("three of a kind found")
-                        currentScore += (die.dieSide!.points * 100)
-                        die.dieSide!.count = 0
-                        scoringCombos[id] = false
-                    }
-                }
-            case fourOAK == true:
-                for die in currentDiceArray where die.dieSide!.count == 4 {
-                    print("four of a kind found")
-                    currentScore += ((die.dieSide!.points * 100) * 2)
-                    die.dieSide!.count = 0
-                    scoringCombos[id] = false
-                }
-            case fiveOAK == true:
-                for die in currentDiceArray where die.dieSide!.count == 5 {
-                    print("five of a kind found")
-                    currentScore += ((die.dieSide!.points * 100) * 3)
-                    die.dieSide!.count = 0
-                    scoringCombos[id] = false
-                }
-            case sixOAK == true:
-                for die in currentDiceArray where die.dieSide!.count == 6 {
-                    print("six of a kind found")
-                    currentScore += ((die.dieSide!.points * 100) * 4)
-                    die.dieSide!.count = 0
-                    scoringCombos[id] = false
-                }
-            default:
-                for die in currentDiceArray where die.dieSide!.value == 1 || die.dieSide!.value == 5 {
-                    if die.dieSide!.value == 1 && !die.counted {
-                        print("a 1 found")
-                        currentScore += 100
-                        die.counted = true
-                    } else if die.dieSide!.value == 5 && !die.counted {
-                        print("a 5 found")
-                        currentScore += 50
-                        die.counted = true
-                    }
-                    die.dieSide!.count = 0
-                }
-            }
-            id += 1
-        }
-        resetScoringCombos()
-        */
-
-        /*
-        if fullHouse {
-            currentScore += 1250
-        } else if straight {
-            currentScore += 1500
-        } else if threePair {
-            currentScore += 500
-        } else {
-            for die in currentDiceArray where die.selected && !die.counted {
-                if die.dieSide!.value == 1 {
-                    currentScore += 100
-                    die.counted = true
-                } else if die.dieSide!.value == 5 {
-                    currentScore += 50
-                    die.counted = true
-                }
-            }
-
-        }
-        */
-        //currentPlayer.currentRollScore += currentScore
+        currentPlayer.currentRollScore += currentScore
         //currentRollScoreLabel.text = String(currentPlayer.currentRollScore)
     }
 
@@ -751,26 +688,27 @@ extension GameScene {
         sixOAK = false
     }
 
+    /*
     func checkForStraight() -> Bool {
         var dieValues = [Int]()
         var result = Bool()
 
-        for die in currentDiceArray {
-            dieValues.append(die.dieSide!.value)
+        for _ in currentDiceArray {
+            //dieValues.append(die.dieSide!.value)
         }
         dieValues = dieValues.sorted()
 
         if dieValues ==  [1,2,3,4,5] || dieValues == [2,3,4,5,6] || dieValues == [1,2,3,4,5,6] {
             print("straight found")
-            //currentScore += 1500
             result = true
-            //currentDiceArray.removeAll()
         } else {
             result = false
         }
         return result
     }
+    */
 
+    /*
     func checkForPairs() {
         if !currentDiceArray.isEmpty {
             for die in currentDiceArray {
@@ -782,16 +720,12 @@ extension GameScene {
                 }
             }
             if pairs == 1 && threeOAK == true {
+                print("full house found")
+                fullHouse = true
+                threeOAK = false
+                currentScore += 1250
+                currentDiceArray.removeAll()
 
-                //for die in currentDiceArray {
-                    //if die.dieSide!.count == 3 {
-                        print("full house found")
-                        fullHouse = true
-                        threeOAK = false
-                        currentScore += 1250
-                        //die.dieSide!.count = 0
-                        currentDiceArray.removeAll()
-                    //}
             } else if pairs == 3 {
                 print("three pair found")
                 currentScore += 500
@@ -916,24 +850,18 @@ extension GameScene {
             }
         }
     }
-
+  */
 
     func resetCounters() {
         pairs = 0
         for die in currentDiceArray {
+            die.selected = false
             die.counted = false
         }
-        dieSide1.count = 0
-        dieSide2.count = 0
-        dieSide3.count = 0
-        dieSide4.count = 0
-        dieSide5.count = 0
-        dieSide6.count = 0
     }
 
-    func rollDiceAction(die: Die, isComplete: (Bool) -> Void) {
+    func rollDiceAction() {
         for die in currentDiceArray {
-            //print("dieSelected: \(die.selected)")
             var rollAction: SKAction = SKAction()
             let Wait = SKAction.wait(forDuration: 0.50)
 
@@ -963,7 +891,7 @@ extension GameScene {
 
     func setDieSides(die: Die) {
         die.physicsBody?.velocity = CGVector(dx: 0, dy: 0)
-        switch die.dieSide!.value {
+        switch die.dieFace?.faceValue {
         case 1:
             die.texture = GameConstants.Textures.Die1
         case 2:
@@ -1134,12 +1062,18 @@ extension GameScene {
         } else {
             logo.run(seq2)
         }
+        resetDice()
         isComplete(true)
     }
 
     func resetDieVariables() {
         for die in currentDiceArray {
-            die.dieSide!.count = 0
+            //die.dieSide!.count = 0
+            die.selected = false
+            die.counted = false
+        }
+        for die in selectedDieArray {
+            //die.dieSide!.count = 0
             die.selected = false
             die.counted = false
         }
@@ -1147,8 +1081,9 @@ extension GameScene {
 
     func resetDice() {
         currentDiceArray = diceArray
+        selectedDieArray.removeAll()
         for die in currentDiceArray {
-            die.dieSide!.count = 0
+            //die.dieSide!.count = 0
             die.selected = false
             die.counted = false
         }

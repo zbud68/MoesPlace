@@ -12,6 +12,14 @@ import UIKit
 let gameVC: GameViewController = GameViewController()
 
 // MARK: ********** Global Variables Section **********
+enum DieSides {
+    case One(Int)
+    case Two(Int)
+    case Three(Int)
+    case Four(Int)
+    case Five(Int)
+    case Sixe(Int)
+}
 
 enum GameState {
     case NewGame, InProgress, NewRound, GameOver
@@ -73,6 +81,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     var diePositionsArray: [CGPoint] = [CGPoint]()
     var positionsArray: [CGPoint] = [CGPoint]()
     var scoringDiceArray: [Die] = [Die]()
+    var dieCountDict: [String:Int] = [String:Int]()
 
     var die1PlaceHolder = SKSpriteNode()
     var die2PlaceHolder = SKSpriteNode()
@@ -92,15 +101,33 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
 
     // MARK: ********** DieFace Variables **********
 
+    var dieFace1: DieFace = DieFace(faceValue: 1)
+    var dieFace2: DieFace = DieFace(faceValue: 2)
+    var dieFace3: DieFace = DieFace(faceValue: 3)
+    var dieFace4: DieFace = DieFace(faceValue: 4)
+    var dieFace5: DieFace = DieFace(faceValue: 5)
+    var dieFace6: DieFace = DieFace(faceValue: 6)
+
+    /*
+    var dieSide1: DieSide = DieSide(name: "Die1", dieValue: ["Ones":0], points: 10)
+    var dieSide2: DieSide = DieSide(name: "Die2", dieValue: ["Twos":0], points: 2)
+    var dieSide3: DieSide = DieSide(name: "Die3", dieValue: ["Threes":0], points: 3)
+    var dieSide4: DieSide = DieSide(name: "Die4", dieValue: ["Fours":0], points: 4)
+    var dieSide5: DieSide = DieSide(name: "Die5", dieValue: ["Fives":0], points: 5)
+    var dieSide6: DieSide = DieSide(name: "Die6", dieValue: ["Sixes":0], points: 6)
+    */
+
+    /*
     var dieSide1: DieSide = DieSide(name: "Die1", value: 1, count: 0, points: 10)
     var dieSide2: DieSide = DieSide(name: "Die2", value: 2, count: 0, points: 2)
     var dieSide3: DieSide = DieSide(name: "Die3", value: 3, count: 0, points: 3)
     var dieSide4: DieSide = DieSide(name: "Die4", value: 4, count: 0, points: 4)
     var dieSide5: DieSide = DieSide(name: "Die5", value: 5, count: 0, points: 5)
     var dieSide6: DieSide = DieSide(name: "Die6", value: 6, count: 0, points: 6)
+    */
 
-    var dieSidesArray: [DieSide] = [DieSide]()
-    var currentRollArray: [DieSide] = [DieSide]()
+    var dieFacesArray: [DieFace] = [DieFace]()
+    //var currentRollArray: [DieSide] = [DieSide]()
     var currentDieValuesArray: [Int] = [Int]()
     var selectedDieArray: [Die] = [Die]()
 
@@ -206,7 +233,6 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     override func didMove(to view: SKView) {
         setupBackGround()
         setupGameTable()
-        //animateGameTitle(isComplete: handlerBlock)
         setupPlayers()
         setupCurrentRollScoreLabel()
         setupLogo()
@@ -236,7 +262,6 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
 
     func handleTouches(TouchedNode: SKNode) {
         var dieName: String = ""
-        // var dieTouched = false
         let touchedNode = TouchedNode
         if let name = touchedNode.name {
             dieName = name
@@ -267,7 +292,6 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
                     return
                 } else {
                     rollDice()
-                    //resetCounters()
                 }
 
             case "KeepButton":
@@ -305,9 +329,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
 
             for die in currentDiceArray {
                 if dieName == die.name {
-                    //selectedDieArray.append(die)
                     handleTouchedDie(TouchedNode: touchedNode)
-                    //print("selected Die: \(die.name!)")
                 }
             }
         }
@@ -316,144 +338,64 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     func handleTouchedDie(TouchedNode: SKNode) {
         let touchedNode = TouchedNode as! SKSpriteNode
         if let name = touchedNode.name {
+
             switch name {
             case "Die1":
-                print("\(die1.dieSide!.value) touched")
+                print("\((die1.dieFace?.faceValue)!) touched")
                 die1.physicsBody?.velocity = CGVector(dx: 0, dy: 0)
                 die1.physicsBody = nil
                 die1.selected = true
                 die1.zRotation = 0
                 die1.position = die1PlaceHolder.position
                 selectedDieArray.append(die1)
-                /*
-                if die1.dieSide!.count >= 3  || die1.dieSide!.value == 1 || die1.dieSide!.value == 5 {
-                    selectedDieArray.append(die1)
-                    //currentDiceArray.removeAll(where: { $0.name == "Die2" })
-                }
-                die1.counted = true
-                 */
             case "Die2":
-                print("\(die2.dieSide!.value) touched")
+                print("\((die2.dieFace?.faceValue)!) touched")
                 die2.physicsBody?.velocity = CGVector(dx: 0, dy: 0)
                 die2.physicsBody = nil
                 die2.selected = true
                 die2.zRotation = 0
                 die2.position = die2PlaceHolder.position
                 selectedDieArray.append(die2)
-                /*
-                if die2.dieSide!.count >= 3  || die2.dieSide!.value == 1 || die2.dieSide!.value == 5 {
-                    selectedDieArray.append(die2)
-                    //currentDiceArray.removeAll(where: { $0.name == "Die2" })
-                }
-                die2.counted = true
-                */
             case "Die3":
-                print("\(die3.dieSide!.value) touched")
+                print("\((die3.dieFace?.faceValue)!) touched")
                 die3.physicsBody?.velocity = CGVector(dx: 0, dy: 0)
                 die3.physicsBody = nil
                 die3.selected = true
                 die3.zRotation = 0
                 die3.position = die3PlaceHolder.position
                 selectedDieArray.append(die3)
-                /*
-                if die3.dieSide!.count >= 3  || die3.dieSide!.value == 1 || die3.dieSide!.value == 5 {
-                    selectedDieArray.append(die3)
-                    //currentDiceArray.removeAll(where: { $0.name == "Die3" })
-                }
-                die3.counted = true
-                */
             case "Die4":
-                print("\(die4.dieSide!.value) touched")
+                print("\((die4.dieFace?.faceValue)!) touched")
                 die4.physicsBody?.velocity = CGVector(dx: 0, dy: 0)
                 die4.physicsBody = nil
                 die4.selected = true
                 die4.zRotation = 0
                 die4.position = die4PlaceHolder.position
                 selectedDieArray.append(die4)
-                /*
-                if die4.dieSide!.count >= 3  || die4.dieSide!.value == 1 || die4.dieSide!.value == 5 {
-                    selectedDieArray.append(die4)
-                    //currentDiceArray.removeAll(where: { $0.name == "Die4" })
-                }
-                die4.counted = true
-                */
             case "Die5":
-                print("\(die5.dieSide!.value) touched")
+                print("\((die5.dieFace?.faceValue)!) touched")
                 die5.physicsBody?.velocity = CGVector(dx: 0, dy: 0)
                 die5.physicsBody = nil
                 die5.selected = true
                 die5.zRotation = 0
                 die5.position = die5PlaceHolder.position
                 selectedDieArray.append(die5)
-                /*
-                if die5.dieSide!.count >= 3  || die5.dieSide!.value == 1 || die5.dieSide!.value == 5 {
-                    selectedDieArray.append(die5)
-                    //currentDiceArray.removeAll(where: { $0.name == "Die2" })
-                }
-                die5.counted = true
-                */
             case "Die6":
-                print("\(die6.dieSide!.value) touched")
+                print("\((die6.dieFace?.faceValue)!) touched")
                 die6.physicsBody?.velocity = CGVector(dx: 0, dy: 0)
                 die6.physicsBody = nil
                 die6.selected = true
                 die6.zRotation = 0
                 die6.position = die6PlaceHolder.position
                 selectedDieArray.append(die6)
-                /*
-                if die6.dieSide!.count >= 3 || die6.dieSide!.value == 1 || die6.dieSide!.value == 5 {
-                    currentPlayer.hasScoringDice = true
-                    selectedDieArray.append(die6)
-                    //currentDiceArray.removeAll(where: { $0.name == "Die6" })
-                }
-                die6.counted = true
-                */
             default:
                 break
             }
         }
         currentDiceArray.removeAll(where: { $0.selected })
-        for die in selectedDieArray {
-            print("selected Die: \(die.dieSide!.value)")
-        }
-        //currentScore = 0
-        evalDice()//(dice: selectedDieArray)
-        //currentRollScoreLabel.text = String(currentPlayer.currentRollScore)
-        //if !currentPlayer.firstRoll {
-           // evalDice(dice: scoringDiceArray)//selectedDieArray)
-       // } //else {
-            //currentPlayer.firstRoll = false
-            //evalDice(dice: scoringDiceArray) //currentDiceArray)
-        //}
-        //currentPlayer.currentRollScore += currentScore
-
-        /*
-        if currentPlayer.hasScoringDice == false {
-            farkle()
-        } else {
-            if scoringDiceArray.count == currentDiceArray.count {
-                //startNewRoll()
-            }
-        }
-        */
+        getScoringCombos()
+        //evalDice()
     }
-
-    /*
-    func removeSelectedDie() {
-        print("remove selected die")
-        var id = 0
-        for currentDie in currentDiceArray {
-            for selectedDie in selectedDieArray {
-                if selectedDie.name == currentDie.name {
-                    currentDiceArray.remove(at: id)
-                    print("selected Die Name: \(selectedDie.name!)")
-                    print("\(currentDie.name!): removed")
-                }
-            }
-            id += 1
-        }
-    }
-    */
 
     func wasMainMenuButtonTouched() {
         for button in mainMenuButtonsArray where button.contains(mainMenuTouchLocation) {
@@ -525,51 +467,9 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
                     diePositionsArray.removeFirst()
                 }
             }
-            evalDice()
-            //if currentScore == 0 {
-                //farkle()
-                //return
-            //}
+            //evalDice()
         }
     }
-
-
-    //func wasDiceTouched(touchedNode: SKNode) {
-        /*
-         for die in currentDiceArray where die.selected == false {
-         if die.contains(gameTableTouchLocation) {
-         print("dice touched")
-
-         die.selected = true
-         die.physicsBody?.collisionBitMask = 2
-         die.physicsBody?.isDynamic = false
-         die.physicsBody?.mass = 10000
-         die.zRotation = 0
-         if diePositionsArray.isEmpty {
-         diePositionsArray = positionsArray
-         } else {
-         die.position = diePositionsArray.first!
-         diePositionsArray.removeFirst()
-         }
-         if threeOAK || fourOAK || fiveOAK || sixOAK || fullHouse {
-         scoringDiceArray.append(die)
-         evalDice(dice: scoringDiceArray)
-         }
-         die.physicsBody = nil
-         }
-         }
-         if !currentPlayer.firstRoll {
-         evalDice(dice: currentDiceArray)
-         } else {
-         currentPlayer.firstRoll = false
-         }
-         for die in scoringDiceArray {
-         die.counted = true
-         }
-         currentPlayer.currentRollScore += currentScore
-         currentRollScoreLabel.text = String(currentPlayer.currentRollScore)
-         */
-    //}
 
     func newGameButtonTouched() {
         if gameState == .InProgress {
@@ -583,6 +483,14 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     func setupNewGame() {
         gameState = .InProgress
         currentGame = Game()
+        resetDice()
+        resetCurrentScoreVariables()
+        resetCounters()
+        resetArrays()
+        resetScoringCombos()
+        resetDiePhysics()
+        resetDieVariables()
+        resetPlayerScoreVariables()
         currentPlayerID = 0
     }
 
@@ -635,25 +543,24 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     }
 
     func keepScoreButtonTouched() {
-        //showScoreTotal()
-        //currentPlayer.score += currentPlayer.currentRollScore
-        //currentPlayer.scoreLabel.text = String(currentPlayer.score)
+        prepareForNextPlayer()
         nextPlayer()
     }
 
-    func nextPlayer() {
+    func prepareForNextPlayer() {
         currentDiceArray = diceArray
-        resetDice()
-        resetCounters()
-        resetArrays()
-        resetCurrentScoreVariables()
-        returnDiceToHomePosition()
-        /*
         for die in currentDiceArray {
             die.selected = false
-            die.counted = false
         }
-        */
+        resetCurrentScoreVariables()
+        resetDice()
+        resetDiePhysics()
+        resetCounters()
+        resetArrays()
+        returnDiceToHomePosition()
+    }
+
+    func nextPlayer() {
         if currentPlayerID < playersArray.count - 1 {
             currentPlayerID += 1
         } else {
@@ -667,6 +574,10 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
 
     func startNewRoll() {
         currentDiceArray = diceArray
+        resetDice()
+        resetCounters()
+        resetCurrentScoreVariables()
+        currentScore = 0
         currentPlayer.firstRoll = true
         currentPlayer.hasScoringDice = false
         rollDice()
