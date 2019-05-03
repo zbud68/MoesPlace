@@ -310,6 +310,9 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         if let name = touchedNode.name {
             switch name {
             case "Die1":
+                if die1.dieFace!.countThisRoll >= 3 {
+                    moveDiceCollection(count: die1.dieFace!.countThisRoll)
+                }
                 print("\((die1.dieFace?.faceValue)!) touched")
                 die1.physicsBody?.velocity = CGVector(dx: 0, dy: 0)
                 die1.physicsBody = nil
@@ -318,6 +321,9 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
                 die1.position = die1PlaceHolder.position
                 selectedDieArray.append(die1)
             case "Die2":
+                if die1.dieFace!.countThisRoll >= 3 {
+                    moveDiceCollection(count: die1.dieFace!.countThisRoll)
+                }
                 print("\((die2.dieFace?.faceValue)!) touched")
                 die2.physicsBody?.velocity = CGVector(dx: 0, dy: 0)
                 die2.physicsBody = nil
@@ -326,6 +332,9 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
                 die2.position = die2PlaceHolder.position
                 selectedDieArray.append(die2)
             case "Die3":
+                if die1.dieFace!.countThisRoll >= 3 {
+                    moveDiceCollection(count: die1.dieFace!.countThisRoll)
+                }
                 print("\((die3.dieFace?.faceValue)!) touched")
                 die3.physicsBody?.velocity = CGVector(dx: 0, dy: 0)
                 die3.physicsBody = nil
@@ -334,6 +343,9 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
                 die3.position = die3PlaceHolder.position
                 selectedDieArray.append(die3)
             case "Die4":
+                if die1.dieFace!.countThisRoll >= 3 {
+                    moveDiceCollection(count: die1.dieFace!.countThisRoll)
+                }
                 print("\((die4.dieFace?.faceValue)!) touched")
                 die4.physicsBody?.velocity = CGVector(dx: 0, dy: 0)
                 die4.physicsBody = nil
@@ -342,6 +354,9 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
                 die4.position = die4PlaceHolder.position
                 selectedDieArray.append(die4)
             case "Die5":
+                if die1.dieFace!.countThisRoll >= 3 {
+                    moveDiceCollection(count: die1.dieFace!.countThisRoll)
+                }
                 print("\((die5.dieFace?.faceValue)!) touched")
                 die5.physicsBody?.velocity = CGVector(dx: 0, dy: 0)
                 die5.physicsBody = nil
@@ -350,6 +365,9 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
                 die5.position = die5PlaceHolder.position
                 selectedDieArray.append(die5)
             case "Die6":
+                if die1.dieFace!.countThisRoll >= 3 {
+                    moveDiceCollection(count: die1.dieFace!.countThisRoll)
+                }
                 print("\((die6.dieFace?.faceValue)!) touched")
                 die6.physicsBody?.velocity = CGVector(dx: 0, dy: 0)
                 die6.physicsBody = nil

@@ -143,7 +143,7 @@ extension GameScene {
         currentPlayer.hasScoringDice = false
         resetDiePhysics()
         if currentDiceArray.isEmpty {
-            print("new roll started")
+            //print("new roll started")
             startNewRoll()
         } else {
             getDieSides()
@@ -163,7 +163,7 @@ extension GameScene {
             getScoringCombos(isComplete: handlerBlock)
         }
 
-        print("pairs: \(pairs)")
+        //print("pairs: \(pairs)")
         var id = 0
         for _ in currentDieValuesArray {
             currentDieValuesArray[id] = 0
@@ -201,7 +201,7 @@ extension GameScene {
             }
             dieFacesArray.append(die.dieFace!.faceValue)
 
-            print("dieValue: \(die.dieFace!.faceValue), dieCount: \(die.dieFace!.countThisRoll)")
+            //print("dieValue: \(die.dieFace!.faceValue), dieCount: \(die.dieFace!.countThisRoll)")
         }
 
         for die in currentDiceArray {
@@ -212,53 +212,80 @@ extension GameScene {
 
         let uniqueDieFaces = removeDuplicateInts(values: dieFacesArray)
         print(dieFacesArray)
-        print(uniqueDieFaces)
+        //print(uniqueDieFaces)
         dieFacesArray = uniqueDieFaces
-        print(dieFacesArray)
+        //print(dieFacesArray)
 
         isComplete(true)
     }
 
     func getScoringCombos(isComplete: (Bool) -> Void) {
-        for die in currentDiceArray { //where die.selected {
-            print("dieFaceValue: \(die.dieFace!.faceValue), dieCount: \(die.dieFace!.countThisRoll)")
-            switch die.dieFace?.countThisRoll {
+        var count = 0
+        //var value = 0
+
+        for die in currentDiceArray where die.selected {
+            //print("dieFaceValue: \(die.dieFace!.faceValue), dieCount: \(die.dieFace!.countThisRoll)")
+            count = die.dieFace!.countThisRoll
+            //value = die.dieFace!.faceValue
+
+            switch count {
             case 1:
-                print("single \(die.dieFace!.faceValue) found")
+                //print("single \(die.dieFace!.faceValue) found")
                 if die.dieFace!.faceValue == 1 || die.dieFace!.faceValue == 5 {
                     currentPlayer.hasScoringDice = true
+                    singles = true
                 }
-                singles = true
             case 2:
-                print("pair of \(die.dieFace!.faceValue)'s found")
+                //print("pair of \(die.dieFace!.faceValue)'s found")
                 if die.dieFace!.faceValue == 1 || die.dieFace!.faceValue == 5 {
                     currentPlayer.hasScoringDice = true
+                    singles = true
                 }
-                singles = true
                 pairs += 1
             case 3:
+                if pairs == 1 {
+                    break
+                }
                 threeOAK = true
                 threeOAKFaceValue = die.dieFace!.faceValue
+                currentPlayer.hasScoringDice = true
+                scoreDice(key: "ThreeOAK")
+                die.dieFace!.countThisRoll = 0
             case 4:
                 fourOAK = true
                 threeOAKFaceValue = die.dieFace!.faceValue
+                currentPlayer.hasScoringDice = true
+                scoreDice(key: "ThreeOAK")
+                die.dieFace!.countThisRoll = 0
             case 5:
                 fiveOAK = true
                 fiveOAKFaceValue = die.dieFace!.faceValue
+                currentPlayer.hasScoringDice = true
+                scoreDice(key: "ThreeOAK")
+                die.dieFace!.countThisRoll = 0
             case 6:
                 sixOAK = true
                 sixOAKFaceValue = die.dieFace!.faceValue
+                currentPlayer.hasScoringDice = true
+                scoreDice(key: "ThreeOAK")
+                die.dieFace!.countThisRoll = 0
             default:
                 break
             }
+            print("Die Value: \(die.dieFace!.faceValue), Die Count: \(die.dieFace!.countThisRoll)")
         }
+
         if pairs == 1 && threeOAK == true {
             fullHouse = true
             threeOAK = false
             pairs = 0
+            currentPlayer.hasScoringDice = true
+            scoreDice(key: "FullHouse")
         } else if pairs == 3 {
             threePair = true
             pairs = 0
+            currentPlayer.hasScoringDice = true
+            scoreDice(key: "ThreePair")
         }
         currentDieValuesArray.removeAll()
 
@@ -269,22 +296,26 @@ extension GameScene {
         let sortedDieValues = currentDieValuesArray.sorted()
         if sortedDieValues == [1,2,3,4,5] || sortedDieValues == [2,3,4,5,6] || sortedDieValues == [1,2,3,4,5,6] {
             straight = true
+            currentPlayer.hasScoringDice = true
+            scoreDice(key: "Straight")
         }
+        print("Scoring Keys: \(scoringCombosArray.keys)")
+        print("Scoring Values: \(scoringCombosArray.values)")
 
-        //if !currentPlayer.firstRoll {
-            for (key, value) in scoringCombosArray {
-                if value == true {
-                    scoreDice(combo: key)
-                }
+        /*
+        for (key, value) in scoringCombosArray {
+            if value == true {
+                scoreDice(key: key)
             }
-        //}
+        }
+        */
 
         currentDiceArray.removeAll(where: { $0.selected })
         isComplete(true)
     }
 
-    func scoreDice(combo: String) {
-        for (key, _) in scoringCombosArray where key == combo {
+    func scoreDice(key: String) {
+        for (_, _) in scoringCombosArray {  //where key == combo {
             switch key {
             case "FullHouse":
                 print("FullHouse found")
@@ -297,7 +328,7 @@ extension GameScene {
                 positionDice()
                 startNewRoll()
             case "ThreePair":
-                print("Three pair found")
+                //print("Three pair found")
                 currentScore = 500
                 pairs = 0
                 positionDice()
@@ -306,23 +337,24 @@ extension GameScene {
                 print("three of a kind")
                 currentScore = calcScore(count: 3)
             case "FourOAK":
-                print("four of a kind")
+                //print("four of a kind")
                 currentScore = calcScore(count: 4)
             case "FiveOAK":
-                print("five of a kind")
+                //print("five of a kind")
                 currentScore = calcScore(count: 5)
             case "SixOAK":
-                print("six of a kind")
+                //print("six of a kind")
                 currentScore = calcScore(count: 6)
             case "Singles":
                 if currentPlayer.hasScoringDice {
                     currentScore = calcSingleDice()
                 } else {
-                    //farkle()
+                    farkle()
                 }
             default:
                 break
             }
+            print("hasScoringDice: \(currentPlayer.hasScoringDice)")
             scoreTally.append(currentScore)
         }
         displayScore()
@@ -331,6 +363,7 @@ extension GameScene {
     }
 
     func calcScore(count: Int) -> Int {
+        print("Calculating Scoring Combo")
         var result = 0
         for die in currentDiceArray where die.dieFace?.countThisRoll == count {
             if die.dieFace!.faceValue == 1 {
@@ -438,26 +471,6 @@ extension GameScene {
         let moveDie4 = SKAction.move(to: die4PlaceHolder.position, duration: 0.25)
         let moveDie5 = SKAction.move(to: die5PlaceHolder.position, duration: 0.25)
         let moveDie6 = SKAction.move(to: die6PlaceHolder.position, duration: 0.25)
-        /*
-        let moveDie1 = SKAction.run {
-            self.die1.position = self.die1PlaceHolder.position
-        }
-        let moveDie2 = SKAction.run {
-            self.die2.position = self.die2PlaceHolder.position
-        }
-        let moveDie3 = SKAction.run {
-            self.die3.position = self.die3PlaceHolder.position
-        }
-        let moveDie4 = SKAction.run {
-            self.die4.position = self.die4PlaceHolder.position
-        }
-        let moveDie5 = SKAction.run {
-            self.die5.position = self.die5PlaceHolder.position
-        }
-        let moveDie6 = SKAction.run {
-            self.die5.position = self.die5PlaceHolder.position
-        }
-         */
 
         let rotateDice = SKAction.run {
             self.die1.zRotation = 0
@@ -501,8 +514,6 @@ extension GameScene {
         let resetDice = SKAction.run {
             self.resetDieVariables()
         }
-
-        //let wait = SKAction.wait(forDuration: 0)
 
         let seq1 = SKAction.sequence([moveDice1, resetDice])
 
@@ -627,6 +638,46 @@ extension GameScene {
             die.physicsBody?.linearDamping = 4
             die.physicsBody?.angularDamping = 5
             die.zPosition = GameConstants.ZPositions.Dice
+        }
+    }
+
+    func moveDiceCollection(count: Int){
+
+        let moveDie1 = SKAction.move(to: die1PlaceHolder.position, duration: 0.25)
+        let moveDie2 = SKAction.move(to: die2PlaceHolder.position, duration: 0.25)
+        let moveDie3 = SKAction.move(to: die3PlaceHolder.position, duration: 0.25)
+        let moveDie4 = SKAction.move(to: die4PlaceHolder.position, duration: 0.25)
+        let moveDie5 = SKAction.move(to: die5PlaceHolder.position, duration: 0.25)
+        let moveDie6 = SKAction.move(to: die6PlaceHolder.position, duration: 0.25)
+
+        for die in currentDiceArray where die.dieFace!.countThisRoll == count {
+            die.selected = true
+            die.physicsBody?.collisionBitMask = 2
+            die.physicsBody?.isDynamic = false
+            die.physicsBody?.allowsRotation = false
+
+            switch die.name {
+            case "Die1":
+                die.zRotation = 0
+                die.run(moveDie1)
+            case "Die2":
+                die.zRotation = 0
+                die.run(moveDie2)
+            case "Die3":
+                die.zRotation = 0
+                die.run(moveDie3)
+            case "Die4":
+                die.zRotation = 0
+                die.run(moveDie4)
+            case "Die5":
+                die.zRotation = 0
+                die.run(moveDie5)
+            case "Die6":
+                die.zRotation = 0
+                die.run(moveDie6)
+            default:
+                break
+            }
         }
     }
 
