@@ -78,10 +78,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
 
     var diceArray: [Die] = [Die]()
     var currentDiceArray: [Die] = [Die]()
-    var diePositionsArray: [CGPoint] = [CGPoint]()
-    var positionsArray: [CGPoint] = [CGPoint]()
     var scoringDiceArray: [Die] = [Die]()
-    var dieCountDict: [String:Int] = [String:Int]()
 
     var die1PlaceHolder = SKSpriteNode()
     var die2PlaceHolder = SKSpriteNode()
@@ -97,8 +94,6 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     var diePosition5: CGPoint = CGPoint()
     var diePosition6: CGPoint = CGPoint()
 
-    var reducedPositionArray: [CGPoint] = [CGPoint]()
-
     // MARK: ********** DieFace Variables **********
 
     var dieFace1: DieFace = DieFace(faceValue: 1)
@@ -107,45 +102,31 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     var dieFace4: DieFace = DieFace(faceValue: 4)
     var dieFace5: DieFace = DieFace(faceValue: 5)
     var dieFace6: DieFace = DieFace(faceValue: 6)
+    var dieFacesArray: [Int] = [Int]()
 
-    /*
-    var dieSide1: DieSide = DieSide(name: "Die1", dieValue: ["Ones":0], points: 10)
-    var dieSide2: DieSide = DieSide(name: "Die2", dieValue: ["Twos":0], points: 2)
-    var dieSide3: DieSide = DieSide(name: "Die3", dieValue: ["Threes":0], points: 3)
-    var dieSide4: DieSide = DieSide(name: "Die4", dieValue: ["Fours":0], points: 4)
-    var dieSide5: DieSide = DieSide(name: "Die5", dieValue: ["Fives":0], points: 5)
-    var dieSide6: DieSide = DieSide(name: "Die6", dieValue: ["Sixes":0], points: 6)
-    */
-
-    /*
-    var dieSide1: DieSide = DieSide(name: "Die1", value: 1, count: 0, points: 10)
-    var dieSide2: DieSide = DieSide(name: "Die2", value: 2, count: 0, points: 2)
-    var dieSide3: DieSide = DieSide(name: "Die3", value: 3, count: 0, points: 3)
-    var dieSide4: DieSide = DieSide(name: "Die4", value: 4, count: 0, points: 4)
-    var dieSide5: DieSide = DieSide(name: "Die5", value: 5, count: 0, points: 5)
-    var dieSide6: DieSide = DieSide(name: "Die6", value: 6, count: 0, points: 6)
-    */
-
-    var dieFacesArray: [DieFace] = [DieFace]()
-    //var currentRollArray: [DieSide] = [DieSide]()
     var currentDieValuesArray: [Int] = [Int]()
     var selectedDieArray: [Die] = [Die]()
+    var dieFaceValue = Int()
+    var dieFaceCount = Int()
 
     // MARK: ********** Scoring Variables **********
-
-    let lowStraight: [Int] = [1, 2, 3, 4, 5]
-    let highStraight: [Int] = [2, 3, 4, 5, 6]
-    let sixDieStraight: [Int] = [1, 2, 3, 4, 5, 6]
 
     var straight = false
     var fullHouse = false
     var threePair = false
-    var threeOAK: Bool = false
-    var fourOAK: Bool = false
-    var fiveOAK: Bool = false
-    var sixOAK: Bool = false
+    var threeOAK = false
+    var fourOAK = false
+    var fiveOAK = false
+    var sixOAK = false
+    var singles = false
     var pairs = 0
 
+    var threeOAKFaceValue = 0
+    var fourOAKFaceValue = 0
+    var fiveOAKFaceValue = 0
+    var sixOAKFaceValue = 0
+
+    var scoringCombosArray = [String:Bool]()
     var currentScore: Int = 0
     var currentRollScoreLabel: SKLabelNode = SKLabelNode()
 
@@ -207,26 +188,14 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     var mainMenuTouchLocation: CGPoint = CGPoint(x: 0, y: 0)
     var settingsMenuTouchLocation: CGPoint = CGPoint(x: 0, y: 0)
 
-    var threeOAKValue = 0
-    var fourOAKValue = 0
-    var fiveOAKValue = 0
-    var sixOAKValue = 0
-
-    var ones = 0
-    var twos = 0
-    var threes = 0
-    var fours = 0
-    var fives = 0
-    var sixes = 0
-
-    var dots = [Int]()
-
     let handlerBlock: (Bool) -> Void = {
         if $0 {
             var finished = false
             finished.toggle()
         }
     }
+
+    var scoreTally = [Int]()
 
     // MARK: ********** didMove Section **********
 
@@ -245,6 +214,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         showMenu(menu: mainMenu)
         getPlaceHolders()
         setupDice()
+        setupScoringCombosArray()
     }
 
     // MARK: ********** Touches Section **********
@@ -261,7 +231,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     }
 
     func handleTouches(TouchedNode: SKNode) {
-        var dieName: String = ""
+        var dieName = ""
         let touchedNode = TouchedNode
         if let name = touchedNode.name {
             dieName = name
@@ -338,7 +308,6 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     func handleTouchedDie(TouchedNode: SKNode) {
         let touchedNode = TouchedNode as! SKSpriteNode
         if let name = touchedNode.name {
-
             switch name {
             case "Die1":
                 print("\((die1.dieFace?.faceValue)!) touched")
@@ -391,10 +360,11 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             default:
                 break
             }
+            //getScoringCombos(isComplete: handlerBlock)
         }
-        currentDiceArray.removeAll(where: { $0.selected })
-        getScoringCombos()
-        //evalDice()
+        //currentDiceArray.removeAll(where: { $0.selected })
+        getScoringCombos(isComplete: handlerBlock)
+        displayScore()
     }
 
     func wasMainMenuButtonTouched() {
@@ -452,6 +422,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         }
     }
 
+    /*
     func wasDiceTouched() {
         for die in scoringDiceArray {
             if die.contains(gameTableTouchLocation) {
@@ -461,7 +432,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
                 die.selected = true
                 die.zRotation = 0
                 if diePositionsArray.isEmpty {
-                    diePositionsArray = positionsArray
+                    // = positionsArray
                 } else {
                     die.position = diePositionsArray.first!
                     diePositionsArray.removeFirst()
@@ -470,6 +441,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             //evalDice()
         }
     }
+    */
 
     func newGameButtonTouched() {
         if gameState == .InProgress {
@@ -573,11 +545,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     }
 
     func startNewRoll() {
-        currentDiceArray = diceArray
         resetDice()
         resetCounters()
-        resetCurrentScoreVariables()
-        currentScore = 0
         currentPlayer.firstRoll = true
         currentPlayer.hasScoringDice = false
         rollDice()
@@ -585,6 +554,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
 
     func startNewRound() {
         currentPlayerID = 0
+        resetDice()
         for player in playersArray {
             player.currentRollScore = 0
             player.firstRoll = true
@@ -620,7 +590,6 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     func resetCurrentScoreVariables() {
         currentPlayer.currentRollScore = 0
         currentScore = 0
-        currentRollScoreLabel.text = String(0)
     }
 
     func resetPlayerScoreVariables() {
@@ -634,19 +603,11 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
 
     func resetArrays() {
         currentDieValuesArray.removeAll()
-        //currentDiceArray = diceArray
-    }
-
-    func showScoreTotal() {
-        currentPlayer.score += currentPlayer.currentRollScore
-        print("current roll score: \(currentPlayer.currentRollScore)")
-        currentPlayer.currentRollScore = 0
-        print("current Score: \(currentPlayer.score)")
     }
 
     // MARK: ********** Updates Section **********
 
     override func update(_ currentTime: TimeInterval) {
-        currentRollScoreLabel.text = String(currentPlayer.currentRollScore)
+        displayScore()
     }
 }

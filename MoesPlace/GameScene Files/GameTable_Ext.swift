@@ -108,7 +108,7 @@ extension GameScene {
         currentRollScoreLabel.fontColor = GameConstants.Colors.LogoFont
         currentRollScoreLabel.fontSize = GameConstants.Sizes.PlayerScoreLabelFont
         currentRollScoreLabel.position = CGPoint(x: playerNameLabel.position.x + 110, y: playerNameLabel.position.y)
-        currentRollScoreLabel.zPosition = (gameTable.zPosition + 0.5)
+        currentRollScoreLabel.zPosition = GameConstants.ZPositions.ScoreLabel
         currentRollScoreLabel.alpha = 0.65
         
         gameTable.addChild(currentRollScoreLabel)

@@ -10,7 +10,7 @@ import SpriteKit
 
 class DieFace
 {
-    let faceValue : Int
+    var faceValue : Int
     var countThisRoll : Int = 0
 
     init(faceValue: Int)

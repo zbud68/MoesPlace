@@ -82,17 +82,17 @@ struct GameConstants {
 
     struct ZPositions {
         static let BackGround: CGFloat = 0
-        static let GameTable: CGFloat = 1
-        static let Window: CGFloat = 2
-        static let Logo: CGFloat = 3
-        static let Icon: CGFloat = 4
-        static let IconLabel: CGFloat = 5
-        static let NameLabel: CGFloat = 6
-        static let ScoreLabel:  CGFloat = 6
-        static let Dice: CGFloat = 7
-        static let Message: CGFloat = 8
-        static let Menu: CGFloat = 9
-        static let MenuLabel: CGFloat = 10
+        static let GameTable: CGFloat = 5
+        static let Window: CGFloat = 5
+        static let Logo: CGFloat = 10
+        static let Icon: CGFloat = 10
+        static let IconLabel: CGFloat = 10
+        static let NameLabel: CGFloat = 10
+        static let ScoreLabel:  CGFloat = 10
+        static let Dice: CGFloat = 15
+        static let Message: CGFloat = 20
+        static let Menu: CGFloat = 20
+        static let MenuLabel: CGFloat = 20
     }
 
     struct PhysicsCategory {
