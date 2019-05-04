@@ -18,21 +18,3 @@ class DieFace
         self.faceValue = faceValue
     }
 }
-
-/*
-struct DieSide {
-    
-    var name: String
-    var dieValue: [String:Int]
-    var points: Int
-
-    init(name: String, dieValue: [String:Int], points: Int) {
-        self.name = name
-        self.dieValue = dieValue
-        //self.value = value
-        //self.count = count
-        self.points = points
-    }
-}
-*/
-

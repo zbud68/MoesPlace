@@ -86,7 +86,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
 
         while hasScoringDice || currentDiceArray.count != 0 {
             rollDice()
-            print("has scoring dice: \(hasScoringDice)")
+            //print("has scoring dice: \(hasScoringDice)")
         }
         if !hasScoringDice {
             print("Farkle")
@@ -99,22 +99,22 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         for dieSide in currentDieSidesArray where dieSide.counted {
             let currentValue = dieSide.value
             
-            for die in currentDiceArray {
+            for _ in currentDiceArray {
                 currentDiceArray.removeAll(where: { $0.value == currentValue })
-                print("dieSide Value: \(dieSide.value)")
-                print("die of Value: \(die.value) removed:")
+                //print("dieSide Value: \(dieSide.value)")
+                //print("die of Value: \(die.value) removed:")
             }
         }
-        print("currentDiceArray Count: \(currentDiceArray.count)")
-        for die in currentDiceArray {
-            print("die of value: \(die.value)")
-        }
+        //print("currentDiceArray Count: \(currentDiceArray.count)")
+        //for die in currentDiceArray {
+            //print("die of value: \(die.value)")
+        //}
         //print("Current Dice Array: \(currentDiceArray.enumerated())")
     }
     
     
     func setupGameScene() {
-        //setupGameTable()
+        setupGameTable()
         
     }
     
@@ -127,6 +127,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     func rollDice() {
         getDieSides()
         calcDieRoll()
+        resetDieCount()
     }
     
     func getDieSides() {
@@ -162,6 +163,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         for dieSide in currentDieSidesArray {
             print("current Roll: \(dieSide.value), count: \(dieSide.count)")
         }
+
     }
     
     func calcDieRoll() {
@@ -363,6 +365,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     }
     
     func newRoll() {
+        print("New Roll")
         hasScoringDice = false
         currentDieSidesArray.removeAll()
 
@@ -389,8 +392,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         currentRollScore = 0
         print("current Score: \(score)")
     }
-    
-    /*
+
     func setupGameTable() {
         gameTable = SKSpriteNode(imageNamed: "WindowPopup")
         gameTable.name = "Game Table"
@@ -407,7 +409,6 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         gameTable.physicsBody?.collisionBitMask = 1
         gameTable.physicsBody?.contactTestBitMask = 1
     }
-     */
     
     func setupDice() {
         let die1 = Die()
@@ -568,6 +569,12 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         /*
         for t in touches { touchUp(atPoint: t.location(in: self)) }
         */
+    }
+
+    func resetDieCount() {
+        for die in currentDieSidesArray {
+            die.count = 0
+        }
     }
     
     override func update(_ currentTime: TimeInterval) {

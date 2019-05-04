@@ -299,91 +299,297 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
 
             for die in currentDiceArray {
                 if dieName == die.name {
-                    handleTouchedDie(TouchedNode: touchedNode)
+                    handleTouchedDie(TouchedNode: touchedNode, die: die)
                 }
             }
         }
     }
 
-    func handleTouchedDie(TouchedNode: SKNode) {
-        let touchedNode = TouchedNode as! SKSpriteNode
-        if let name = touchedNode.name {
+    func handleTouchedDie(TouchedNode: SKNode, die: Die) {
+        let count = die.dieFace!.countThisRoll
+        if die.dieFace!.countThisRoll >= 3 {
+            for Die in currentDiceArray where Die.dieFace!.countThisRoll == count {
+                print("and here")
+                Die.selected = true
+                selectedDieArray.append(die)
+                switch die.dieFace!.countThisRoll {
+                case 3:
+                    print("three of a kind")
+                    print("dieValue: \(die.dieFace!.faceValue)")
+                    print("dieCount: \(die.dieFace!.countThisRoll)")
+                    threeOAK = true
+                    currentScore = calcMultiDieScore(count: 3)
+                    die.dieFace!.countThisRoll = 0
+                    scoreDice(key: "ThreeOAK", isComplete: handlerBlock)
+                case 4:
+                    print("four of a kind")
+                    fourOAK = true
+                    currentScore = calcMultiDieScore(count: 4)
+                    die.dieFace!.countThisRoll = 0
+                    scoreDice(key: "FourOAK", isComplete: handlerBlock)
+                case 5:
+                    print("five of a kind")
+                    fiveOAK = true
+                    currentScore = calcMultiDieScore(count: 5)
+                    die.dieFace!.countThisRoll = 0
+                    scoreDice(key: "FiveOAK", isComplete: handlerBlock)
+                case 6:
+                    print("six of a kind")
+                    sixOAK = true
+                    currentScore = calcMultiDieScore(count: 6)
+                    die.dieFace!.countThisRoll = 0
+                    scoreDice(key: "SixOAK", isComplete: handlerBlock)
+                default:
+                    break
+                }
+                //currentPlayer.currentRollScore += currentScore
+            }
+            moveDiceCollection(count: die.dieFace!.countThisRoll)
+        } else {
+            print("\((die.dieFace?.faceValue)!) touched")
+            die.physicsBody = nil
+            die.zRotation = 0
+            die.position = die.placeHolder.position
+            die.selected = true
+            selectedDieArray.append(die)
+        }
+        getScoringCombos(isComplete: handlerBlock)
+    }
+
+/*
+
+
+
+
             switch name {
             case "Die1":
+
+
+
                 if die1.dieFace!.countThisRoll >= 3 {
+                    //handleMultipleDieSelection(dieValue: die1.dieFace!.faceValue, dieCount: die1.dieFace!.countThisRoll)
                     moveDiceCollection(count: die1.dieFace!.countThisRoll)
-                }
-                print("\((die1.dieFace?.faceValue)!) touched")
-                die1.physicsBody?.velocity = CGVector(dx: 0, dy: 0)
-                die1.physicsBody = nil
-                die1.selected = true
-                die1.zRotation = 0
-                die1.position = die1PlaceHolder.position
-                selectedDieArray.append(die1)
+                    for die in currentDiceArray where die.dieFace!.faceValue == die1.dieFace!.faceValue {
+                        die.selected = true
+                        selectedDieArray.append(die)
+                    }
+                } else {
+                    print("\((die1.dieFace?.faceValue)!) touched")
+                    die1.physicsBody?.velocity = CGVector(dx: 0, dy: 0)
+                    die1.physicsBody = nil
+                    die1.zRotation = 0
+                    die1.position = die1PlaceHolder.position
+                    die1.selected = true
+                    selectedDieArray.append(die1)
+               }
+
             case "Die2":
-                if die1.dieFace!.countThisRoll >= 3 {
-                    moveDiceCollection(count: die1.dieFace!.countThisRoll)
-                }
-                print("\((die2.dieFace?.faceValue)!) touched")
-                die2.physicsBody?.velocity = CGVector(dx: 0, dy: 0)
-                die2.physicsBody = nil
-                die2.selected = true
-                die2.zRotation = 0
-                die2.position = die2PlaceHolder.position
-                selectedDieArray.append(die2)
+                currentDie = die2
+
+
+
+                if die2.dieFace!.countThisRoll >= 3 {
+                    //handleMultipleDieSelection(dieValue: die2.dieFace!.faceValue, dieCount: die2.dieFace!.countThisRoll)
+                    moveDiceCollection(count: die2.dieFace!.countThisRoll)
+                    for die in currentDiceArray where die.dieFace!.faceValue == die2.dieFace!.faceValue {
+                        die.selected = true
+                        selectedDieArray.append(die)
+                    }
+                } else {
+                    print("\((die2.dieFace?.faceValue)!) touched")
+                    die2.physicsBody?.velocity = CGVector(dx: 0, dy: 0)
+                    die2.physicsBody = nil
+                    die2.zRotation = 0
+                    die2.position = die2PlaceHolder.position
+                    die2.selected = true
+                    selectedDieArray.append(die2)
+               }
+
             case "Die3":
-                if die1.dieFace!.countThisRoll >= 3 {
-                    moveDiceCollection(count: die1.dieFace!.countThisRoll)
-                }
-                print("\((die3.dieFace?.faceValue)!) touched")
-                die3.physicsBody?.velocity = CGVector(dx: 0, dy: 0)
-                die3.physicsBody = nil
-                die3.selected = true
-                die3.zRotation = 0
-                die3.position = die3PlaceHolder.position
-                selectedDieArray.append(die3)
+                if die3.dieFace!.countThisRoll >= 3 {
+                    //handleMultipleDieSelection(dieValue: die3.dieFace!.faceValue, dieCount: die3.dieFace!.countThisRoll)
+                    moveDiceCollection(count: die3.dieFace!.countThisRoll)
+                    for die in currentDiceArray where die.dieFace!.faceValue == die3.dieFace!.faceValue {
+                        die.selected = true
+                        selectedDieArray.append(die)
+                    }
+                } else {
+                    print("\((die3.dieFace?.faceValue)!) touched")
+                    die3.physicsBody?.velocity = CGVector(dx: 0, dy: 0)
+                    die3.physicsBody = nil
+                    die3.zRotation = 0
+                    die3.position = die3PlaceHolder.position
+                    die3.selected = true
+                    selectedDieArray.append(die3)
+               }
             case "Die4":
-                if die1.dieFace!.countThisRoll >= 3 {
-                    moveDiceCollection(count: die1.dieFace!.countThisRoll)
+                if die4.dieFace!.countThisRoll >= 3 {
+                    //handleMultipleDieSelection(dieValue: die4.dieFace!.faceValue, dieCount: die4.dieFace!.countThisRoll)
+                    moveDiceCollection(count: die4.dieFace!.countThisRoll)
+                    for die in currentDiceArray where die.dieFace!.faceValue == die4.dieFace!.faceValue {
+                        die.selected = true
+                        selectedDieArray.append(die)
+                    }
+                } else {
+                    print("\((die4.dieFace?.faceValue)!) touched")
+                    die4.physicsBody?.velocity = CGVector(dx: 0, dy: 0)
+                    die4.physicsBody = nil
+                    die4.zRotation = 0
+                    die4.position = die4PlaceHolder.position
+                    die4.selected = true
+                    selectedDieArray.append(die4)
                 }
-                print("\((die4.dieFace?.faceValue)!) touched")
-                die4.physicsBody?.velocity = CGVector(dx: 0, dy: 0)
-                die4.physicsBody = nil
-                die4.selected = true
-                die4.zRotation = 0
-                die4.position = die4PlaceHolder.position
-                selectedDieArray.append(die4)
-            case "Die5":
-                if die1.dieFace!.countThisRoll >= 3 {
-                    moveDiceCollection(count: die1.dieFace!.countThisRoll)
+           case "Die5":
+                if die5.dieFace!.countThisRoll >= 3 {
+                    //handleMultipleDieSelection(dieValue: die5.dieFace!.faceValue, dieCount: die5.dieFace!.countThisRoll)
+                    moveDiceCollection(count: die5.dieFace!.countThisRoll)
+                    for die in currentDiceArray where die.dieFace!.faceValue == die5.dieFace!.faceValue {
+                        die.selected = true
+                        selectedDieArray.append(die)
+                    }
+                } else {
+                    print("\((die5.dieFace?.faceValue)!) touched")
+                    die5.physicsBody?.velocity = CGVector(dx: 0, dy: 0)
+                    die5.physicsBody = nil
+                    die5.zRotation = 0
+                    die5.position = die5PlaceHolder.position
+                    die5.selected = true
+                    selectedDieArray.append(die5)
                 }
-                print("\((die5.dieFace?.faceValue)!) touched")
-                die5.physicsBody?.velocity = CGVector(dx: 0, dy: 0)
-                die5.physicsBody = nil
-                die5.selected = true
-                die5.zRotation = 0
-                die5.position = die5PlaceHolder.position
-                selectedDieArray.append(die5)
             case "Die6":
-                if die1.dieFace!.countThisRoll >= 3 {
-                    moveDiceCollection(count: die1.dieFace!.countThisRoll)
+                if die6.dieFace!.countThisRoll >= 3 {
+                    //handleMultipleDieSelection(dieValue: die6.dieFace!.faceValue, dieCount: die6.dieFace!.countThisRoll)
+                    moveDiceCollection(count: die5.dieFace!.countThisRoll)
+                    for die in currentDiceArray where die.dieFace!.faceValue == die6.dieFace!.faceValue {
+                        die.selected = true
+                        selectedDieArray.append(die)
+                    }
+                } else {
+                    print("\((die6.dieFace?.faceValue)!) touched")
+                    die6.physicsBody?.velocity = CGVector(dx: 0, dy: 0)
+                    die6.physicsBody = nil
+                    die6.zRotation = 0
+                    die6.position = die6PlaceHolder.position
+                    die6.selected = true
+                    selectedDieArray.append(die6)
                 }
-                print("\((die6.dieFace?.faceValue)!) touched")
-                die6.physicsBody?.velocity = CGVector(dx: 0, dy: 0)
-                die6.physicsBody = nil
-                die6.selected = true
-                die6.zRotation = 0
-                die6.position = die6PlaceHolder.position
-                selectedDieArray.append(die6)
             default:
                 break
-            }
-            //getScoringCombos(isComplete: handlerBlock)
+          }
+            getScoringCombos(isComplete: handlerBlock)
         }
-        //currentDiceArray.removeAll(where: { $0.selected })
-        getScoringCombos(isComplete: handlerBlock)
         displayScore()
     }
+
+ switch name {
+ case "Die1":
+ if die1.dieFace!.countThisRoll >= 3 {
+ //handleMultipleDieSelection(dieValue: die1.dieFace!.faceValue, dieCount: die1.dieFace!.countThisRoll)
+ moveDiceCollection(count: die1.dieFace!.countThisRoll)
+ for die in currentDiceArray where die.dieFace!.faceValue == die1.dieFace!.faceValue {
+ die.selected = true
+ selectedDieArray.append(die)
+ }
+ } else {
+ print("\((die1.dieFace?.faceValue)!) touched")
+ die1.physicsBody?.velocity = CGVector(dx: 0, dy: 0)
+ die1.physicsBody = nil
+ die1.zRotation = 0
+ die1.position = die1PlaceHolder.position
+ die1.selected = true
+ selectedDieArray.append(die1)
+ }
+ case "Die2":
+ if die2.dieFace!.countThisRoll >= 3 {
+ //handleMultipleDieSelection(dieValue: die2.dieFace!.faceValue, dieCount: die2.dieFace!.countThisRoll)
+ moveDiceCollection(count: die2.dieFace!.countThisRoll)
+ for die in currentDiceArray where die.dieFace!.faceValue == die2.dieFace!.faceValue {
+ die.selected = true
+ selectedDieArray.append(die)
+ }
+ } else {
+ print("\((die2.dieFace?.faceValue)!) touched")
+ die2.physicsBody?.velocity = CGVector(dx: 0, dy: 0)
+ die2.physicsBody = nil
+ die2.zRotation = 0
+ die2.position = die2PlaceHolder.position
+ die2.selected = true
+ selectedDieArray.append(die2)
+ }
+ case "Die3":
+ if die3.dieFace!.countThisRoll >= 3 {
+ //handleMultipleDieSelection(dieValue: die3.dieFace!.faceValue, dieCount: die3.dieFace!.countThisRoll)
+ moveDiceCollection(count: die3.dieFace!.countThisRoll)
+ for die in currentDiceArray where die.dieFace!.faceValue == die3.dieFace!.faceValue {
+ die.selected = true
+ selectedDieArray.append(die)
+ }
+ } else {
+ print("\((die3.dieFace?.faceValue)!) touched")
+ die3.physicsBody?.velocity = CGVector(dx: 0, dy: 0)
+ die3.physicsBody = nil
+ die3.zRotation = 0
+ die3.position = die3PlaceHolder.position
+ die3.selected = true
+ selectedDieArray.append(die3)
+ }
+ case "Die4":
+ if die4.dieFace!.countThisRoll >= 3 {
+ //handleMultipleDieSelection(dieValue: die4.dieFace!.faceValue, dieCount: die4.dieFace!.countThisRoll)
+ moveDiceCollection(count: die4.dieFace!.countThisRoll)
+ for die in currentDiceArray where die.dieFace!.faceValue == die4.dieFace!.faceValue {
+ die.selected = true
+ selectedDieArray.append(die)
+ }
+ } else {
+ print("\((die4.dieFace?.faceValue)!) touched")
+ die4.physicsBody?.velocity = CGVector(dx: 0, dy: 0)
+ die4.physicsBody = nil
+ die4.zRotation = 0
+ die4.position = die4PlaceHolder.position
+ die4.selected = true
+ selectedDieArray.append(die4)
+ }
+ case "Die5":
+ if die5.dieFace!.countThisRoll >= 3 {
+ //handleMultipleDieSelection(dieValue: die5.dieFace!.faceValue, dieCount: die5.dieFace!.countThisRoll)
+ moveDiceCollection(count: die5.dieFace!.countThisRoll)
+ for die in currentDiceArray where die.dieFace!.faceValue == die5.dieFace!.faceValue {
+ die.selected = true
+ selectedDieArray.append(die)
+ }
+ } else {
+ print("\((die5.dieFace?.faceValue)!) touched")
+ die5.physicsBody?.velocity = CGVector(dx: 0, dy: 0)
+ die5.physicsBody = nil
+ die5.zRotation = 0
+ die5.position = die5PlaceHolder.position
+ die5.selected = true
+ selectedDieArray.append(die5)
+ }
+ case "Die6":
+ if die6.dieFace!.countThisRoll >= 3 {
+ //handleMultipleDieSelection(dieValue: die6.dieFace!.faceValue, dieCount: die6.dieFace!.countThisRoll)
+ moveDiceCollection(count: die5.dieFace!.countThisRoll)
+ for die in currentDiceArray where die.dieFace!.faceValue == die6.dieFace!.faceValue {
+ die.selected = true
+ selectedDieArray.append(die)
+ }
+ } else {
+ print("\((die6.dieFace?.faceValue)!) touched")
+ die6.physicsBody?.velocity = CGVector(dx: 0, dy: 0)
+ die6.physicsBody = nil
+ die6.zRotation = 0
+ die6.position = die6PlaceHolder.position
+ die6.selected = true
+ selectedDieArray.append(die6)
+ }
+ default:
+ break
+ }
+ getScoringCombos(isComplete: handlerBlock)
+*/
+
 
     func wasMainMenuButtonTouched() {
         for button in mainMenuButtonsArray where button.contains(mainMenuTouchLocation) {

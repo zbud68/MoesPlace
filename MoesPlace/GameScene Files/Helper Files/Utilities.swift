@@ -17,4 +17,20 @@ extension GameScene {
         let result = Array<Int>(uniques)
         return result
     }
+
+    func printArrayContents(arrayName: String) {
+        switch arrayName {
+        case "currentDiceArray":
+            for die in currentDiceArray {
+                print("dieValue: \(die.dieFace!.faceValue), dieCount: \(die.dieFace!.countThisRoll)")
+            }
+        case "selectedDieArray":
+            for die in selectedDieArray {
+                print("dieValue: \(die.dieFace!.faceValue), dieCount: \(die.dieFace!.countThisRoll)")
+            }
+        default:
+            break
+        }
+    }
+
 }

@@ -16,14 +16,6 @@ extension GameScene {
         }
         mainMenu.position = CGPoint(x: 0, y: 0)
         mainMenu.alpha = 1
-
-        /*
-         mainMenu.texture = GameConstants.Textures.MainMenu
-         mainMenu.name = "MainMenu"
-         mainMenu.position = CGPoint(x: 0, y: 0)
-         mainMenu.size = CGSize(width: frame.size.width / 2, height: frame.size.height / 1.5)
-         mainMenu.zPosition = GameConstants.ZPositions.Menu
-         */
     }
 
     func setupSettingsMenu() {
@@ -32,17 +24,7 @@ extension GameScene {
         } else {
             print("settings menu not found")
         }
-        //settingsMenu.isPaused = true
         settingsMenu.position = CGPoint(x: 500, y: 0)
-        //settingsMenu.position = CGPoint(x: 10000, y: 10000)
-
-        /*
-         settingsMenu.texture = GameConstants.Textures.SettingsMenu
-         settingsMenu.name = "SettingsMenu"
-         settingsMenu.position = CGPoint(x: 0, y: 0)
-         settingsMenu.size = CGSize(width: frame.size.width / 2, height: frame.size.height / 1.5)
-         settingsMenu.zPosition = GameConstants.ZPositions.Menu
-         */
         setupSettingsMenuButtons()
     }
 
@@ -52,10 +34,7 @@ extension GameScene {
         } else {
             print("help menu not found")
         }
-        //helpMenu.isPaused = true
         helpMenu.position = CGPoint(x: 500, y: -150)
-        //helpMenu.position = CGPoint(x: 10000, y: 10000)
-
     }
     
     func setupMainMenuButtons() {
@@ -65,28 +44,11 @@ extension GameScene {
             print("new game button not found")
         }
 
-        /*
-        newGameIcon.texture = SKTexture(imageNamed: "GreenPlay")
-        newGameIcon.name = "New Game"
-        newGameIcon.size = CGSize(width: 32, height: 32)
-        newGameIcon.zPosition = GameConstants.ZPositions.Icon
-        newGameIcon.position = CGPoint(x: -50, y: mainMenu.frame.midY + 40)
-        */
-
         if let ResumeGameButton = mainMenu.childNode(withName: "ResumeGameButton") as? SKSpriteNode {
             resumeGameButton = ResumeGameButton
         } else {
             print("resume game button not found")
         }
-
-        /*
-        resumeGameIcon.texture = SKTexture(imageNamed: "GreenReload")
-        resumeGameIcon.name = "Continue"
-        resumeGameIcon.size = CGSize(width: 32, height: 32)
-        resumeGameIcon.zPosition = GameConstants.ZPositions.Icon
-        resumeGameIcon.position = CGPoint(x: -50, y: mainMenu.frame.midY)
-        
-        */
 
         if let SettingsButton = mainMenu.childNode(withName: "SettingsButton") as? SKSpriteNode {
             settingsButton = SettingsButton
@@ -94,26 +56,11 @@ extension GameScene {
             print("settings button not found")
         }
 
-        /*
-        settingsIcon.texture = SKTexture(imageNamed: "GreenSettings")
-        settingsIcon.name = "Settings"
-        settingsIcon.size = CGSize(width: 32, height: 32)
-        settingsIcon.zPosition = GameConstants.ZPositions.Icon
-        settingsIcon.position = CGPoint(x: -50, y: mainMenu.frame.midY - 40)
-        */
-
         if let ExitButton = mainMenu.childNode(withName: "ExitButton") as? SKSpriteNode {
             exitButton = ExitButton
         } else {
             print("exit button not found")
         }
-        /*
-        exitIcon.texture = SKTexture(imageNamed: "GreenExit")
-        exitIcon.name = "Exit"
-        exitIcon.size = CGSize(width: 32, height: 32)
-        exitIcon.zPosition = GameConstants.ZPositions.Icon
-        exitIcon.position = CGPoint(x: -50, y: mainMenu.frame.midY - 80)
-        */
 
         if let InfoButton = mainMenu.childNode(withName: "InfoButton") as? SKSpriteNode {
             infoButton = InfoButton
@@ -121,17 +68,7 @@ extension GameScene {
             print("info button not found")
         }
 
-        /*
-        infoIcon.texture = SKTexture(imageNamed: "GreenInfo")
-        infoIcon.name = "Info"
-        infoIcon.size = CGSize(width: 24, height: 24)
-        infoIcon.position = CGPoint(x: mainMenu.frame.maxX - 50, y: mainMenu.frame.minY + 35)
-        infoIcon.zPosition = GameConstants.ZPositions.Icon
-        */
-
-        //setupMainMenuLabels()
-        setupMainMenuButtonsArray()
-        //addMainMenu()
+        setupButtonArrays()
     }
     
     func setupMainMenuLabels() {
@@ -177,28 +114,14 @@ extension GameScene {
         } else {
             print("sound button not found")
         }
-        /*
-        soundIcon.texture = SKTexture(imageNamed: "GreenSound")
-        soundIcon.name = "Sound"
-        soundIcon.size = CGSize(width: 32, height: 32)
-        soundIcon.zPosition = GameConstants.ZPositions.Icon
-        soundIcon.position = CGPoint(x: -50, y: settingsMenu.frame.midY + 40)
-        */
 
         if let BackButton = settingsMenu.childNode(withName: "BackButton") as? SKSpriteNode {
             backButton = BackButton
         } else {
             print("back button not found")
         }
-        /*
-        backButton.texture = SKTexture(imageNamed: "GreenLeftArrow")
-        backButton.name = "Back"
-        backButton.size = CGSize(width: 32, height: 32)
-        backButton.zPosition = GameConstants.ZPositions.Icon
-        backButton.position = CGPoint(x: -50, y: settingsMenu.frame.midY)
-        */
-        //setupSettingsMenuLabels()
-        setupSettingsMenuButtonsArray()
+
+        setupButtonArrays()
     }
     
     func setupSettingsMenuLabels() {

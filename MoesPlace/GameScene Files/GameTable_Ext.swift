@@ -15,32 +15,6 @@ extension GameScene {
         } else {
             print("game table not found")
         }
-
-        /*
-        if let CurrentRollScoreLabel =  gameTable.childNode(withName: "CurrentRollScoreLabel") as? SKLabelNode {
-            currentRollScoreLabel = CurrentRollScoreLabel
-        } else {
-            print("CurrentRollScoreLabel not found")
-        }
-        */
-
-
-        //gameTable = SKSpriteNode(imageNamed: "WindowPopup")
-        //gameTable.name = "Game Table"
-        //gameTable.zPosition = GameConstants.ZPositions.GameTable
-        //gameTable.size = CGSize(width: backGround.size.width - 75, height: backGround.size.height + 20)
-        //gameTable.position = CGPoint(x: (backGround.frame.maxX - (gameTable.size.width / 2) + 40), y: 0)
-        //gameTable.physicsBody = SKPhysicsBody(edgeLoopFrom: CGRect(origin: CGPoint(x: gameTable.frame.minX - 15, y: gameTable.frame.minY + 40), size: CGSize(width: gameTable.size.width - 140, height: gameTable.size.height - 80)))
-        //gameTable.physicsBody?.affectedByGravity = false
-        //gameTable.physicsBody?.allowsRotation = false
-        //gameTable.physicsBody?.isDynamic = true
-        //gameTable.physicsBody?.restitution = 0.75
-
-        //gameTable.physicsBody?.categoryBitMask = 1
-        //gameTable.physicsBody?.collisionBitMask = 1
-        //gameTable.physicsBody?.contactTestBitMask = 1
-
-        //background.addChild(gameTable)
     }
 
     func animateGameTitle(isComplete: (Bool) -> Void) {
@@ -80,21 +54,6 @@ extension GameScene {
     }
     
     func setupCurrentRollScoreLabel() {
-        /*
-        if let CurrentRollScoreLabel = gameTable.childNode(withName: "CurrentRollScoreLabel") as? SKLabelNode {
-            currentRollScoreLabel = CurrentRollScoreLabel
-        } else {
-            print("current roll score lable not found")
-        }
-
-        if let CurrentPlayerNameLabel = gameTable.childNode(withName: "CurrentPlayerNameLabel") as? SKLabelNode {
-            currentPlayerNameLabel = CurrentPlayerNameLabel
-        } else {
-            print("Player Name Label not found")
-        }
-        currentPlayerNameLabel.text = "\(currentPlayer.name)"
-        */
-
         playerNameLabel.text = "\(currentPlayer.name):"
         playerNameLabel.fontName = GameConstants.StringConstants.FontName
         playerNameLabel.fontColor = GameConstants.Colors.LogoFont
