@@ -51,12 +51,10 @@
 		4D6396AB220165CE004B6718 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		4D66AED122528B85003B292C /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = MoesPlace/Info.plist; sourceTree = SOURCE_ROOT; };
 		4D7BD9E222110B02005D6D78 /* GameScene.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = GameScene.sks; sourceTree = "<group>"; };
-		4D842891224F34A400DF6C78 /* MoesPlace.playground */ = {isa = PBXFileReference; lastKnownFileType = file.playground; name = MoesPlace.playground; path = Playground/MoesPlace.playground; sourceTree = SOURCE_ROOT; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		4D9394EC2216A99D00E12EFC /* Player_Ext.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Player_Ext.swift; sourceTree = "<group>"; };
 		4D9A6547227CA30C009FFD9F /* Scoring_Ext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Scoring_Ext.swift; sourceTree = "<group>"; };
 		4DA3FF61220A9EFB008B7BC4 /* GameConstants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameConstants.swift; sourceTree = "<group>"; };
 		4DA971762215E2E500CEB115 /* Game.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Game.swift; sourceTree = "<group>"; };
-		4DBCF846227CBFE900A5E5BD /* MyPlayground.playground */ = {isa = PBXFileReference; lastKnownFileType = file.playground; path = MyPlayground.playground; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		4DE4A22D2211D74300671D07 /* BackGround_Ext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackGround_Ext.swift; sourceTree = "<group>"; };
 		4DE4A2302211D82800671D07 /* GameTable_Ext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameTable_Ext.swift; sourceTree = "<group>"; };
 		4DE4A2332211D87100671D07 /* Window_Ext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Window_Ext.swift; sourceTree = "<group>"; };
@@ -119,7 +117,6 @@
 		4DE4A22F2211D7CE00671D07 /* GameScene Files */ = {
 			isa = PBXGroup;
 			children = (
-				4D842891224F34A400DF6C78 /* MoesPlace.playground */,
 				4DE4A23E22123D5100671D07 /* Helper Files */,
 				4D1017A02213DE8A0060FBA2 /* Class Files */,
 				4D9394EC2216A99D00E12EFC /* Player_Ext.swift */,
@@ -132,7 +129,6 @@
 				4D374D1E221E104A00834241 /* Menus_Ext.swift */,
 				4D385C28225DAC2C00CFF531 /* UIAlerts.swift */,
 				4D9A6547227CA30C009FFD9F /* Scoring_Ext.swift */,
-				4DBCF846227CBFE900A5E5BD /* MyPlayground.playground */,
 			);
 			path = "GameScene Files";
 			sourceTree = "<group>";
