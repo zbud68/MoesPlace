@@ -69,8 +69,17 @@ extension GameScene {
         }))
 
         scene.view?.window?.rootViewController?.present(alert, animated: true, completion: nil)
-
     }
+
+    func selectScoringDieMessage(on scene: SKScene, title: String, message: String) {
+        let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
+
+        alert.addAction(UIAlertAction(title: "Okay", style: .default, handler: { (action) in
+            alert.dismiss(animated: true, completion: nil) }))
+
+        scene.view?.window?.rootViewController?.present(alert, animated: true, completion: nil)
+    }
+
 
 }
 

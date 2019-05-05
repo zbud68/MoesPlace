@@ -19,19 +19,19 @@ extension GameScene {
     }
 
     func rollDice() {
+        /*
+        if previousRollScore == currentPlayer.currentRollScore {
+            selectScoringDieMessage(on: scene!, title: "Select a Scoring Die", message: GameConstants.Messages.NoScoringDieSelected)
+        }
+        */
         currentScore = 0
         currentPlayer.hasScoringDice = false
         resetDiePhysics()
         if currentDiceArray.isEmpty {
-            //print("new roll started")
             startNewRoll()
-        } else {
-            getDieSides()
         }
+        getDieSides()
         displayScore()
-        print("current score: \(currentScore)")
-        print("current player current roll score: \(currentPlayer.currentRollScore)")
-        print("current roll score label: \(currentRollScoreLabel.text!)")
     }
 
     func countDice(isComplete: (Bool) -> Void) {
@@ -63,25 +63,42 @@ extension GameScene {
                 break
             }
             dieFacesArray.append(die.dieFace!.faceValue)
+        }
+        isComplete(true)
+    }
 
-            //print("dieValue: \(die.dieFace!.faceValue), dieCount: \(die.dieFace!.countThisRoll)")
+    func checkForFarkle() {
+        var farkle = true
+        currentDieValuesArray.removeAll()
+        for die in currentDiceArray {
+            currentDieValuesArray.append(die.dieFace!.faceValue)
+        }
+        currentDieValuesArray = currentDieValuesArray.sorted()
+        if currentDieValuesArray == [1,2,3,4,5] {
+            farkle = false
+        } else if currentDieValuesArray == [2,3,4,5,6] {
+            farkle = false
+        } else if currentDieValuesArray == [1,2,3,4,5,6] {
+            farkle = false
+        }
+        currentDieValuesArray.removeAll()
+
+        for die in currentDiceArray {
+            switch die.dieFace!.faceValue {
+            case 1,5:
+                farkle = false
+            case 2,3,4,6:
+                if die.dieFace!.countThisRoll >= 3 {
+                    farkle = false
+                }
+            default:
+                break
+            }
         }
 
-        /*
-         for die in currentDiceArray {
-         if die.dieFace!.faceValue == 1 || die.dieFace!.faceValue == 5 {
-         scoringCombosArray["Singles"] = true
-         }
-         }
-         */
-
-        //let uniqueDieFaces = removeDuplicateInts(values: dieFacesArray)
-        //print(dieFacesArray)
-        //print(uniqueDieFaces)
-        //dieFacesArray = uniqueDieFaces
-        //print(dieFacesArray)
-
-        isComplete(true)
+        if farkle {
+            runFarkleAction(isComplete: handlerBlock)
+        }
     }
 
     func getScoringCombos(isComplete: (Bool) -> Void) {
@@ -109,33 +126,28 @@ extension GameScene {
                     pairs = 0
                     scoreDice(key: "FullHouse", isComplete: handlerBlock)
                 } else {
-                    threeOAKFaceValue = die.dieFace!.faceValue
                     scoreDice(key: "ThreeOAK", isComplete: handlerBlock)
                     die.dieFace!.countThisRoll = 0
                 }
                 currentPlayer.hasScoringDice = true
             case 4:
                 fourOAK = true
-                threeOAKFaceValue = die.dieFace!.faceValue
                 currentPlayer.hasScoringDice = true
                 scoreDice(key: "FourOAK", isComplete: handlerBlock)
                 die.dieFace!.countThisRoll = 0
             case 5:
                 fiveOAK = true
-                fiveOAKFaceValue = die.dieFace!.faceValue
                 currentPlayer.hasScoringDice = true
                 scoreDice(key: "FiveOAK", isComplete: handlerBlock)
                 die.dieFace!.countThisRoll = 0
             case 6:
                 sixOAK = true
-                sixOAKFaceValue = die.dieFace!.faceValue
                 currentPlayer.hasScoringDice = true
                 scoreDice(key: "SixOAK", isComplete: handlerBlock)
                 die.dieFace!.countThisRoll = 0
             default:
                 break
             }
-            print("Die Value: \(die.dieFace!.faceValue), Die Count: \(die.dieFace!.countThisRoll)")
         }
         if pairs == 3 {
             threePair = true
@@ -149,7 +161,6 @@ extension GameScene {
     }
 
     func scoreDice(key: String, isComplete: (Bool) -> Void) {
-        print("inside scoreDice")
         for combo in scoringCombosArray.keys where combo == key {
             switch combo {
             case "FullHouse":
@@ -168,31 +179,23 @@ extension GameScene {
                 positionDice()
                 startNewRoll()
             case "ThreeOAK":
-                print("three of a kind")
                 currentScore = calcMultiDieScore(count: 3)
             case "FourOAK":
-                print("four of a kind")
                 currentScore = calcMultiDieScore(count: 4)
             case "FiveOAK":
-                print("five of a kind")
                 currentScore = calcMultiDieScore(count: 5)
             case "SixOAK":
-                print("six of a kind")
                 currentScore = calcMultiDieScore(count: 6)
             case "Singles":
                 if currentPlayer.hasScoringDice {
                     currentScore = calcSingleDice()
-                } else {
-                    farkle()
                 }
             default:
                 break
             }
-            print("hasScoringDice: \(currentPlayer.hasScoringDice)")
             scoreTally.append(currentScore)
         }
         displayScore()
-        print("score tally: \(scoreTally)")
         scoreTally.removeAll()
         resetScoringCombosArray()
         isComplete(true)
@@ -202,6 +205,7 @@ extension GameScene {
         currentPlayer.currentRollScore += currentScore
         currentRollScoreLabel.text = String(currentPlayer.currentRollScore)
         currentScore = 0
+        previousRollScore = currentPlayer.currentRollScore
     }
 
     func checkForStraight() {
@@ -209,21 +213,14 @@ extension GameScene {
         for die in currentDiceArray {
             currentDieValuesArray.append(die.dieFace!.faceValue)
         }
-        //currentDieValuesArray = [2,3,5,1,4]
         currentDieValuesArray = currentDieValuesArray.sorted()
         if currentDieValuesArray == [1,2,3,4,5] || currentDieValuesArray == [2,3,4,5,6] || currentDieValuesArray == [1,2,3,4,5,6] {
             straight = true
             currentPlayer.hasScoringDice = true
             currentDieValuesArray.removeAll()
             scoreDice(key: "Straight", isComplete: handlerBlock)
-            print("Straight: \(straight)")
         }
     }
-
-    func handleMultipleDieSelection(dieValue: Int, dieCount: Int) {
-
-    }
-
 
     func moveDiceCollection(count: Int){
         let moveDie1 = SKAction.move(to: die1PlaceHolder.position, duration: 0.25)
@@ -267,20 +264,15 @@ extension GameScene {
     }
 
     func calcMultiDieScore(count: Int) -> Int {
-        print("Calculating Scoring Combo")
-        print("count: \(count)")
         var result = 0
         for die in selectedDieArray where die.dieFace!.countThisRoll == count {
             if die.dieFace!.faceValue == 1 {
                 result = (1000 * (count - 2))
-                //die.dieFace!.countThisRoll = 0
             } else {
                 result = ((die.dieFace!.faceValue * 100) * (count - 2))
-                //die.dieFace!.countThisRoll = 0
             }
             die.counted = true
         }
-        print("result: \(result)")
         return result
     }
 
@@ -295,10 +287,6 @@ extension GameScene {
             die.counted = true
         }
         return result
-    }
-
-    func farkle() {
-        runFarkleAction(isComplete: handlerBlock)
     }
 
     func runFarkleAction(isComplete: (Bool) -> Void) {

@@ -82,17 +82,17 @@ struct GameConstants {
 
     struct ZPositions {
         static let BackGround: CGFloat = 0
-        static let GameTable: CGFloat = 5
-        static let Window: CGFloat = 5
-        static let Logo: CGFloat = 10
-        static let Icon: CGFloat = 10
-        static let IconLabel: CGFloat = 10
-        static let NameLabel: CGFloat = 10
-        static let ScoreLabel:  CGFloat = 10
-        static let Dice: CGFloat = 15
-        static let Message: CGFloat = 20
-        static let Menu: CGFloat = 20
-        static let MenuLabel: CGFloat = 20
+        static let GameTable: CGFloat = 10
+        static let Window: CGFloat = 10
+        static let Logo: CGFloat = 20
+        static let Icon: CGFloat = 20
+        static let IconLabel: CGFloat = 20
+        static let NameLabel: CGFloat = 20
+        static let ScoreLabel:  CGFloat = 20
+        static let Dice: CGFloat = 30
+        static let Message: CGFloat = 80
+        static let Menu: CGFloat = 60
+        static let MenuLabel: CGFloat = 60
     }
 
     struct PhysicsCategory {
@@ -108,6 +108,7 @@ struct GameConstants {
         static let Busted = "You must match the target score exactly to win"
         static let Farkle = "No scoring dice"
         static let Settings = "There is currently a game in progress, if you continue the current game will be aborted.  Press 'Continue' to abandon game in progress and continue to the Settings Menu, or 'Cancel' and press 'Resume Game' from main menu to contiue the game in progress"
+        static let NoScoringDieSelected = "You must select a scoring sie to continue. Please select a 1, 5, or a scoring combination to keep rolling or select 'Keep Score' to end your turn."
     }
     
     struct Locations {

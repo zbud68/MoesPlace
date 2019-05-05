@@ -17,21 +17,6 @@ extension GameScene {
         }
     }
 
-    func animateGameTitle(isComplete: (Bool) -> Void) {
-        var animateTitle = SKAction()
-        if let animation = SKAction(named: "AnimateGameTitle") {
-            animateTitle = animation
-        } else {
-            print("Animation not found")
-        }
-        let wait = SKAction.wait(forDuration: 3)
-
-        animateTitle = SKAction.group([animateTitle, wait])
-        logo.run(animateTitle)
-        logo2.run(animateTitle)
-        isComplete(true)
-    }
-    
     func setupLogo() {
         
         logo.fontName = GameConstants.StringConstants.FontName
@@ -59,7 +44,7 @@ extension GameScene {
         playerNameLabel.fontColor = GameConstants.Colors.LogoFont
         playerNameLabel.fontSize = GameConstants.Sizes.PlayerNameLabelFont
         playerNameLabel.position = CGPoint(x: (gameTable.frame.minX) + ((gameTable.size.width) / 3), y: (gameTable.frame.maxY) / 2)
-        playerNameLabel.zPosition = GameConstants.ZPositions.Logo
+        playerNameLabel.zPosition = GameConstants.ZPositions.NameLabel
         playerNameLabel.alpha = 0.65
         
         //currentRollScoreLabel.text = String(currentPlayer.currentRollScore)
@@ -72,6 +57,7 @@ extension GameScene {
         
         gameTable.addChild(currentRollScoreLabel)
         gameTable.addChild(playerNameLabel)
-
     }
+
+    
 }

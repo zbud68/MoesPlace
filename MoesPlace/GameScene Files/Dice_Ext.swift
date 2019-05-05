@@ -141,6 +141,7 @@ extension GameScene {
         resetScoringCombos()
         dieFacesArray.removeAll()
         countDice(isComplete: handlerBlock)
+        checkForFarkle()
         if currentPlayer.firstRoll {
             checkForStraight()
         }

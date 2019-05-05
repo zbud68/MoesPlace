@@ -28,6 +28,22 @@ extension GameScene {
             for die in selectedDieArray {
                 print("dieValue: \(die.dieFace!.faceValue), dieCount: \(die.dieFace!.countThisRoll)")
             }
+        case "currentDieValuesArray":
+            for currentDieValue in currentDieValuesArray {
+                print("currentDieValue: \(currentDieValue)")
+            }
+        case "diceArray":
+            for die in diceArray {
+                print("dieValue: \(die.dieFace!.faceValue), dieCount: \(die.dieFace!.countThisRoll)")
+            }
+        case "scoringDiceArray":
+            for die in scoringDiceArray {
+                print("dieValue: \(die.dieFace!.faceValue), dieCount: \(die.dieFace!.countThisRoll)")
+            }
+        case "scoringCombosArray":
+            for (key, value) in scoringCombosArray {
+                print("Key: \(key), Value: \(value)")
+            }
         default:
             break
         }
