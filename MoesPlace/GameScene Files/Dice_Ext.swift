@@ -36,6 +36,12 @@ extension GameScene {
         if let Die6PlaceHolder = gameTable.childNode(withName: "Die6PlaceHolder") as? SKSpriteNode {
             die6PlaceHolder = Die6PlaceHolder
         }
+        placeHoldersArray = [die1PlaceHolder, die2PlaceHolder, die3PlaceHolder, die4PlaceHolder, die5PlaceHolder]
+
+        if currentGame.numDice == 6 {
+            placeHoldersArray.append(die6PlaceHolder)
+        }
+        placeHoldersIndex = 0
     }
 
     func setupDice() {
@@ -176,6 +182,7 @@ extension GameScene {
             die.position = CGPoint(x: 0, y: 0)
             die.run(Seq)
         }
+        resetDiePhysics()
     }
 
     func setDieSides(die: Die) {
@@ -260,6 +267,7 @@ extension GameScene {
                 die.run(seq2)
             }
         }
+        resetDiePhysics()
     }
 
     func resetDice() {
@@ -287,5 +295,14 @@ extension GameScene {
             die.physicsBody?.angularDamping = 5
             die.zPosition = GameConstants.ZPositions.Dice
         }
+    }
+
+    func resetPlaceHoldersArray() {
+        placeHoldersArray.removeAll()
+        placeHoldersArray = [die1PlaceHolder, die2PlaceHolder, die3PlaceHolder, die4PlaceHolder, die5PlaceHolder]
+        if currentGame.numDice == 6 {
+            placeHoldersArray.append(die6PlaceHolder)
+        }
+        placeHoldersIndex = 0
     }
 }

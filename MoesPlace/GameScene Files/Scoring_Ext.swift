@@ -222,45 +222,27 @@ extension GameScene {
         }
     }
 
-    func moveDiceCollection(count: Int){
-        let moveDie1 = SKAction.move(to: die1PlaceHolder.position, duration: 0.25)
-        let moveDie2 = SKAction.move(to: die2PlaceHolder.position, duration: 0.25)
-        let moveDie3 = SKAction.move(to: die3PlaceHolder.position, duration: 0.25)
-        let moveDie4 = SKAction.move(to: die4PlaceHolder.position, duration: 0.25)
-        let moveDie5 = SKAction.move(to: die5PlaceHolder.position, duration: 0.25)
-        let moveDie6 = SKAction.move(to: die6PlaceHolder.position, duration: 0.25)
-
+    func moveDiceCollection(count: Int, isComplete: (Bool) -> Void) {
         for die in currentDiceArray where die.dieFace!.countThisRoll == count {
             die.selected = true
             die.counted = true
+            die.zRotation = 0
             die.physicsBody?.collisionBitMask = 2
             die.physicsBody?.isDynamic = false
             die.physicsBody?.allowsRotation = false
+            //position = getFirstPosition()
 
-            switch die.name {
-            case "Die1":
-                die.zRotation = 0
-                die.run(moveDie1)
-            case "Die2":
-                die.zRotation = 0
-                die.run(moveDie2)
-            case "Die3":
-                die.zRotation = 0
-                die.run(moveDie3)
-            case "Die4":
-                die.zRotation = 0
-                die.run(moveDie4)
-            case "Die5":
-                die.zRotation = 0
-                die.run(moveDie5)
-            case "Die6":
-                die.zRotation = 0
-                die.run(moveDie6)
-            default:
-                break
+            if !placeHoldersArray.isEmpty {
+                die.position = placeHoldersArray.first!.position
+            } else {
+                resetPlaceHoldersArray()
+                die.position = placeHoldersArray.first!.position
             }
+            placeHoldersArray.removeFirst()
         }
+        resetDiePhysics()
         currentDiceArray.removeAll(where: { $0.selected })
+        isComplete(true)
     }
 
     func calcMultiDieScore(count: Int) -> Int {
@@ -361,6 +343,7 @@ extension GameScene {
             logo.run(seq2)
         }
         resetDice()
+        resetPlaceHoldersArray()
         isComplete(true)
     }
 

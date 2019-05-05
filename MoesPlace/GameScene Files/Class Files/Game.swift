@@ -10,7 +10,7 @@ import SpriteKit
 
 class Game {
     var numDice = 5
-    var numPlayers = 4
+    var numPlayers = 2
     var targetScore = 10000
     var matchTargetScore = true
     var numRounds = 1

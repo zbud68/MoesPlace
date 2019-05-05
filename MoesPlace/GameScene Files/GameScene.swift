@@ -106,6 +106,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
 
     var currentDieValuesArray: [Int] = [Int]()
     var selectedDieArray: [Die] = [Die]()
+    var placeHoldersArray: [SKSpriteNode] = [SKSpriteNode]()
+    var placeHoldersIndex = 0
     var dieFaceValue = Int()
     var dieFaceCount = Int()
 
@@ -308,8 +310,15 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
                 selectedDieArray.append(die)
                 switch currentDie.dieFace!.countThisRoll {
                 case 3:
-                    threeOAK = true
-                    scoreDice(key: "ThreeOAK", isComplete: handlerBlock)
+                    if pairs == 1 {
+                        fullHouse = true
+                        pairs = 0
+                        threeOAK = false
+                        scoreDice(key: "FullHouse", isComplete: handlerBlock)
+                    } else {
+                        threeOAK = true
+                        scoreDice(key: "ThreeOAK", isComplete: handlerBlock)
+                    }
                 case 4:
                     fourOAK = true
                     scoreDice(key: "FourOAK", isComplete: handlerBlock)
@@ -324,17 +333,23 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
                 }
                 currentDie.dieFace!.countThisRoll = 0
                 currentPlayer.currentRollScore += currentScore
-                moveDiceCollection(count: die.dieFace!.countThisRoll)
+                moveDiceCollection(count: die.dieFace!.countThisRoll, isComplete: handlerBlock)
             }
         } else {
-            if die.dieFace!.faceValue == 1 || die.dieFace!.faceValue == 5 {
-                die.physicsBody = nil
-                die.zRotation = 0
-                die.position = die.placeHolder.position
-                die.selected = true
-                selectedDieArray.append(die)
+            checkForStraight()
+            if !straight {
+                if die.dieFace!.faceValue == 1 || die.dieFace!.faceValue == 5 {
+                    die.physicsBody = nil
+                    die.zRotation = 0
+                    die.position = getFirstPosition()
+                    die.selected = true
+                    selectedDieArray.append(die)
+                    resetDiePhysics()
+                } else {
+                    selectScoringDieMessage(on: scene!, title: "Select a Scoring Die", message: GameConstants.Messages.NoScoringDieSelected)
+                }
             } else {
-                selectScoringDieMessage(on: scene!, title: "Select a Scoring Die", message: GameConstants.Messages.NoScoringDieSelected)
+                scoreDice(key: "Straight", isComplete: handlerBlock)
             }
         }
         getScoringCombos(isComplete: handlerBlock)
@@ -461,6 +476,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     }
 
     func startNewRoll() {
+        resetPlaceHoldersArray()
         resetDice()
         resetCounters()
         currentPlayer.firstRoll = true

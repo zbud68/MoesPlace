@@ -84,7 +84,7 @@ struct GameConstants {
         static let BackGround: CGFloat = 0
         static let GameTable: CGFloat = 10
         static let Window: CGFloat = 10
-        static let Logo: CGFloat = 20
+        static let Logo: CGFloat = 15
         static let Icon: CGFloat = 20
         static let IconLabel: CGFloat = 20
         static let NameLabel: CGFloat = 20
